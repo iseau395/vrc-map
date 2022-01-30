@@ -87,6 +87,14 @@ if (canvas.getContext) {
         { "x": 375, "y": 125 }, { "x": 375, "y": 93.75 }, { "x": 375, "y": 62.5 }, { "x": 375, "y": 31.25 }, { "x": 406.25, "y": 125 }, { "x": 437.5, "y": 125 }, { "x": 468.75, "y": 125 }, { "x": 500, "y": 125 }, { "x": 375, "y": 250 }, { "x": 375, "y": 281.25 }, { "x": 375, "y": 312.5 }, { "x": 375, "y": 437.5 }, { "x": 375, "y": 468.75 }, { "x": 375, "y": 500 }, { "x": 375, "y": 625 }, { "x": 375, "y": 656.25 }, { "x": 375, "y": 687.5 }, { "x": 375, "y": 718.75 }, { "x": 250, "y": 625 }, { "x": 281.25, "y": 625 }, { "x": 312.5, "y": 625 }, { "x": 343.75, "y": 625 }, { "x": 500, "y": 375 }, { "x": 515.625, "y": 375 }, { "x": 500, "y": 359.375 }, { "x": 484.375, "y": 375 }, { "x": 500, "y": 390.625 }, { "x": 500, "y": 500 }, { "x": 515.625, "y": 500 }, { "x": 500, "y": 484.375 }, { "x": 484.375, "y": 500 }, { "x": 500, "y": 515.625 }, { "x": 250, "y": 375 }, { "x": 265.625, "y": 375 }, { "x": 250, "y": 359.375 }, { "x": 234.375, "y": 375 }, { "x": 250, "y": 390.625 }, { "x": 250, "y": 250 }, { "x": 265.625, "y": 250 }, { "x": 250, "y": 234.375 }, { "x": 234.375, "y": 250 }, { "x": 250, "y": 265.625 }
     ];
 
+    /**
+     * @type {{array:string,index:number}}
+     */
+    let selection = {
+        array: "none",
+        index: NaN
+    };
+
 
     let lastX = 0;
     let lastY = 0;
@@ -106,14 +114,14 @@ if (canvas.getContext) {
         canvas.addEventListener("mousedown", (event) => {
             if (event.button != 0) return;
 
-            if (!shiftDown) mouseDown = true;
-            else {
-                let selection = null;
-                
-            }
+            console.log("mousedown");
+
+            mouseDown = true;
         });
         canvas.addEventListener("mouseup", (event) => {
             if (event.button != 0) return;
+
+            console.log("mouseup");
 
             mouseDown = false;
 
@@ -124,6 +132,11 @@ if (canvas.getContext) {
                 });
 
                 undo = [];
+            } else {
+                selection = {
+                    array: "none",
+                    index: NaN
+                };
             }
         });
         canvas.addEventListener("contextmenu", (event) => {
@@ -144,6 +157,53 @@ if (canvas.getContext) {
                 (lastY % FIELD_GRID * event.altKey) +
                 Math.round(((event.y - 7) - (lastY % FIELD_GRID * event.altKey)) / FIELD_GRID) * FIELD_GRID :
                 (event.y - 7);
+
+            console.log(event.shiftKey, mouseDown, selection.array);
+
+            if (event.shiftKey && mouseDown && selection.array == "none") {
+
+                mogos.forEach((mogo, i) => {
+                    if ((event.x - mogo.x) ** 2 + (event.y - mogo.y) ** 2 <= 25.94 ** 2) {
+                        selection = {
+                            array: "mogos",
+                            index: i
+                        };
+                    }
+                });
+
+                rings.forEach((ring, i) => {
+                    if ((event.x - ring.x) ** 2 + (event.y - ring.y) ** 2 <= 16 ** 2) {
+                        selection = {
+                            array: "rings",
+                            index: i
+                        };
+                    }
+                });
+
+                lines.forEach((line, i) => {
+                    if ((event.x - line.x) ** 2 + (event.y - line.y) ** 2 <= 14 ** 2) {
+                        selection = {
+                            array: "lines",
+                            index: i
+                        };
+                    }
+                });
+            }
+
+            switch (selection.array) {
+                case "mogos":
+                    mogos[selection.index].x = event.x;
+                    mogos[selection.index].y = event.y;
+                    break;
+                case "rings":
+                    rings[selection.index].x = event.x;
+                    rings[selection.index].y = event.y;
+                    break;
+                case "lines":
+                    lines[selection.index].x = event.x;
+                    lines[selection.index].y = event.y;
+                    break;
+            }
         });
         canvas.addEventListener("mouseenter", () => {
             mouseInCanvas = true;
@@ -351,8 +411,10 @@ if (canvas.getContext) {
 
         if (lines.length != 0) drawDot(lines[0].x, lines[0].y, PATH_COLOR);
         for (let i = 1; i < lines.length; i++) {
-            drawDot(lines[i].x, lines[i].y, PATH_COLOR);
+            if (selection.index == i) drawDot(lines[i].x, lines[i].y, UNFINISHED_COLOR);
+            else drawDot(lines[i].x, lines[i].y, PATH_COLOR);
 
+            ctx.strokeStyle = selection.index == i || selection.index == i - 1 ? UNFINISHED_COLOR : PATH_COLOR;
             ctx.lineWidth = 3;
             ctx.beginPath();
             ctx.moveTo(lines[i - 1].x ?? lines[i].x, lines[i - 1].y ?? lines[i].y);
@@ -361,7 +423,7 @@ if (canvas.getContext) {
             ctx.closePath();
         }
 
-        if (mouseDown && mouseInCanvas) {
+        if (mouseDown && mouseInCanvas && !shiftDown) {
             ctx.lineWidth = 3;
             ctx.strokeStyle = UNFINISHED_COLOR;
 
