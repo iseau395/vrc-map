@@ -114,14 +114,10 @@ if (canvas.getContext) {
         canvas.addEventListener("mousedown", (event) => {
             if (event.button != 0) return;
 
-            console.log("mousedown");
-
             mouseDown = true;
         });
         canvas.addEventListener("mouseup", (event) => {
             if (event.button != 0) return;
-
-            console.log("mouseup");
 
             mouseDown = false;
 
@@ -153,12 +149,11 @@ if (canvas.getContext) {
                 Math.round(((event.x - 7) - (lastX % FIELD_GRID * event.altKey)) / FIELD_GRID) * FIELD_GRID :
                 (event.x - 7);
 
+
             mouseY = !event.ctrlKey ?
                 (lastY % FIELD_GRID * event.altKey) +
                 Math.round(((event.y - 7) - (lastY % FIELD_GRID * event.altKey)) / FIELD_GRID) * FIELD_GRID :
                 (event.y - 7);
-
-            console.log(event.shiftKey, mouseDown, selection.array);
 
             if (event.shiftKey && mouseDown && selection.array == "none") {
 
@@ -406,10 +401,17 @@ if (canvas.getContext) {
                 ctx.lineTo(FIELD_SIDE, FIELD_GRID * i + (lastY % FIELD_GRID * altDown));
             }
             ctx.stroke();
+            ctx.closePath();
         }
 
 
-        if (lines.length != 0) drawDot(lines[0].x, lines[0].y, PATH_COLOR);
+        if (lines.length != 0) {
+            drawDot(lines[0].x, lines[0].y, PATH_COLOR);
+
+            const angle =   (Math.atan2(lines[0].y - lines[1]?.y, lines[0].x - lines[1]?.x) * 180 / Math.PI);
+            if (!isNaN(angle)) 
+                ctx.fillText(Math.round(angle), lines[0].x + 20, lines[0].y + 20);
+        }
         for (let i = 1; i < lines.length; i++) {
             if (selection.index == i) drawDot(lines[i].x, lines[i].y, UNFINISHED_COLOR);
             else drawDot(lines[i].x, lines[i].y, PATH_COLOR);
@@ -421,6 +423,23 @@ if (canvas.getContext) {
             ctx.lineTo(lines[i].x, lines[i].y);
             ctx.stroke();
             ctx.closePath();
+
+            const distance = Math.sqrt(
+                (lines[i].x - lines[i+1]?.x) ** 2 + 
+                (lines[i].y - lines[i+1]?.y) ** 2
+            )
+            if (!isNaN(distance))
+                ctx.measureText
+
+            /**
+             * @type {number}
+             */
+            const angle =   (Math.atan2(lines[i].y - lines[i+1]?.y, lines[i].x - lines[i+1]?.x) * 180 / Math.PI) -
+                            (Math.atan2(lines[i-1]?.y - lines[i]?.y, lines[i-1]?.x - lines[i].x) * 180 / Math.PI);
+
+            if (!isNaN(angle)) 
+                ctx.fillText(Math.round(angle), lines[i].x + 20, lines[i].y + 20);
+
         }
 
         if (mouseDown && mouseInCanvas && !shiftDown) {
