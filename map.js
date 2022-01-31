@@ -413,7 +413,7 @@ if (canvas.getContext) {
                 (lines[0].y - lines[1]?.y) ** 2
             ) * 2;
             if (!isNaN(distance))
-                ctx.fillText(`${Math.round(distance)}cm`, lines[i].x - (lines[i].x - lines[i+1]?.x)/2, lines[i].y - (lines[i].y - lines[i+1]?.y)/2 - 20);
+                ctx.fillText(`${Math.round(distance)}cm`, lines[0].x - (lines[0].x - lines[1]?.x)/2, lines[0].y - (lines[0].y - lines[1]?.y)/2 - 20);
 
             const angle =   (Math.atan2(lines[0].y - lines[1]?.y, lines[0].x - lines[1]?.x) * 180 / Math.PI);
             if (!isNaN(angle)) 
