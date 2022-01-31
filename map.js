@@ -427,9 +427,9 @@ if (canvas.getContext) {
             const distance = Math.sqrt(
                 (lines[i].x - lines[i+1]?.x) ** 2 + 
                 (lines[i].y - lines[i+1]?.y) ** 2
-            )
+            ) * 2;
             if (!isNaN(distance))
-                ctx.fillText(Math.round(distance), lines[i].x + (lines[i].x - lines[i+1]?.x)/2, lines[i].y + (lines[i].y - lines[i+1]?.y)/2 + 20);
+                ctx.fillText(`${Math.round(distance)}cm`, lines[i].x + (lines[i].x - lines[i+1]?.x)/2, lines[i].y + (lines[i].y - lines[i+1]?.y)/2 + 20);
 
             /**
              * @type {number}
@@ -438,7 +438,7 @@ if (canvas.getContext) {
                             (Math.atan2(lines[i-1]?.y - lines[i]?.y, lines[i-1]?.x - lines[i].x) * 180 / Math.PI);
 
             if (!isNaN(angle)) 
-                ctx.fillText(Math.round(angle), lines[i].x + 20, lines[i].y + 20);
+                ctx.fillText(`${Math.round(angle)}°`, lines[i].x + 20, lines[i].y + 20);
 
         }
 
