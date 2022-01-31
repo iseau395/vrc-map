@@ -409,8 +409,8 @@ if (canvas.getContext) {
             drawDot(lines[0].x, lines[0].y, PATH_COLOR);
 
             const distance = Math.sqrt(
-                (lines[i].x - lines[i+1]?.x) ** 2 + 
-                (lines[i].y - lines[i+1]?.y) ** 2
+                (lines[0].x - lines[1]?.x) ** 2 + 
+                (lines[0].y - lines[1]?.y) ** 2
             ) * 2;
             if (!isNaN(distance))
                 ctx.fillText(`${Math.round(distance)}cm`, lines[i].x - (lines[i].x - lines[i+1]?.x)/2, lines[i].y - (lines[i].y - lines[i+1]?.y)/2 - 20);
