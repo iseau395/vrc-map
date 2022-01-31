@@ -413,10 +413,10 @@ if (canvas.getContext) {
                 ctx.fillText(Math.round(angle), lines[0].x + 20, lines[0].y + 20);
         }
         for (let i = 1; i < lines.length; i++) {
-            if (selection.index == i) drawDot(lines[i].x, lines[i].y, UNFINISHED_COLOR);
+            if (selection.index == i && selection.array == "lines") drawDot(lines[i].x, lines[i].y, UNFINISHED_COLOR);
             else drawDot(lines[i].x, lines[i].y, PATH_COLOR);
 
-            ctx.strokeStyle = selection.index == i || selection.index == i - 1 ? UNFINISHED_COLOR : PATH_COLOR;
+            ctx.strokeStyle = (selection.index == i || selection.index == i - 1) && selection.array == "lines" ? UNFINISHED_COLOR : PATH_COLOR;
             ctx.lineWidth = 3;
             ctx.beginPath();
             ctx.moveTo(lines[i - 1].x ?? lines[i].x, lines[i - 1].y ?? lines[i].y);
@@ -429,7 +429,7 @@ if (canvas.getContext) {
                 (lines[i].y - lines[i+1]?.y) ** 2
             )
             if (!isNaN(distance))
-                ctx.measureText
+                ctx.fillText(Math.round(distance), lines[i].x + (lines[i].x - lines[i+1]?.x)/2, lines[i].y + (lines[i].y - lines[i+1]?.y)/2 + 20);
 
             /**
              * @type {number}
