@@ -429,7 +429,7 @@ if (canvas.getContext) {
                 (lines[i].y - lines[i+1]?.y) ** 2
             ) * 2;
             if (!isNaN(distance))
-                ctx.fillText(`${Math.round(distance)}cm`, lines[i].x + (lines[i].x - lines[i+1]?.x)/2, lines[i].y + (lines[i].y - lines[i+1]?.y)/2 + 20);
+                ctx.fillText(`${Math.round(distance)}cm`, lines[i].x - (lines[i].x - lines[i+1]?.x)/2, lines[i].y - (lines[i].y - lines[i+1]?.y)/2 - 20);
 
             /**
              * @type {number}
