@@ -15,12 +15,12 @@ const LINE_COLOR = "rgb(255, 255, 255)";
  */
 const canvas = document.getElementById("map-canvas");
 
+canvas.focus();
+
 const GRID_SCALE = 48;
 
 const FIELD_SIDE = canvas.width;
 const FIELD_GRID = FIELD_SIDE / GRID_SCALE;
-
-canvas.focus();
 const ctx = canvas.getContext('2d');
 
 /**
@@ -83,7 +83,7 @@ const mogos = [
  * @type {Array<{x:number,y:number}>}
  */
 const rings = [
-    {"x":356.5,"y":29.708333333333332},{"x":356.5,"y":59.416666666666664},{"x":356.5,"y":89.125},{"x":356.5,"y":118.83333333333333},{"x":386.2083333333333,"y":118.83333333333333},{"x":415.91666666666663,"y":118.83333333333333},{"x":445.625,"y":118.83333333333333},{"x":475.3333333333333,"y":118.83333333333333},{"x":356.5,"y":237.66666666666666},{"x":356.5,"y":267.375},{"x":356.5,"y":297.0833333333333},{"x":356.5,"y":475.3333333333333},{"x":356.5,"y":445.625},{"x":356.5,"y":445.625},{"x":356.5,"y":415.91666666666663},{"x":356.5,"y":594.1666666666666},{"x":356.5,"y":623.875},{"x":356.5,"y":653.5833333333333},{"x":356.5,"y":683.2916666666666},{"x":326.79166666666663,"y":594.1666666666666},{"x":297.0833333333333,"y":594.1666666666666},{"x":267.375,"y":594.1666666666666},{"x":237.66666666666666,"y":594.1666666666666},{"x":475.3333333333333,"y":356.5},{"x":490.1875,"y":356.5},{"x":475.3333333333333,"y":341.6458333333333},{"x":460.47916666666663,"y":356.5},{"x":475.3333333333333,"y":371.35416666666663},{"x":475.3333333333333,"y":475.3333333333333},{"x":490.1875,"y":475.3333333333333},{"x":475.3333333333333,"y":460.47916666666663},{"x":460.47916666666663,"y":475.3333333333333},{"x":475.3333333333333,"y":490.1875},{"x":237.66666666666666,"y":356.5},{"x":252.52083333333331,"y":356.5},{"x":222.8125,"y":356.5},{"x":237.66666666666666,"y":341.6458333333333},{"x":237.66666666666666,"y":371.35416666666663},{"x":237.66666666666666,"y":237.66666666666666},{"x":237.66666666666666,"y":222.8125},{"x":252.52083333333331,"y":237.66666666666666},{"x":237.66666666666666,"y":252.52083333333331},{"x":222.8125,"y":237.66666666666666}
+    {"x":FIELD_SIDE/2,"y":29.708333333333332},{"x":FIELD_SIDE/2,"y":59.416666666666664},{"x":FIELD_SIDE/2,"y":89.125},{"x":FIELD_SIDE/2,"y":FIELD_SIDE/6},{"x":386.2083333333333,"y":FIELD_SIDE/6},{"x":415.91666666666663,"y":FIELD_SIDE/6},{"x":445.625,"y":FIELD_SIDE/6},{"x":475.3333333333333,"y":FIELD_SIDE/6},{"x":FIELD_SIDE/2,"y":237.66666666666666},{"x":FIELD_SIDE/2,"y":267.375},{"x":FIELD_SIDE/2,"y":297.0833333333333},{"x":FIELD_SIDE/2,"y":475.3333333333333},{"x":FIELD_SIDE/2,"y":445.625},{"x":FIELD_SIDE/2,"y":445.625},{"x":FIELD_SIDE/2,"y":415.91666666666663},{"x":FIELD_SIDE/2,"y":594.1666666666666},{"x":FIELD_SIDE/2,"y":623.875},{"x":FIELD_SIDE/2,"y":653.5833333333333},{"x":FIELD_SIDE/2,"y":683.2916666666666},{"x":326.79166666666663,"y":594.1666666666666},{"x":297.0833333333333,"y":594.1666666666666},{"x":267.375,"y":594.1666666666666},{"x":237.66666666666666,"y":594.1666666666666},{"x":475.3333333333333,"y":FIELD_SIDE/2},{"x":490.1875,"y":FIELD_SIDE/2},{"x":475.3333333333333,"y":341.6458333333333},{"x":460.47916666666663,"y":FIELD_SIDE/2},{"x":475.3333333333333,"y":371.35416666666663},{"x":475.3333333333333,"y":475.3333333333333},{"x":490.1875,"y":475.3333333333333},{"x":475.3333333333333,"y":460.47916666666663},{"x":460.47916666666663,"y":475.3333333333333},{"x":475.3333333333333,"y":490.1875},{"x":237.66666666666666,"y":FIELD_SIDE/2},{"x":252.52083333333331,"y":FIELD_SIDE/2},{"x":222.8125,"y":FIELD_SIDE/2},{"x":237.66666666666666,"y":341.6458333333333},{"x":237.66666666666666,"y":371.35416666666663},{"x":237.66666666666666,"y":237.66666666666666},{"x":237.66666666666666,"y":222.8125},{"x":252.52083333333331,"y":237.66666666666666},{"x":237.66666666666666,"y":252.52083333333331},{"x":222.8125,"y":237.66666666666666}
 ];
 
 const ringsString = () => 
@@ -140,27 +140,29 @@ let altDown = false;
     canvas.addEventListener("contextmenu", (event) => {
         event.preventDefault();
         rings.push({
-            x: Math.round((event.x - 7) / FIELD_GRID) * FIELD_GRID,
-            y: Math.round((event.y - 7) / FIELD_GRID) * FIELD_GRID
+            x: mouseX,
+            y: mouseY
         });
     });
 
     canvas.addEventListener("mousemove", (event) => {
+        const x = event.x - canvas.offsetLeft;
+        const y = event.y - canvas.offsetTop;
+
         mouseX = !event.ctrlKey ?
             (lastX % FIELD_GRID * event.altKey) +
-            Math.round(((event.x - 7) - (lastX % FIELD_GRID * event.altKey)) / FIELD_GRID) * FIELD_GRID :
-            (event.x - 7);
-
+            Math.round((x - (lastX % FIELD_GRID * event.altKey)) / FIELD_GRID) * FIELD_GRID :
+            x;
 
         mouseY = !event.ctrlKey ?
             (lastY % FIELD_GRID * event.altKey) +
-            Math.round(((event.y - 7) - (lastY % FIELD_GRID * event.altKey)) / FIELD_GRID) * FIELD_GRID :
-            (event.y - 7);
+            Math.round((y - (lastY % FIELD_GRID * event.altKey)) / FIELD_GRID) * FIELD_GRID :
+            y;
 
         if (event.shiftKey && mouseDown && selection.array == "none") {
 
             mogos.forEach((mogo, i) => {
-                if ((event.x - mogo.x) ** 2 + (event.y - mogo.y) ** 2 <= 25.94 ** 2) {
+                if ((x - mogo.x) ** 2 + (y - mogo.y) ** 2 <= 25.94 ** 2) {
                     selection = {
                         array: "mogos",
                         index: i
@@ -169,7 +171,7 @@ let altDown = false;
             });
 
             rings.forEach((ring, i) => {
-                if ((event.x - ring.x) ** 2 + (event.y - ring.y) ** 2 <= 16 ** 2) {
+                if ((x - ring.x) ** 2 + (y - ring.y) ** 2 <= 16 ** 2) {
                     selection = {
                         array: "rings",
                         index: i
@@ -178,7 +180,7 @@ let altDown = false;
             });
 
             lines.forEach((line, i) => {
-                if ((event.x - line.x) ** 2 + (event.y - line.y) ** 2 <= 14 ** 2) {
+                if ((x - line.x) ** 2 + (y - line.y) ** 2 <= 14 ** 2) {
                     selection = {
                         array: "lines",
                         index: i
@@ -189,16 +191,16 @@ let altDown = false;
 
         switch (selection.array) {
             case "mogos":
-                mogos[selection.index].x = event.x;
-                mogos[selection.index].y = event.y;
+                mogos[selection.index].x = mouseX;
+                mogos[selection.index].y = mouseY;
                 break;
             case "rings":
-                rings[selection.index].x = event.x;
-                rings[selection.index].y = event.y;
+                rings[selection.index].x = mouseX;
+                rings[selection.index].y = mouseY;
                 break;
             case "lines":
-                lines[selection.index].x = event.x;
-                lines[selection.index].y = event.y;
+                lines[selection.index].x = mouseX;
+                lines[selection.index].y = mouseY;
                 break;
         }
     });
@@ -407,29 +409,29 @@ function tick() {
     }
 
 
-    if (lines.length != 0) {
-        drawDot(lines[0].x, lines[0].y, PATH_COLOR);
+    // if (lines.length != 0) {
+    //     drawDot(lines[0].x, lines[0].y, PATH_COLOR);
 
-        const distance = Math.sqrt(
-            (lines[0].x - lines[1]?.x) ** 2 +
-            (lines[0].y - lines[1]?.y) ** 2
-        ) / 2;
-        if (!isNaN(distance))
-            ctx.fillText(`${Math.round(distance * 100) / 100}cm`, lines[0].x - (lines[0].x - lines[1]?.x) / 2, lines[0].y - (lines[0].y - lines[1]?.y) / 2 - 20);
+    //     const distance = Math.sqrt(
+    //         (lines[0].x - lines[1]?.x) ** 2 +
+    //         (lines[0].y - lines[1]?.y) ** 2
+    //     ) / 2;
+    //     if (!isNaN(distance))
+    //         ctx.fillText(`${Math.round(distance * 100) / 100}cm`, lines[0].x - (lines[0].x - lines[1]?.x) / 2, lines[0].y - (lines[0].y - lines[1]?.y) / 2 - 20);
 
-        const angle = (Math.atan2(lines[0].y - lines[1]?.y, lines[0].x - lines[1]?.x) * 180 / Math.PI);
-        if (!isNaN(angle))
-            ctx.fillText(Math.round(angle), lines[0].x + 20, lines[0].y + 20);
-    }
-    for (let i = 1; i < lines.length; i++) {
+    //     const angle = (Math.atan2(lines[0].y - lines[1]?.y, lines[0].x - lines[1]?.x) * 180 / Math.PI);
+    //     if (!isNaN(angle))
+    //         ctx.fillText(Math.round(angle), lines[0].x + 20, lines[0].y + 20);
+    // }
+    for (let i = 0; i < lines.length; i++) {
         if (selection.index == i && selection.array == "lines") drawDot(lines[i].x, lines[i].y, UNFINISHED_COLOR);
         else drawDot(lines[i].x, lines[i].y, PATH_COLOR);
 
-        ctx.strokeStyle = (selection.index == i || selection.index == i - 1) && selection.array == "lines" ? UNFINISHED_COLOR : PATH_COLOR;
-        ctx.fillStyle = (selection.index == i || selection.index == i - 1) && selection.array == "lines" ? UNFINISHED_COLOR : PATH_COLOR;
+        ctx.strokeStyle = (selection.index == i || selection.index + 1 == i) && selection.array == "lines" ? UNFINISHED_COLOR : PATH_COLOR;
+        ctx.fillStyle = (selection.index == i || selection.index - 1 == i) && selection.array == "lines" ? UNFINISHED_COLOR : PATH_COLOR;
         ctx.lineWidth = 3;
         ctx.beginPath();
-        ctx.moveTo(lines[i - 1].x ?? lines[i].x, lines[i - 1].y ?? lines[i].y);
+        ctx.moveTo(lines[i - 1]?.x ?? lines[i].x, lines[i - 1]?.y ?? lines[i].y);
         ctx.lineTo(lines[i].x, lines[i].y);
 
         ctx.stroke();
@@ -445,8 +447,11 @@ function tick() {
         /**
          * @type {number}
          */
-        const angle = (Math.atan2(lines[i].y - lines[i + 1]?.y, lines[i].x - lines[i + 1]?.x) * 180 / Math.PI) -
+        let angle = (Math.atan2(lines[i].y - lines[i + 1]?.y, lines[i].x - lines[i + 1]?.x) * 180 / Math.PI) -
             (Math.atan2(lines[i - 1]?.y - lines[i]?.y, lines[i - 1]?.x - lines[i].x) * 180 / Math.PI);
+
+        if (i == 0)
+            angle = (Math.atan2(lines[0].y - lines[1]?.y, lines[0].x - lines[1]?.x) * 180 / Math.PI);
 
         if (!isNaN(angle))
             ctx.fillText(`${Math.round(angle)}\u00B0`, lines[i].x + 20, lines[i].y + 20);
