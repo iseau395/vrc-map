@@ -130,12 +130,11 @@ let altDown = false;
             });
 
             undo = [];
-        } else {
-            selection = {
-                array: "none",
-                index: NaN
-            };
         }
+        selection = {
+            array: "none",
+            index: NaN
+        };
     });
     canvas.addEventListener("contextmenu", (event) => {
         event.preventDefault();
@@ -187,6 +186,11 @@ let altDown = false;
                     };
                 }
             });
+        } else if (!event.shiftKey) {
+            selection = {
+                array: "none",
+                index: NaN
+            };
         }
 
         switch (selection.array) {
@@ -459,7 +463,7 @@ function tick() {
 
     }
 
-    if (mouseDown && mouseInCanvas && !shiftDown) {
+    if (mouseDown && mouseInCanvas && !shiftDown && selection.array == "none") {
         ctx.lineWidth = 3;
         ctx.strokeStyle = UNFINISHED_COLOR;
 
