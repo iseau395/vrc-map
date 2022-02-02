@@ -83,11 +83,11 @@ const mogos = [
  * @type {Array<{x:number,y:number}>}
  */
 const rings = [
-    {"x":FIELD_SIDE/2,"y":29.708333333333332},{"x":FIELD_SIDE/2,"y":59.416666666666664},{"x":FIELD_SIDE/2,"y":89.125},{"x":FIELD_SIDE/2,"y":FIELD_SIDE/6},{"x":386.2083333333333,"y":FIELD_SIDE/6},{"x":415.91666666666663,"y":FIELD_SIDE/6},{"x":445.625,"y":FIELD_SIDE/6},{"x":475.3333333333333,"y":FIELD_SIDE/6},{"x":FIELD_SIDE/2,"y":237.66666666666666},{"x":FIELD_SIDE/2,"y":267.375},{"x":FIELD_SIDE/2,"y":297.0833333333333},{"x":FIELD_SIDE/2,"y":475.3333333333333},{"x":FIELD_SIDE/2,"y":445.625},{"x":FIELD_SIDE/2,"y":445.625},{"x":FIELD_SIDE/2,"y":415.91666666666663},{"x":FIELD_SIDE/2,"y":594.1666666666666},{"x":FIELD_SIDE/2,"y":623.875},{"x":FIELD_SIDE/2,"y":653.5833333333333},{"x":FIELD_SIDE/2,"y":683.2916666666666},{"x":326.79166666666663,"y":594.1666666666666},{"x":297.0833333333333,"y":594.1666666666666},{"x":267.375,"y":594.1666666666666},{"x":237.66666666666666,"y":594.1666666666666},{"x":475.3333333333333,"y":FIELD_SIDE/2},{"x":490.1875,"y":FIELD_SIDE/2},{"x":475.3333333333333,"y":341.6458333333333},{"x":460.47916666666663,"y":FIELD_SIDE/2},{"x":475.3333333333333,"y":371.35416666666663},{"x":475.3333333333333,"y":475.3333333333333},{"x":490.1875,"y":475.3333333333333},{"x":475.3333333333333,"y":460.47916666666663},{"x":460.47916666666663,"y":475.3333333333333},{"x":475.3333333333333,"y":490.1875},{"x":237.66666666666666,"y":FIELD_SIDE/2},{"x":252.52083333333331,"y":FIELD_SIDE/2},{"x":222.8125,"y":FIELD_SIDE/2},{"x":237.66666666666666,"y":341.6458333333333},{"x":237.66666666666666,"y":371.35416666666663},{"x":237.66666666666666,"y":237.66666666666666},{"x":237.66666666666666,"y":222.8125},{"x":252.52083333333331,"y":237.66666666666666},{"x":237.66666666666666,"y":252.52083333333331},{"x":222.8125,"y":237.66666666666666}
+    { "x": FIELD_SIDE / 2, "y": 29.708333333333332 }, { "x": FIELD_SIDE / 2, "y": 59.416666666666664 }, { "x": FIELD_SIDE / 2, "y": 89.125 }, { "x": FIELD_SIDE / 2, "y": FIELD_SIDE / 6 }, { "x": 386.2083333333333, "y": FIELD_SIDE / 6 }, { "x": 415.91666666666663, "y": FIELD_SIDE / 6 }, { "x": 445.625, "y": FIELD_SIDE / 6 }, { "x": 475.3333333333333, "y": FIELD_SIDE / 6 }, { "x": FIELD_SIDE / 2, "y": 237.66666666666666 }, { "x": FIELD_SIDE / 2, "y": 267.375 }, { "x": FIELD_SIDE / 2, "y": 297.0833333333333 }, { "x": FIELD_SIDE / 2, "y": 475.3333333333333 }, { "x": FIELD_SIDE / 2, "y": 445.625 }, { "x": FIELD_SIDE / 2, "y": 445.625 }, { "x": FIELD_SIDE / 2, "y": 415.91666666666663 }, { "x": FIELD_SIDE / 2, "y": 594.1666666666666 }, { "x": FIELD_SIDE / 2, "y": 623.875 }, { "x": FIELD_SIDE / 2, "y": 653.5833333333333 }, { "x": FIELD_SIDE / 2, "y": 683.2916666666666 }, { "x": 326.79166666666663, "y": 594.1666666666666 }, { "x": 297.0833333333333, "y": 594.1666666666666 }, { "x": 267.375, "y": 594.1666666666666 }, { "x": 237.66666666666666, "y": 594.1666666666666 }, { "x": 475.3333333333333, "y": FIELD_SIDE / 2 }, { "x": 490.1875, "y": FIELD_SIDE / 2 }, { "x": 475.3333333333333, "y": 341.6458333333333 }, { "x": 460.47916666666663, "y": FIELD_SIDE / 2 }, { "x": 475.3333333333333, "y": 371.35416666666663 }, { "x": 475.3333333333333, "y": 475.3333333333333 }, { "x": 490.1875, "y": 475.3333333333333 }, { "x": 475.3333333333333, "y": 460.47916666666663 }, { "x": 460.47916666666663, "y": 475.3333333333333 }, { "x": 475.3333333333333, "y": 490.1875 }, { "x": 237.66666666666666, "y": FIELD_SIDE / 2 }, { "x": 252.52083333333331, "y": FIELD_SIDE / 2 }, { "x": 222.8125, "y": FIELD_SIDE / 2 }, { "x": 237.66666666666666, "y": 341.6458333333333 }, { "x": 237.66666666666666, "y": 371.35416666666663 }, { "x": 237.66666666666666, "y": 237.66666666666666 }, { "x": 237.66666666666666, "y": 222.8125 }, { "x": 252.52083333333331, "y": 237.66666666666666 }, { "x": 237.66666666666666, "y": 252.52083333333331 }, { "x": 222.8125, "y": 237.66666666666666 }
 ];
 
-const ringsString = () => 
-    rings.map(r=>JSON.stringify(r).toString());
+const ringsString = () =>
+    rings.map(r => JSON.stringify(r).toString());
 
 /**
  * @type {{array:string,index:number}}
@@ -428,7 +428,6 @@ function tick() {
         else drawDot(lines[i].x, lines[i].y, PATH_COLOR);
 
         ctx.strokeStyle = (selection.index == i || selection.index + 1 == i) && selection.array == "lines" ? UNFINISHED_COLOR : PATH_COLOR;
-        ctx.fillStyle = (selection.index == i || selection.index - 1 == i) && selection.array == "lines" ? UNFINISHED_COLOR : PATH_COLOR;
         ctx.lineWidth = 3;
         ctx.beginPath();
         ctx.moveTo(lines[i - 1]?.x ?? lines[i].x, lines[i - 1]?.y ?? lines[i].y);
@@ -436,13 +435,6 @@ function tick() {
 
         ctx.stroke();
         ctx.closePath();
-
-        const distance = Math.sqrt(
-            (lines[i].x - lines[i + 1]?.x) ** 2 +
-            (lines[i].y - lines[i + 1]?.y) ** 2
-        ) / 2;
-        if (!isNaN(distance))
-            ctx.fillText(`${Math.round(distance * 100) / 100}cm`, lines[i].x - (lines[i].x - lines[i + 1]?.x) / 2, lines[i].y - (lines[i].y - lines[i + 1]?.y) / 2 - 20);
 
         /**
          * @type {number}
@@ -455,6 +447,15 @@ function tick() {
 
         if (!isNaN(angle))
             ctx.fillText(`${Math.round(angle)}\u00B0`, lines[i].x + 20, lines[i].y + 20);
+
+        ctx.fillStyle = (selection.index == i || selection.index - 1 == i) && selection.array == "lines" ? UNFINISHED_COLOR : PATH_COLOR;
+
+        const distance = Math.sqrt(
+            (lines[i].x - lines[i + 1]?.x) ** 2 +
+            (lines[i].y - lines[i + 1]?.y) ** 2
+        ) / 2;
+        if (!isNaN(distance))
+            ctx.fillText(`${Math.round(distance * 100) / 100}cm`, lines[i].x - (lines[i].x - lines[i + 1]?.x) / 2, lines[i].y - (lines[i].y - lines[i + 1]?.y) / 2 - 20);
 
     }
 
