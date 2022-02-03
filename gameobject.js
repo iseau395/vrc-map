@@ -52,9 +52,22 @@ export class GameObject {
     pointInside(x, y) {
         throw new Error("Unimplemented");
     }
+    
+    encode() {
+        throw new Error("Unimplemented");
+    }
+    static decode() {
+        throw new Error("Unimplemented");
+    }
+
+    static isEncode(value) {
+        throw new Error("Unimplemented");
+    }
 }
 
 export class Mogo extends GameObject {
+    static regex = /mogo-(?<x>(?:\d|\.)+)-(?<y>(?:\d|\.)+)-(?<rotation>(?:\d|\.)+)-(?<variation>\d)/;
+
     /**
      * Draw the Mogo
      * @param {CanvasRenderingContext2D} ctx The context to draw on
@@ -77,9 +90,27 @@ export class Mogo extends GameObject {
 
     pointInside = (x, y) =>
         (x - this.x) ** 2 + (y - this.y) ** 2 <= 25.94 ** 2;
+
+    encode() {
+        return `mogo-${this.x.toFixed(2)}-${this.y.toFixed(2)}-${this.rotation.toFixed(0)}-${this.variation}`
+    }
+    static decode(string) {
+        const decoded = this.regex.exec(string).groups;
+        return new Mogo(
+            +decoded.x,
+            +decoded.y,
+            +decoded.rotation,
+            +decoded.variation,
+        );
+    }
+
+    static isEncode = (string) =>
+        this.regex.test(string);
 }
 
 export class Ring extends GameObject {
+    static regex = /ring-(?<x>(?:\d|\.)+)-(?<y>(?:\d|\.)+)/;
+
     /**
      * 
      * @param {number} x 
@@ -96,4 +127,18 @@ export class Ring extends GameObject {
 
     pointInside = (x, y) =>
         (x - this.x) ** 2 + (y - this.y) ** 2 <= 14 ** 2;
+
+    encode() {
+        return `ring-${this.x.toFixed(2)}-${this.y.toFixed(2)}`
+    }
+    static decode(string) {
+        const decoded = this.regex.exec(string).groups;
+        return new Ring(
+            +decoded.x,
+            +decoded.y
+        );
+    }
+
+    static isEncode = (string) =>
+        this.regex.test(string);
 }

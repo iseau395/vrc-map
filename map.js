@@ -1,6 +1,8 @@
 import { Ring, Mogo, GameObject } from "./gameobject.js";
 import { drawDot } from "./drawing.js";
 
+import { load, save } from "./saving.js";
+
 const PATH_COLOR = "rgb(100, 255, 100)";
 const UNFINISHED_COLOR = "rgb(100, 255, 255)";
 const REVERSED_PATH_COLOR = "rgb(255, 100, 100)";
@@ -14,6 +16,8 @@ export const BLUE_ALLIANCE = "rgb(0, 0, 255)";
 export const RING_COLOR = "rgb(255, 0, 255)";
 const FIELD_COLOR = "rgb(125, 125, 125)";
 const LINE_COLOR = "rgb(255, 255, 255)";
+
+export let slot = "slot1";
 
 /**
  * @type {HTMLCanvasElement}
@@ -32,7 +36,7 @@ const ctx = canvas.getContext('2d');
 /**
  * @type {Array<{x:number,y:number,reversed:boolean}}
  */
-const points = new Array();
+export const points = new Array();
 /**
  * @type {Array<{x:number,y:number}}
  */
@@ -41,7 +45,7 @@ let undo = new Array();
 /**
  * @type {Array<GameObject>}
  */
-const gameobjects = [
+export const gameobjects = [
     new Mogo(
         FIELD_SIDE / 2,
         FIELD_SIDE / 4,
@@ -115,28 +119,33 @@ let reverseKey = false;
         mouseDown = true;
     });
     canvas.addEventListener("mouseup", (event) => {
-        if (event.button != 0) return;
-
-        mouseDown = false;
-
-        if (!shiftDown) {
-            points.push({
-                x: mouseX,
-                y: mouseY,
-                reversed: reverseKey
-            });
-
-            undo = [];
-        }
-        selection = {
-            array: "none",
-            index: NaN
+        if (event.button == 0) {
+            mouseDown = false;
+    
+            if (!shiftDown) {
+                points.push({
+                    x: mouseX,
+                    y: mouseY,
+                    reversed: reverseKey
+                });
+    
+                undo = [];
+            }
+            selection = {
+                array: "none",
+                index: NaN
+            };
         };
+        
+        save(slot, points, gameobjects);
     });
     canvas.addEventListener("contextmenu", (event) => {
         event.preventDefault();
         gameobjects.push(new Ring(mouseX, mouseY));
+        
+        save(slot, points, gameobjects);
     });
+
 
     canvas.addEventListener("mousemove", (event) => {
         const x = event.x - canvas.offsetLeft;
@@ -388,5 +397,7 @@ function tick() {
     }
 
 }
+
+load("slot1");
 
 setInterval(tick, 10);
