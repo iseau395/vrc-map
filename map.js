@@ -36,13 +36,6 @@ const lines = new Array();
  */
 let undo = new Array();
 
-// /**
-//  * @type {Array<{x:number,y:number}>}
-//  */
-// const rings = [
-//     { "x": FIELD_SIDE / 2, "y": 29.708333333333332 }, { "x": FIELD_SIDE / 2, "y": 59.416666666666664 }, { "x": FIELD_SIDE / 2, "y": 89.125 }, { "x": FIELD_SIDE / 2, "y": FIELD_SIDE / 6 }, { "x": 386.2083333333333, "y": FIELD_SIDE / 6 }, { "x": 415.91666666666663, "y": FIELD_SIDE / 6 }, { "x": 445.625, "y": FIELD_SIDE / 6 }, { "x": 475.3333333333333, "y": FIELD_SIDE / 6 }, { "x": FIELD_SIDE / 2, "y": 237.66666666666666 }, { "x": FIELD_SIDE / 2, "y": 267.375 }, { "x": FIELD_SIDE / 2, "y": 297.0833333333333 }, { "x": FIELD_SIDE / 2, "y": 475.3333333333333 }, { "x": FIELD_SIDE / 2, "y": 445.625 }, { "x": FIELD_SIDE / 2, "y": 445.625 }, { "x": FIELD_SIDE / 2, "y": 415.91666666666663 }, { "x": FIELD_SIDE / 2, "y": 594.1666666666666 }, { "x": FIELD_SIDE / 2, "y": 623.875 }, { "x": FIELD_SIDE / 2, "y": 653.5833333333333 }, { "x": FIELD_SIDE / 2, "y": 683.2916666666666 }, { "x": 326.79166666666663, "y": 594.1666666666666 }, { "x": 297.0833333333333, "y": 594.1666666666666 }, { "x": 267.375, "y": 594.1666666666666 }, { "x": 237.66666666666666, "y": 594.1666666666666 }, { "x": 475.3333333333333, "y": FIELD_SIDE / 2 }, { "x": 490.1875, "y": FIELD_SIDE / 2 }, { "x": 475.3333333333333, "y": 341.6458333333333 }, { "x": 460.47916666666663, "y": FIELD_SIDE / 2 }, { "x": 475.3333333333333, "y": 371.35416666666663 }, { "x": 475.3333333333333, "y": 475.3333333333333 }, { "x": 490.1875, "y": 475.3333333333333 }, { "x": 475.3333333333333, "y": 460.47916666666663 }, { "x": 460.47916666666663, "y": 475.3333333333333 }, { "x": 475.3333333333333, "y": 490.1875 }, { "x": 237.66666666666666, "y": FIELD_SIDE / 2 }, { "x": 252.52083333333331, "y": FIELD_SIDE / 2 }, { "x": 222.8125, "y": FIELD_SIDE / 2 }, { "x": 237.66666666666666, "y": 341.6458333333333 }, { "x": 237.66666666666666, "y": 371.35416666666663 }, { "x": 237.66666666666666, "y": 237.66666666666666 }, { "x": 237.66666666666666, "y": 222.8125 }, { "x": 252.52083333333331, "y": 237.66666666666666 }, { "x": 237.66666666666666, "y": 252.52083333333331 }, { "x": 222.8125, "y": 237.66666666666666 }
-// ];
-
 /**
  * @type {Array<GameObject>}
  */
@@ -100,15 +93,11 @@ let selection = {
     index: NaN
 };
 
-
 let lastX = 0;
 let lastY = 0;
 
 let mouseDown = false;
-let clickX;
-let clickY;
 
-let mouseInCanvas = false;
 let mouseX;
 let mouseY;
 
@@ -195,12 +184,6 @@ let altDown = false;
                 break;
         }
     });
-    canvas.addEventListener("mouseenter", () => {
-        mouseInCanvas = true;
-    });
-    canvas.addEventListener("mouseexit", () => {
-        mouseInCanvas = false;
-    });
 
     canvas.addEventListener("keydown", (event) => {
         if (event.ctrlKey && event.code == "KeyZ") {
@@ -219,20 +202,10 @@ let altDown = false;
         if (ctrlDown || shiftDown || altDown) event.preventDefault();
     });
     canvas.addEventListener("keyup", (event) => {
-        if (event.defaultPrevented) return;
-
         ctrlDown = event.ctrlKey;
         shiftDown = event.shiftKey;
         altDown = event.altKey;
     });
-}
-
-function drawMOGO(x, y, color, rotation) {
-    rotation += 14;
-    ctx.fillStyle = color;
-    ctx.strokeStyle = "rgb(50, 50, 50)";
-    ctx.lineWidth = 3;
-    polygon(x, y, 25.94, 7, rotation);
 }
 
 function drawPlatform(x, y, color) {
@@ -346,7 +319,6 @@ function tick() {
         ctx.closePath();
     }
 
-
     for (let i = 0; i < lines.length; i++) {
         if (selection.index == i && selection.array == "lines") drawDot(lines[i].x, lines[i].y, UNFINISHED_COLOR, ctx);
         else drawDot(lines[i].x, lines[i].y, PATH_COLOR, ctx);
@@ -383,7 +355,7 @@ function tick() {
 
     }
 
-    if (mouseDown && mouseInCanvas && !shiftDown && selection.array == "none") {
+    if (mouseDown && !shiftDown && selection.array == "none") {
         ctx.lineWidth = 3;
         ctx.strokeStyle = UNFINISHED_COLOR;
 
