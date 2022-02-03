@@ -1,11 +1,14 @@
+import { Ring, Mogo, GameObject } from "./gameobject.js";
+import { drawDot } from "./drawing.js";
+
 const PATH_COLOR = "rgb(100, 255, 100)";
 const UNFINISHED_COLOR = "rgb(100, 255, 255)";
 const GRID_COLOR = "rgba(155, 155, 155, 0.5)";
 
-const NEUTRAL_MOGO = "rgb(255, 255, 0)";
-const RED_ALLIANCE = "rgb(255, 0, 0)";
-const BLUE_ALLIANCE = "rgb(0, 0, 255)";
-const RING_COLOR = "rgb(255, 0, 255)";
+export const NEUTRAL_MOGO = "rgb(255, 255, 0)";
+export const RED_ALLIANCE = "rgb(255, 0, 0)";
+export const BLUE_ALLIANCE = "rgb(0, 0, 255)";
+export const RING_COLOR = "rgb(255, 0, 255)";
 const FIELD_COLOR = "rgb(125, 125, 125)";
 const LINE_COLOR = "rgb(255, 255, 255)";
 
@@ -21,6 +24,7 @@ const GRID_SCALE = 48;
 
 const FIELD_SIDE = canvas.width;
 const FIELD_GRID = FIELD_SIDE / GRID_SCALE;
+
 const ctx = canvas.getContext('2d');
 
 /**
@@ -32,62 +36,61 @@ const lines = new Array();
  */
 let undo = new Array();
 
-/**
- * @type {Array<{x:number,y:number,style:string,rot:number}>}
- */
-const mogos = [
-    {
-        x: FIELD_SIDE / 2,
-        y: FIELD_SIDE / 4,
-        style: NEUTRAL_MOGO,
-        rot: 180
-    },
-    {
-        x: FIELD_SIDE / 2,
-        y: (FIELD_SIDE / 4) * 2,
-        style: NEUTRAL_MOGO,
-        rot: 0
-    },
-    {
-        x: FIELD_SIDE / 2,
-        y: (FIELD_SIDE / 4) * 3,
-        style: NEUTRAL_MOGO,
-        rot: 0
-    },
-    {
-        x: (FIELD_SIDE / 12) * 3,
-        y: (FIELD_SIDE / 12) * 11,
-        style: RED_ALLIANCE,
-        rot: 270
-    },
-    {
-        x: (FIELD_SIDE / 12) * 1,
-        y: (FIELD_SIDE / 6) * 2,
-        style: RED_ALLIANCE,
-        rot: 0
-    },
-    {
-        x: (FIELD_SIDE / 12) * 9,
-        y: (FIELD_SIDE / 12) * 1,
-        style: BLUE_ALLIANCE,
-        rot: 90
-    },
-    {
-        x: (FIELD_SIDE / 12) * 11,
-        y: (FIELD_SIDE / 3) * 2,
-        style: BLUE_ALLIANCE,
-        rot: 180
-    }
-];
-/**
- * @type {Array<{x:number,y:number}>}
- */
-const rings = [
-    { "x": FIELD_SIDE / 2, "y": 29.708333333333332 }, { "x": FIELD_SIDE / 2, "y": 59.416666666666664 }, { "x": FIELD_SIDE / 2, "y": 89.125 }, { "x": FIELD_SIDE / 2, "y": FIELD_SIDE / 6 }, { "x": 386.2083333333333, "y": FIELD_SIDE / 6 }, { "x": 415.91666666666663, "y": FIELD_SIDE / 6 }, { "x": 445.625, "y": FIELD_SIDE / 6 }, { "x": 475.3333333333333, "y": FIELD_SIDE / 6 }, { "x": FIELD_SIDE / 2, "y": 237.66666666666666 }, { "x": FIELD_SIDE / 2, "y": 267.375 }, { "x": FIELD_SIDE / 2, "y": 297.0833333333333 }, { "x": FIELD_SIDE / 2, "y": 475.3333333333333 }, { "x": FIELD_SIDE / 2, "y": 445.625 }, { "x": FIELD_SIDE / 2, "y": 445.625 }, { "x": FIELD_SIDE / 2, "y": 415.91666666666663 }, { "x": FIELD_SIDE / 2, "y": 594.1666666666666 }, { "x": FIELD_SIDE / 2, "y": 623.875 }, { "x": FIELD_SIDE / 2, "y": 653.5833333333333 }, { "x": FIELD_SIDE / 2, "y": 683.2916666666666 }, { "x": 326.79166666666663, "y": 594.1666666666666 }, { "x": 297.0833333333333, "y": 594.1666666666666 }, { "x": 267.375, "y": 594.1666666666666 }, { "x": 237.66666666666666, "y": 594.1666666666666 }, { "x": 475.3333333333333, "y": FIELD_SIDE / 2 }, { "x": 490.1875, "y": FIELD_SIDE / 2 }, { "x": 475.3333333333333, "y": 341.6458333333333 }, { "x": 460.47916666666663, "y": FIELD_SIDE / 2 }, { "x": 475.3333333333333, "y": 371.35416666666663 }, { "x": 475.3333333333333, "y": 475.3333333333333 }, { "x": 490.1875, "y": 475.3333333333333 }, { "x": 475.3333333333333, "y": 460.47916666666663 }, { "x": 460.47916666666663, "y": 475.3333333333333 }, { "x": 475.3333333333333, "y": 490.1875 }, { "x": 237.66666666666666, "y": FIELD_SIDE / 2 }, { "x": 252.52083333333331, "y": FIELD_SIDE / 2 }, { "x": 222.8125, "y": FIELD_SIDE / 2 }, { "x": 237.66666666666666, "y": 341.6458333333333 }, { "x": 237.66666666666666, "y": 371.35416666666663 }, { "x": 237.66666666666666, "y": 237.66666666666666 }, { "x": 237.66666666666666, "y": 222.8125 }, { "x": 252.52083333333331, "y": 237.66666666666666 }, { "x": 237.66666666666666, "y": 252.52083333333331 }, { "x": 222.8125, "y": 237.66666666666666 }
-];
+// /**
+//  * @type {Array<{x:number,y:number}>}
+//  */
+// const rings = [
+//     { "x": FIELD_SIDE / 2, "y": 29.708333333333332 }, { "x": FIELD_SIDE / 2, "y": 59.416666666666664 }, { "x": FIELD_SIDE / 2, "y": 89.125 }, { "x": FIELD_SIDE / 2, "y": FIELD_SIDE / 6 }, { "x": 386.2083333333333, "y": FIELD_SIDE / 6 }, { "x": 415.91666666666663, "y": FIELD_SIDE / 6 }, { "x": 445.625, "y": FIELD_SIDE / 6 }, { "x": 475.3333333333333, "y": FIELD_SIDE / 6 }, { "x": FIELD_SIDE / 2, "y": 237.66666666666666 }, { "x": FIELD_SIDE / 2, "y": 267.375 }, { "x": FIELD_SIDE / 2, "y": 297.0833333333333 }, { "x": FIELD_SIDE / 2, "y": 475.3333333333333 }, { "x": FIELD_SIDE / 2, "y": 445.625 }, { "x": FIELD_SIDE / 2, "y": 445.625 }, { "x": FIELD_SIDE / 2, "y": 415.91666666666663 }, { "x": FIELD_SIDE / 2, "y": 594.1666666666666 }, { "x": FIELD_SIDE / 2, "y": 623.875 }, { "x": FIELD_SIDE / 2, "y": 653.5833333333333 }, { "x": FIELD_SIDE / 2, "y": 683.2916666666666 }, { "x": 326.79166666666663, "y": 594.1666666666666 }, { "x": 297.0833333333333, "y": 594.1666666666666 }, { "x": 267.375, "y": 594.1666666666666 }, { "x": 237.66666666666666, "y": 594.1666666666666 }, { "x": 475.3333333333333, "y": FIELD_SIDE / 2 }, { "x": 490.1875, "y": FIELD_SIDE / 2 }, { "x": 475.3333333333333, "y": 341.6458333333333 }, { "x": 460.47916666666663, "y": FIELD_SIDE / 2 }, { "x": 475.3333333333333, "y": 371.35416666666663 }, { "x": 475.3333333333333, "y": 475.3333333333333 }, { "x": 490.1875, "y": 475.3333333333333 }, { "x": 475.3333333333333, "y": 460.47916666666663 }, { "x": 460.47916666666663, "y": 475.3333333333333 }, { "x": 475.3333333333333, "y": 490.1875 }, { "x": 237.66666666666666, "y": FIELD_SIDE / 2 }, { "x": 252.52083333333331, "y": FIELD_SIDE / 2 }, { "x": 222.8125, "y": FIELD_SIDE / 2 }, { "x": 237.66666666666666, "y": 341.6458333333333 }, { "x": 237.66666666666666, "y": 371.35416666666663 }, { "x": 237.66666666666666, "y": 237.66666666666666 }, { "x": 237.66666666666666, "y": 222.8125 }, { "x": 252.52083333333331, "y": 237.66666666666666 }, { "x": 237.66666666666666, "y": 252.52083333333331 }, { "x": 222.8125, "y": 237.66666666666666 }
+// ];
 
-const ringsString = () =>
-    rings.map(r => JSON.stringify(r).toString());
+/**
+ * @type {Array<GameObject>}
+ */
+const gameobjects = [
+    new Mogo(
+        FIELD_SIDE / 2,
+        FIELD_SIDE / 4,
+        180,
+        0
+    ),
+    new Mogo(
+        FIELD_SIDE / 2,
+        (FIELD_SIDE / 4) * 2,
+        0,
+        0
+    ),
+    new Mogo(
+        FIELD_SIDE / 2,
+        (FIELD_SIDE / 4) * 3,
+        0,
+        0
+    ),
+    new Mogo(
+        (FIELD_SIDE / 12) * 3,
+        (FIELD_SIDE / 12) * 11,
+        270,
+        1
+    ),
+    new Mogo(
+        (FIELD_SIDE / 12) * 1,
+        (FIELD_SIDE / 6) * 2,
+        0,
+        1
+    ),
+    new Mogo(
+        (FIELD_SIDE / 12) * 9,
+        (FIELD_SIDE / 12) * 1,
+        90,
+        2
+    ),
+    new Mogo(
+        (FIELD_SIDE / 12) * 11,
+        (FIELD_SIDE / 3) * 2,
+        180,
+        2
+    ),
+    new Ring(FIELD_SIDE / 2, 29.708333333333332), new Ring(FIELD_SIDE / 2, 59.416666666666664), new Ring(FIELD_SIDE / 2, 89.125), new Ring(FIELD_SIDE / 2, FIELD_SIDE / 6), new Ring(386.2083333333333, FIELD_SIDE / 6), new Ring(415.91666666666663, FIELD_SIDE / 6), new Ring(445.625, FIELD_SIDE / 6), new Ring(475.3333333333333, FIELD_SIDE / 6), new Ring(FIELD_SIDE / 2, 237.66666666666666), new Ring(FIELD_SIDE / 2, 267.375), new Ring(FIELD_SIDE / 2, 297.0833333333333), new Ring(FIELD_SIDE / 2, 475.3333333333333), new Ring(FIELD_SIDE / 2, 445.625), new Ring(FIELD_SIDE / 2, 445.625), new Ring(FIELD_SIDE / 2, 415.91666666666663), new Ring(FIELD_SIDE / 2, 594.1666666666666), new Ring(FIELD_SIDE / 2, 623.875), new Ring(FIELD_SIDE / 2, 653.5833333333333), new Ring(FIELD_SIDE / 2, 683.2916666666666), new Ring(326.79166666666663, 594.1666666666666), new Ring(297.0833333333333, 594.1666666666666), new Ring(267.375, 594.1666666666666), new Ring(237.66666666666666, 594.1666666666666), new Ring(475.3333333333333, FIELD_SIDE / 2), new Ring(490.1875, FIELD_SIDE / 2), new Ring(475.3333333333333, 341.6458333333333), new Ring(460.47916666666663, FIELD_SIDE / 2), new Ring(475.3333333333333, 371.35416666666663), new Ring(475.3333333333333, 475.3333333333333), new Ring(490.1875, 475.3333333333333), new Ring(475.3333333333333, 460.47916666666663), new Ring(460.47916666666663, 475.3333333333333), new Ring(475.3333333333333, 490.1875), new Ring(237.66666666666666, FIELD_SIDE / 2), new Ring(252.52083333333331, FIELD_SIDE / 2), new Ring(222.8125, FIELD_SIDE / 2), new Ring(237.66666666666666, 341.6458333333333), new Ring(237.66666666666666, 371.35416666666663), new Ring(237.66666666666666, 237.66666666666666), new Ring(237.66666666666666, 222.8125), new Ring(252.52083333333331, 237.66666666666666), new Ring(237.66666666666666, 252.52083333333331), new Ring(222.8125, 237.66666666666666)
+];
 
 /**
  * @type {{array:string,index:number}}
@@ -138,10 +141,7 @@ let altDown = false;
     });
     canvas.addEventListener("contextmenu", (event) => {
         event.preventDefault();
-        rings.push({
-            x: mouseX,
-            y: mouseY
-        });
+        gameobjects.push(new Ring(mouseX, mouseY));
     });
 
     canvas.addEventListener("mousemove", (event) => {
@@ -160,26 +160,17 @@ let altDown = false;
 
         if (event.shiftKey && mouseDown && selection.array == "none") {
 
-            mogos.forEach((mogo, i) => {
-                if ((x - mogo.x) ** 2 + (y - mogo.y) ** 2 <= 25.94 ** 2) {
+            gameobjects.forEach((gameobject, i) => {
+                if (gameobject.pointInside(x, y)) {
                     selection = {
-                        array: "mogos",
-                        index: i
-                    };
-                }
-            });
-
-            rings.forEach((ring, i) => {
-                if ((x - ring.x) ** 2 + (y - ring.y) ** 2 <= 16 ** 2) {
-                    selection = {
-                        array: "rings",
+                        array: "gameobjects",
                         index: i
                     };
                 }
             });
 
             lines.forEach((line, i) => {
-                if ((x - line.x) ** 2 + (y - line.y) ** 2 <= 14 ** 2) {
+                if ((x - line.x) ** 2 + (y - line.y) ** 2 <= 16 ** 2) {
                     selection = {
                         array: "lines",
                         index: i
@@ -194,13 +185,9 @@ let altDown = false;
         }
 
         switch (selection.array) {
-            case "mogos":
-                mogos[selection.index].x = mouseX;
-                mogos[selection.index].y = mouseY;
-                break;
-            case "rings":
-                rings[selection.index].x = mouseX;
-                rings[selection.index].y = mouseY;
+            case "gameobjects":
+                gameobjects[selection.index].x = mouseX;
+                gameobjects[selection.index].y = mouseY;
                 break;
             case "lines":
                 lines[selection.index].x = mouseX;
@@ -238,53 +225,6 @@ let altDown = false;
         shiftDown = event.shiftKey;
         altDown = event.altKey;
     });
-}
-
-/**
- * 
- * @param {number} centerX 
- * @param {number} centerY 
- * @param {number} radius 
- * @param {string | CanvasGradient | CanvasPattern | null} fillStyle 
- * @param {string | CanvasGradient | CanvasPattern | null} strokeStyle 
- */
-function drawCircle(centerX, centerY, radius, fillStyle, strokeStyle) {
-    ctx.beginPath();
-    ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
-    ctx.fillStyle = fillStyle;
-    if (fillStyle) ctx.fill();
-    ctx.lineWidth = 5;
-    ctx.strokeStyle = strokeStyle;
-    if (strokeStyle) ctx.stroke();
-    ctx.closePath();
-}
-
-/**
- * 
- * @param {number} centerX 
- * @param {number} centerY 
- * @param {number} radius 
- * @param {string | CanvasGradient | CanvasPattern} fillStyle 
- * @param {string | CanvasGradient | CanvasPattern} strokeStyle 
- */
-function drawDot(centerX, centerY, style) {
-    ctx.lineWidth = 1;
-    drawCircle(centerX, centerY, 13, null, style);
-    drawCircle(centerX, centerY, 5, style, null);
-}
-
-function polygon(x, y, radius, nsides, rotation) {
-    const step = 2 * Math.PI / nsides,//Precalculate step value
-        shift = Math.PI + (rotation / 360) * (Math.PI * 2);//Quick fix ;)
-
-    ctx.beginPath();
-    for (let i = 0; i <= nsides; i++) {
-        const curStep = i * step + shift;
-        ctx.lineTo(x + radius * Math.cos(curStep), y + radius * Math.sin(curStep));
-    }
-    ctx.fill();
-    ctx.stroke();
-    ctx.closePath();
 }
 
 function drawMOGO(x, y, color, rotation) {
@@ -379,15 +319,9 @@ function drawField() {
     drawPlatform(0, (FIELD_SIDE / 6) * 2, RED_ALLIANCE);
     drawPlatform((FIELD_SIDE / 6) * 5, (FIELD_SIDE / 6) * 2, BLUE_ALLIANCE);
 
-
-    mogos.forEach((mogo) => {
-        drawMOGO(mogo.x, mogo.y, mogo.style, mogo.rot);
-    });
-
-    ctx.lineWidth = 2;
-    rings.forEach((ring) => {
-        drawCircle(ring.x, ring.y, 6, "rgba(0, 0, 0, 0)", RING_COLOR);
-    });
+    gameobjects.forEach((gameobject) =>
+        gameobject.render(ctx)
+    );
 }
 
 function tick() {
@@ -413,23 +347,9 @@ function tick() {
     }
 
 
-    // if (lines.length != 0) {
-    //     drawDot(lines[0].x, lines[0].y, PATH_COLOR);
-
-    //     const distance = Math.sqrt(
-    //         (lines[0].x - lines[1]?.x) ** 2 +
-    //         (lines[0].y - lines[1]?.y) ** 2
-    //     ) / 2;
-    //     if (!isNaN(distance))
-    //         ctx.fillText(`${Math.round(distance * 100) / 100}cm`, lines[0].x - (lines[0].x - lines[1]?.x) / 2, lines[0].y - (lines[0].y - lines[1]?.y) / 2 - 20);
-
-    //     const angle = (Math.atan2(lines[0].y - lines[1]?.y, lines[0].x - lines[1]?.x) * 180 / Math.PI);
-    //     if (!isNaN(angle))
-    //         ctx.fillText(Math.round(angle), lines[0].x + 20, lines[0].y + 20);
-    // }
     for (let i = 0; i < lines.length; i++) {
-        if (selection.index == i && selection.array == "lines") drawDot(lines[i].x, lines[i].y, UNFINISHED_COLOR);
-        else drawDot(lines[i].x, lines[i].y, PATH_COLOR);
+        if (selection.index == i && selection.array == "lines") drawDot(lines[i].x, lines[i].y, UNFINISHED_COLOR, ctx);
+        else drawDot(lines[i].x, lines[i].y, PATH_COLOR, ctx);
 
         ctx.strokeStyle = (selection.index == i || selection.index + 1 == i) && selection.array == "lines" ? UNFINISHED_COLOR : PATH_COLOR;
         ctx.lineWidth = 3;
@@ -475,7 +395,7 @@ function tick() {
         ctx.closePath();
 
         // if (lines.length == 0) drawDot(clickX, clickY, UNFINISHED_COLOR);
-        drawDot(mouseX, mouseY, UNFINISHED_COLOR);
+        drawDot(mouseX, mouseY, UNFINISHED_COLOR, ctx);
     }
 
 }
