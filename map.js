@@ -32,7 +32,7 @@ const ctx = canvas.getContext('2d');
 /**
  * @type {Array<{x:number,y:number,reversed:boolean}}
  */
-const lines = new Array();
+const points = new Array();
 /**
  * @type {Array<{x:number,y:number}}
  */
@@ -120,7 +120,7 @@ let reverseKey = false;
         mouseDown = false;
 
         if (!shiftDown) {
-            lines.push({
+            points.push({
                 x: mouseX,
                 y: mouseY,
                 reversed: reverseKey
@@ -163,10 +163,10 @@ let reverseKey = false;
                 }
             });
 
-            lines.forEach((line, i) => {
-                if ((x - line.x) ** 2 + (y - line.y) ** 2 <= 16 ** 2) {
+            points.forEach((point, i) => {
+                if ((x - point.x) ** 2 + (y - point.y) ** 2 <= 16 ** 2) {
                     selection = {
-                        array: "lines",
+                        array: "points",
                         index: i
                     };
                 }
@@ -183,21 +183,21 @@ let reverseKey = false;
                 gameobjects[selection.index].x = mouseX;
                 gameobjects[selection.index].y = mouseY;
                 break;
-            case "lines":
-                lines[selection.index].x = mouseX;
-                lines[selection.index].y = mouseY;
+            case "points":
+                points[selection.index].x = mouseX;
+                points[selection.index].y = mouseY;
                 break;
         }
     });
 
     canvas.addEventListener("keydown", (event) => {
         if (event.ctrlKey && event.code == "KeyZ") {
-            const point = lines.pop();
+            const point = points.pop();
             if (point) undo.push(point);
         }
         if (event.ctrlKey && event.code == "KeyY") {
             const point = undo.pop();
-            if (point) lines.push(point);
+            if (point) points.push(point);
         }
 
         ctrlDown = event.ctrlKey;
@@ -307,8 +307,8 @@ function drawField() {
 }
 
 function tick() {
-    lastX = lines[lines.length - 1]?.x ?? 0;
-    lastY = lines[lines.length - 1]?.y ?? 0;
+    lastX = points[points.length - 1]?.x ?? 0;
+    lastY = points[points.length - 1]?.y ?? 0;
 
     drawField();
 
@@ -328,22 +328,22 @@ function tick() {
         ctx.closePath();
     }
 
-    for (let i = 0; i < lines.length; i++) {
-        if (lines[i].reversed) {
-            if (selection.index == i && selection.array == "lines") drawDot(lines[i].x, lines[i].y, REVERSED_UNFINISHED_COLOR, ctx);
-            else drawDot(lines[i].x, lines[i].y, REVERSED_PATH_COLOR, ctx);
+    for (let i = 0; i < points.length; i++) {
+        if (points[i].reversed) {
+            if (selection.index == i && selection.array == "points") drawDot(points[i].x, points[i].y, REVERSED_UNFINISHED_COLOR, ctx);
+            else drawDot(points[i].x, points[i].y, REVERSED_PATH_COLOR, ctx);
         } else {
-            if (selection.index == i && selection.array == "lines") drawDot(lines[i].x, lines[i].y, UNFINISHED_COLOR, ctx);
-            else drawDot(lines[i].x, lines[i].y, PATH_COLOR, ctx);
+            if (selection.index == i && selection.array == "points") drawDot(points[i].x, points[i].y, UNFINISHED_COLOR, ctx);
+            else drawDot(points[i].x, points[i].y, PATH_COLOR, ctx);
         }
 
-        ctx.strokeStyle = (selection.index == i || selection.index + 1 == i) && selection.array == "lines" ? UNFINISHED_COLOR : PATH_COLOR;
-        if (lines[i].reversed && lines[i-1]?.reversed) ctx.strokeStyle = (selection.index == i || selection.index + 1 == i) && selection.array == "lines" ? REVERSED_UNFINISHED_COLOR : REVERSED_PATH_COLOR;
+        ctx.strokeStyle = (selection.index == i || selection.index + 1 == i) && selection.array == "points" ? UNFINISHED_COLOR : PATH_COLOR;
+        if (points[i].reversed && points[i-1]?.reversed) ctx.strokeStyle = (selection.index == i || selection.index + 1 == i) && selection.array == "points" ? REVERSED_UNFINISHED_COLOR : REVERSED_PATH_COLOR;
 
         ctx.lineWidth = 3;
         ctx.beginPath();
-        ctx.moveTo(lines[i - 1]?.x ?? lines[i].x, lines[i - 1]?.y ?? lines[i].y);
-        ctx.lineTo(lines[i].x, lines[i].y);
+        ctx.moveTo(points[i - 1]?.x ?? points[i].x, points[i - 1]?.y ?? points[i].y);
+        ctx.lineTo(points[i].x, points[i].y);
 
         ctx.stroke();
         ctx.closePath();
@@ -351,24 +351,24 @@ function tick() {
         /**
          * @type {number}
          */
-        let angle = (Math.atan2(lines[i].y - lines[i + 1]?.y, lines[i].x - lines[i + 1]?.x) * 180 / Math.PI) -
-            (Math.atan2(lines[i - 1]?.y - lines[i]?.y, lines[i - 1]?.x - lines[i].x) * 180 / Math.PI);
+        let angle = (Math.atan2(points[i].y - points[i + 1]?.y, points[i].x - points[i + 1]?.x) * 180 / Math.PI) -
+            (Math.atan2(points[i - 1]?.y - points[i]?.y, points[i - 1]?.x - points[i].x) * 180 / Math.PI);
 
         if (i == 0)
-            angle = (Math.atan2(lines[0].y - lines[1]?.y, lines[0].x - lines[1]?.x) * 180 / Math.PI);
+            angle = (Math.atan2(points[0].y - points[1]?.y, points[0].x - points[1]?.x) * 180 / Math.PI);
 
         if (!isNaN(angle))
-            ctx.fillText(`${Math.round(angle)}\u00B0`, lines[i].x + 20, lines[i].y + 20);
+            ctx.fillText(`${Math.round(angle)}\u00B0`, points[i].x + 20, points[i].y + 20);
 
-        ctx.fillStyle = (selection.index == i || selection.index - 1 == i) && selection.array == "lines" ? UNFINISHED_COLOR : PATH_COLOR;
-        if (lines[i].reversed && lines[i+1]?.reversed) ctx.fillStyle = (selection.index == i || selection.index - 1 == i) && selection.array == "lines" ? REVERSED_UNFINISHED_COLOR : REVERSED_PATH_COLOR;
+        ctx.fillStyle = (selection.index == i || selection.index - 1 == i) && selection.array == "points" ? UNFINISHED_COLOR : PATH_COLOR;
+        if (points[i].reversed && points[i+1]?.reversed) ctx.fillStyle = (selection.index == i || selection.index - 1 == i) && selection.array == "points" ? REVERSED_UNFINISHED_COLOR : REVERSED_PATH_COLOR;
 
         const distance = Math.sqrt(
-            (lines[i].x - lines[i + 1]?.x) ** 2 +
-            (lines[i].y - lines[i + 1]?.y) ** 2
+            (points[i].x - points[i + 1]?.x) ** 2 +
+            (points[i].y - points[i + 1]?.y) ** 2
         ) / 2;
         if (!isNaN(distance))
-            ctx.fillText(`${Math.round(distance * 100) / 100}cm`, lines[i].x - (lines[i].x - lines[i + 1]?.x) / 2, lines[i].y - (lines[i].y - lines[i + 1]?.y) / 2 - 20);
+            ctx.fillText(`${Math.round(distance * 100) / 100}cm`, points[i].x - (points[i].x - points[i + 1]?.x) / 2, points[i].y - (points[i].y - points[i + 1]?.y) / 2 - 20);
 
     }
 
@@ -377,13 +377,13 @@ function tick() {
         ctx.strokeStyle = UNFINISHED_COLOR;
 
         ctx.beginPath();
-        if (lines.length == 0) ctx.moveTo(mouseX, mouseY);
+        if (points.length == 0) ctx.moveTo(mouseX, mouseY);
         else ctx.moveTo(lastX, lastY);
         ctx.lineTo(mouseX, mouseY);
         ctx.stroke();
         ctx.closePath();
 
-        // if (lines.length == 0) drawDot(clickX, clickY, UNFINISHED_COLOR);
+        // if (points.length == 0) drawDot(clickX, clickY, UNFINISHED_COLOR);
         drawDot(mouseX, mouseY, UNFINISHED_COLOR, ctx);
     }
 
