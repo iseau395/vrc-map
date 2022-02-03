@@ -3,6 +3,9 @@ import { drawDot } from "./drawing.js";
 
 const PATH_COLOR = "rgb(100, 255, 100)";
 const UNFINISHED_COLOR = "rgb(100, 255, 255)";
+const REVERSED_PATH_COLOR = "rgb(255, 100, 100)";
+const REVERSED_UNFINISHED_COLOR = "rgb(255, 200, 0)";
+
 const GRID_COLOR = "rgba(155, 155, 155, 0.5)";
 
 export const NEUTRAL_MOGO = "rgb(255, 255, 0)";
@@ -11,7 +14,6 @@ export const BLUE_ALLIANCE = "rgb(0, 0, 255)";
 export const RING_COLOR = "rgb(255, 0, 255)";
 const FIELD_COLOR = "rgb(125, 125, 125)";
 const LINE_COLOR = "rgb(255, 255, 255)";
-
 
 /**
  * @type {HTMLCanvasElement}
@@ -28,7 +30,7 @@ const FIELD_GRID = FIELD_SIDE / GRID_SCALE;
 const ctx = canvas.getContext('2d');
 
 /**
- * @type {Array<{x:number,y:number}}
+ * @type {Array<{x:number,y:number,reversed:boolean}}
  */
 const lines = new Array();
 /**
@@ -104,6 +106,8 @@ let mouseY;
 let ctrlDown = false;
 let shiftDown = false;
 let altDown = false;
+let reverseKey = false;
+
 {
     canvas.addEventListener("mousedown", (event) => {
         if (event.button != 0) return;
@@ -118,7 +122,8 @@ let altDown = false;
         if (!shiftDown) {
             lines.push({
                 x: mouseX,
-                y: mouseY
+                y: mouseY,
+                reversed: reverseKey
             });
 
             undo = [];
@@ -199,12 +204,16 @@ let altDown = false;
         shiftDown = event.shiftKey;
         altDown = event.altKey;
 
+        if (event.key == "r") reverseKey = true;
+
         if (ctrlDown || shiftDown || altDown) event.preventDefault();
     });
     canvas.addEventListener("keyup", (event) => {
         ctrlDown = event.ctrlKey;
         shiftDown = event.shiftKey;
         altDown = event.altKey;
+
+        if (event.key == "r") reverseKey = false;
     });
 }
 
@@ -320,10 +329,17 @@ function tick() {
     }
 
     for (let i = 0; i < lines.length; i++) {
-        if (selection.index == i && selection.array == "lines") drawDot(lines[i].x, lines[i].y, UNFINISHED_COLOR, ctx);
-        else drawDot(lines[i].x, lines[i].y, PATH_COLOR, ctx);
+        if (lines[i].reversed) {
+            if (selection.index == i && selection.array == "lines") drawDot(lines[i].x, lines[i].y, REVERSED_UNFINISHED_COLOR, ctx);
+            else drawDot(lines[i].x, lines[i].y, REVERSED_PATH_COLOR, ctx);
+        } else {
+            if (selection.index == i && selection.array == "lines") drawDot(lines[i].x, lines[i].y, UNFINISHED_COLOR, ctx);
+            else drawDot(lines[i].x, lines[i].y, PATH_COLOR, ctx);
+        }
 
         ctx.strokeStyle = (selection.index == i || selection.index + 1 == i) && selection.array == "lines" ? UNFINISHED_COLOR : PATH_COLOR;
+        if (lines[i].reversed && lines[i-1]?.reversed) ctx.strokeStyle = (selection.index == i || selection.index + 1 == i) && selection.array == "lines" ? REVERSED_UNFINISHED_COLOR : REVERSED_PATH_COLOR;
+
         ctx.lineWidth = 3;
         ctx.beginPath();
         ctx.moveTo(lines[i - 1]?.x ?? lines[i].x, lines[i - 1]?.y ?? lines[i].y);
@@ -345,6 +361,7 @@ function tick() {
             ctx.fillText(`${Math.round(angle)}\u00B0`, lines[i].x + 20, lines[i].y + 20);
 
         ctx.fillStyle = (selection.index == i || selection.index - 1 == i) && selection.array == "lines" ? UNFINISHED_COLOR : PATH_COLOR;
+        if (lines[i].reversed && lines[i+1]?.reversed) ctx.fillStyle = (selection.index == i || selection.index - 1 == i) && selection.array == "lines" ? REVERSED_UNFINISHED_COLOR : REVERSED_PATH_COLOR;
 
         const distance = Math.sqrt(
             (lines[i].x - lines[i + 1]?.x) ** 2 +
