@@ -20,6 +20,10 @@ const LINE_COLOR = "rgb(255, 255, 255)";
 export let slot = "slot1";
 
 /**
+ * @type {HTMLParagraphElement}
+ */
+const slot_list = document.getElementById("slots-list");
+/**
  * @type {HTMLCanvasElement}
  */
 const canvas = document.getElementById("map-canvas");
@@ -113,6 +117,17 @@ let altDown = false;
 let reverseKey = false;
 
 {
+    document.getElementById("slot-selector").addEventListener("input", (event) => {
+        if (event.target.value == "all-slots-list") {
+            event.target.value = "invalid value!"
+            return;
+        };
+
+        if (localStorage.getItem(slot)) save(slot, points, gameobjects);
+        slot = event.target.value;
+        load(slot);
+    });
+
     canvas.addEventListener("mousedown", (event) => {
         if (event.button != 0) return;
 
@@ -383,7 +398,7 @@ function tick() {
 
     if (mouseDown && !shiftDown && selection.array == "none") {
         ctx.lineWidth = 3;
-        ctx.strokeStyle = UNFINISHED_COLOR;
+        ctx.strokeStyle = reverseKey ? REVERSED_UNFINISHED_COLOR : UNFINISHED_COLOR;
 
         ctx.beginPath();
         if (points.length == 0) ctx.moveTo(mouseX, mouseY);
@@ -392,12 +407,13 @@ function tick() {
         ctx.stroke();
         ctx.closePath();
 
-        // if (points.length == 0) drawDot(clickX, clickY, UNFINISHED_COLOR);
-        drawDot(mouseX, mouseY, UNFINISHED_COLOR, ctx);
+        drawDot(mouseX, mouseY, reverseKey ? REVERSED_UNFINISHED_COLOR : UNFINISHED_COLOR, ctx);
     }
 
+    const slots = localStorage.getItem("all-slots-list")?.split("|");
+    if (slots) slot_list.textContent = "Save Slots: " + slots.join(", ");
 }
 
-load("slot1");
+load(slot);
 
 setInterval(tick, 10);

@@ -50,8 +50,17 @@ const default_gameobjects = [
 ];
 
 document.getElementById("clear-button").addEventListener("click", () => {
-    console.log("clearing...");
     localStorage.removeItem(slot);
+    const slots = localStorage.getItem("all-slots-list")?.split("|");
+    if (slots) localStorage.setItem("all-slots-list", slots.filter((v) => v != slot).join("|"));
+    else localStorage.setItem("all-slots-list", slot);
+    load(slot);
+});
+
+document.getElementById("clear-all-button").addEventListener("click", () => {
+    document.getElementById("slot-selector").value = "slot1";
+
+    localStorage.clear();
     load(slot);
 });
 
@@ -74,9 +83,20 @@ export function save(slot, points, gameobjects) {
         data += gameobject.encode() + "/";
     });
 
-    console.log(`${slot}: ${data}`);
-
     window.localStorage.setItem(slot, data);
+
+    const slots = localStorage.getItem("all-slots-list")?.split("|");
+    if (slots) {
+        if (!slots.includes(slot)) {
+            console.log("set");
+            slots.push(slot);
+            localStorage.setItem("all-slots-list", slots.join("|"));
+        }
+    }
+    else {
+        localStorage.setItem("all-slots-list", slot);
+    }
+    console.log(slots);
 }
 
 /**
@@ -84,6 +104,8 @@ export function save(slot, points, gameobjects) {
  * 
  */
 export function load(slot) {
+    if (!localStorage.getItem("all-slots-list")) localStorage.setItem("all-slots-list", "slot1");
+
     const data = window.localStorage.getItem(slot);
     if (data == null) {
         points.length = 0;
@@ -98,8 +120,6 @@ export function load(slot) {
 
     let raw_points = raw[0].split("/");
     let raw_gameobjects = raw[1].split("/");
-
-    console.log(raw_gameobjects);
 
     if (raw_points[raw_points.length-1] == '') raw_points.pop();
     if (raw_gameobjects[raw_gameobjects.length-1] == '') raw_gameobjects.pop();
