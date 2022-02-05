@@ -39,7 +39,7 @@ const PATH_COLORS = [
     new Color(210,  10,  10),
     new Color(210, 110,  10),
     new Color(210, 210,  10),
-    new Color(110, 210,  10),
+    // new Color(110, 210,  10),
     new Color( 10, 210,  10),
     new Color( 10, 210, 110),
     new Color( 10, 210, 210),
@@ -410,7 +410,7 @@ function tick() {
         if (!isNaN(angle))
             ctx.fillText(`${Math.round(angle)}\u00B0`, points[i].x + 20, points[i].y + 20);
 
-        ctx.fillStyle = (selection.index == i || selection.index - 1 == i) && selection.array == "points" ? PATH_COLORS[points[i].step].toUnfinished().toString() : PATH_COLORS[points[i].step].toString();
+        ctx.fillStyle = (selection.index == i || selection.index - 1 == i) && selection.array == "points" ? PATH_COLORS[points[i+1].step].toUnfinished().toString() : PATH_COLORS[points[i+1].step].toString();
 
         const distance = Math.sqrt(
             (points[i].x - points[i + 1]?.x) ** 2 +
