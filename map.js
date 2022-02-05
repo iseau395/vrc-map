@@ -388,7 +388,8 @@ function tick() {
         if (selection.index == i && selection.array == "points") drawDot(points[i].x, points[i].y, PATH_COLORS[points[i].step].toUnfinished().toString(), ctx);
         else drawDot(points[i].x, points[i].y, PATH_COLORS[points[i].step].toString(), ctx);
 
-        ctx.strokeStyle = (selection.index == i || selection.index + 1 == i) && selection.array == "points" ? PATH_COLORS[points[i].step].toUnfinished().toString() : PATH_COLORS[points[i].step].toString();
+        ctx.strokeStyle = (selection.index == i || selection.index + 1 == i) && selection.array == "points" ?
+            PATH_COLORS[points[i].step].toUnfinished().toString() : PATH_COLORS[points[i].step].toString();
 
         ctx.lineWidth = 3;
         ctx.beginPath();
@@ -410,7 +411,8 @@ function tick() {
         if (!isNaN(angle))
             ctx.fillText(`${Math.round(angle)}\u00B0`, points[i].x + 20, points[i].y + 20);
 
-        ctx.fillStyle = (selection.index == i || selection.index - 1 == i) && selection.array == "points" ? PATH_COLORS[points[i+1].step].toUnfinished().toString() : PATH_COLORS[points[i+1].step].toString();
+        ctx.fillStyle = (selection.index == i || selection.index - 1 == i) && selection.array == "points" ?
+            PATH_COLORS[points[i+1]?.step ?? points[i].step].toUnfinished().toString() : PATH_COLORS[points[i+1]?.step ?? points[i].step].toString();
 
         const distance = Math.sqrt(
             (points[i].x - points[i + 1]?.x) ** 2 +
