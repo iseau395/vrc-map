@@ -1,9 +1,10 @@
 import { Ring, Mogo, GameObject } from "./gameobject.js";
 import { points, gameobjects, slot } from "./map.js";
 
-const FIELD_SIDE = document.getElementById("map-canvas").width;
+const FIELD_SIDE = 713.74;
 
-const default_gameobjects = [
+// This isn't used
+const starting_gameobjects = [
     new Mogo(
         FIELD_SIDE / 2,
         FIELD_SIDE / 4,
@@ -58,9 +59,8 @@ document.getElementById("clear-button").addEventListener("click", () => {
 });
 
 document.getElementById("clear-all-button").addEventListener("click", () => {
-    document.getElementById("slot-selector").value = "slot1";
-
     localStorage.clear();
+    document.getElementById("slot-selector").value = "slot1";
     load(slot);
 });
 
@@ -71,8 +71,6 @@ document.getElementById("clear-all-button").addEventListener("click", () => {
  */
 export function save(slot, points, gameobjects) {
     let data = "";
-
-    console.log(points);
 
     points.forEach((point) => {
         data += point.x.toFixed(2) + "-";
@@ -90,7 +88,6 @@ export function save(slot, points, gameobjects) {
     const slots = localStorage.getItem("all-slots-list")?.split("|");
     if (slots) {
         if (!slots.includes(slot)) {
-            console.log("set");
             slots.push(slot);
             localStorage.setItem("all-slots-list", slots.join("|"));
         }
@@ -98,27 +95,24 @@ export function save(slot, points, gameobjects) {
     else {
         localStorage.setItem("all-slots-list", slot);
     }
-    console.log(slots);
 }
 
 /**
  * @param {string} slot
  * 
  */
-export function load(slot) {
+export async function load(slot) {
     if (!localStorage.getItem("all-slots-list")) localStorage.setItem("all-slots-list", "slot1");
 
     const data = window.localStorage.getItem(slot);
+    let raw = data?.split("|");
+
     if (data == null) {
         points.length = 0;
         gameobjects.length = 0;
 
-        default_gameobjects.forEach((g) => gameobjects.push(g));
-
-        return;
+        raw = await (await (await fetch("./default_save")).text()).split("|");
     };
-
-    let raw = data.split("|");
 
     let raw_points = raw[0].split("/");
     let raw_gameobjects = raw[1].split("/");
@@ -142,6 +136,7 @@ export function load(slot) {
             step
         });
     });
+
     raw_gameobjects.forEach(raw_gameobject => {
         if (!raw_gameobject) return;
 
