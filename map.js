@@ -36,19 +36,18 @@ const FIELD_COLOR = new Color(125, 125, 125);
 const LINE_COLOR = new Color(255, 255, 255);
 
 const PATH_COLORS = [
-    new Color(210,  60,  60),
-    new Color(160,  60,  60),
-    new Color(110, 110,  60),
-    new Color( 60, 160,  60),
-    new Color( 60, 210,  60),
-    new Color( 60, 160,  60),
-    new Color( 60, 110, 110),
-    new Color( 60,  60, 160),
-    new Color( 60,  60, 210),
-    new Color( 60,  60, 160),
-    new Color(110,  60, 110),
-    new Color(160,  60,  60),
-    new Color(210,  60,  60),
+    new Color(210,  10,  10),
+    new Color(210, 110,  10),
+    new Color(210, 210,  10),
+    new Color(110, 210,  10),
+    new Color( 10, 210,  10),
+    new Color( 10, 210, 110),
+    new Color( 10, 210, 210),
+    new Color( 10, 110, 210),
+    new Color( 10,  10, 210),
+    new Color(110,  10, 210),
+    new Color(210,  10, 210),
+    new Color(210,  10, 110),
 ]
 
 export let slot = "slot1";
@@ -262,7 +261,8 @@ let numberKey = 0;
         shiftDown = event.shiftKey;
         altDown = event.altKey;
         
-        if (/\d/.test(event.key)) numberKey = +event.key;
+        if (/\d/.test(event.key) && +event.key != 0) numberKey = +event.key - 1;
+        else if (+event.key == 0) numberKey = 10;
 
         if (ctrlDown || shiftDown || altDown) event.preventDefault();
     });
