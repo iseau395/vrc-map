@@ -3,19 +3,53 @@ import { drawDot } from "./drawing.js";
 
 import { load, save } from "./saving.js";
 
-const PATH_COLOR = "rgb(100, 255, 100)";
-const UNFINISHED_COLOR = "rgb(100, 255, 255)";
-const REVERSED_PATH_COLOR = "rgb(255, 100, 100)";
-const REVERSED_UNFINISHED_COLOR = "rgb(255, 200, 0)";
+class Color {
+    constructor(r, g, b, a = 1) {
+        this.r = r;
+        this.g = g;
+        this.b = b;
+        this.a = a;
+    }
+
+    toUnfinished = () => 
+        new Color(this.r + 40, this.g + 40, this.b + 40, this.a);
+
+    toTransparent = () => 
+        new Color(this.r, this.g, this.b, 0.1);
+
+    toString = () => 
+        `rgba(${this.r}, ${this.g}, ${this.b}, ${this.a})`
+}
+
+const PATH_COLOR = new Color(100, 255, 100);
+const UNFINISHED_COLOR = new Color(100, 255, 255);
+const REVERSED_PATH_COLOR = new Color(255, 100, 100);
+const REVERSED_UNFINISHED_COLOR = new Color(255, 200, 0);
 
 const GRID_COLOR = "rgba(155, 155, 155, 0.5)";
 
-export const NEUTRAL_MOGO = "rgb(255, 255, 0)";
-export const RED_ALLIANCE = "rgb(255, 0, 0)";
-export const BLUE_ALLIANCE = "rgb(0, 0, 255)";
-export const RING_COLOR = "rgb(255, 0, 255)";
-const FIELD_COLOR = "rgb(125, 125, 125)";
-const LINE_COLOR = "rgb(255, 255, 255)";
+export const NEUTRAL_MOGO = new Color(255, 255, 0);
+export const RED_ALLIANCE = new Color(255, 0, 0);
+export const BLUE_ALLIANCE = new Color(0, 0, 255);
+export const RING_COLOR = new Color(255, 0, 255);
+const FIELD_COLOR = new Color(125, 125, 125);
+const LINE_COLOR = new Color(255, 255, 255);
+
+const PATH_COLORS = [
+    new Color(210,  60,  60),
+    new Color(160,  60,  60),
+    new Color(110, 110,  60),
+    new Color( 60, 160,  60),
+    new Color( 60, 210,  60),
+    new Color( 60, 160,  60),
+    new Color( 60, 110, 110),
+    new Color( 60,  60, 160),
+    new Color( 60,  60, 210),
+    new Color( 60,  60, 160),
+    new Color(110,  60, 110),
+    new Color(160,  60,  60),
+    new Color(210,  60,  60),
+]
 
 export let slot = "slot1";
 
@@ -38,7 +72,7 @@ const FIELD_GRID = FIELD_SIDE / GRID_SCALE;
 const ctx = canvas.getContext('2d');
 
 /**
- * @type {Array<{x:number,y:number,reversed:boolean}}
+ * @type {Array<{x:number,y:number,step:number}}
  */
 export const points = new Array();
 /**
@@ -54,19 +88,19 @@ export const gameobjects = [
         FIELD_SIDE / 2,
         FIELD_SIDE / 4,
         180,
-        0
+       50
     ),
     new Mogo(
         FIELD_SIDE / 2,
         (FIELD_SIDE / 4) * 2,
-        0,
-        0
+       50,
+       50
     ),
     new Mogo(
         FIELD_SIDE / 2,
         (FIELD_SIDE / 4) * 3,
-        0,
-        0
+       50,
+       50
     ),
     new Mogo(
         (FIELD_SIDE / 12) * 3,
@@ -77,7 +111,7 @@ export const gameobjects = [
     new Mogo(
         (FIELD_SIDE / 12) * 1,
         (FIELD_SIDE / 6) * 2,
-        0,
+       50,
         1
     ),
     new Mogo(
@@ -114,7 +148,7 @@ let mouseY;
 let ctrlDown = false;
 let shiftDown = false;
 let altDown = false;
-let reverseKey = false;
+let numberKey = 0;
 
 {
     document.getElementById("slot-selector").addEventListener("input", (event) => {
@@ -141,7 +175,7 @@ let reverseKey = false;
                 points.push({
                     x: mouseX,
                     y: mouseY,
-                    reversed: reverseKey
+                    step: numberKey
                 });
     
                 undo = [];
@@ -227,8 +261,8 @@ let reverseKey = false;
         ctrlDown = event.ctrlKey;
         shiftDown = event.shiftKey;
         altDown = event.altKey;
-
-        if (event.key == "r") reverseKey = true;
+        
+        if (/\d/.test(event.key)) numberKey = +event.key;
 
         if (ctrlDown || shiftDown || altDown) event.preventDefault();
     });
@@ -236,8 +270,6 @@ let reverseKey = false;
         ctrlDown = event.ctrlKey;
         shiftDown = event.shiftKey;
         altDown = event.altKey;
-
-        if (event.key == "r") reverseKey = false;
     });
 }
 
@@ -245,7 +277,7 @@ function drawPlatform(x, y, color) {
     const longEdge = FIELD_SIDE / 3;
     const shortEdge = FIELD_SIDE / 6;
 
-    ctx.strokeStyle = color;
+    ctx.strokeStyle = color.toString();
     ctx.lineWidth = 10;
 
     ctx.beginPath();
@@ -277,14 +309,14 @@ function drawPlatform(x, y, color) {
 }
 
 function drawField() {
-    ctx.fillStyle = FIELD_COLOR;
+    ctx.fillStyle = FIELD_COLOR.toString();
     ctx.lineWidth = 5;
     ctx.fillRect(0, 0, FIELD_SIDE, FIELD_SIDE);
 
     let gridScale = 6;
     let fieldGrid = FIELD_SIDE / gridScale;
     ctx.lineWidth = 3;
-    ctx.strokeStyle = GRID_COLOR;
+    ctx.strokeStyle = GRID_COLOR.toString();
     ctx.beginPath();
     for (let i = 0; i < gridScale; i++) {
         ctx.moveTo(fieldGrid * i, 0);
@@ -297,7 +329,7 @@ function drawField() {
     ctx.stroke();
 
 
-    ctx.strokeStyle = LINE_COLOR;
+    ctx.strokeStyle = LINE_COLOR.toString();
     ctx.beginPath();
 
     ctx.moveTo(FIELD_SIDE / 3, 0);
@@ -338,7 +370,7 @@ function tick() {
 
     if (!ctrlDown) {
         ctx.lineWidth = 1;
-        ctx.strokeStyle = GRID_COLOR;
+        ctx.strokeStyle = GRID_COLOR.toString();
         ctx.beginPath();
         for (let i = 0; i < GRID_SCALE; i++) {
             ctx.moveTo(FIELD_GRID * i + (lastX % FIELD_GRID * altDown), 0);
@@ -353,16 +385,10 @@ function tick() {
     }
 
     for (let i = 0; i < points.length; i++) {
-        if (points[i].reversed) {
-            if (selection.index == i && selection.array == "points") drawDot(points[i].x, points[i].y, REVERSED_UNFINISHED_COLOR, ctx);
-            else drawDot(points[i].x, points[i].y, REVERSED_PATH_COLOR, ctx);
-        } else {
-            if (selection.index == i && selection.array == "points") drawDot(points[i].x, points[i].y, UNFINISHED_COLOR, ctx);
-            else drawDot(points[i].x, points[i].y, PATH_COLOR, ctx);
-        }
+        if (selection.index == i && selection.array == "points") drawDot(points[i].x, points[i].y, PATH_COLORS[points[i].step].toUnfinished().toString(), ctx);
+        else drawDot(points[i].x, points[i].y, PATH_COLORS[points[i].step].toString(), ctx);
 
-        ctx.strokeStyle = (selection.index == i || selection.index + 1 == i) && selection.array == "points" ? UNFINISHED_COLOR : PATH_COLOR;
-        if (points[i].reversed && points[i-1]?.reversed) ctx.strokeStyle = (selection.index == i || selection.index + 1 == i) && selection.array == "points" ? REVERSED_UNFINISHED_COLOR : REVERSED_PATH_COLOR;
+        ctx.strokeStyle = (selection.index == i || selection.index + 1 == i) && selection.array == "points" ? PATH_COLORS[points[i].step].toUnfinished().toString() : PATH_COLORS[points[i].step].toString();
 
         ctx.lineWidth = 3;
         ctx.beginPath();
@@ -384,8 +410,7 @@ function tick() {
         if (!isNaN(angle))
             ctx.fillText(`${Math.round(angle)}\u00B0`, points[i].x + 20, points[i].y + 20);
 
-        ctx.fillStyle = (selection.index == i || selection.index - 1 == i) && selection.array == "points" ? UNFINISHED_COLOR : PATH_COLOR;
-        if (points[i].reversed && points[i+1]?.reversed) ctx.fillStyle = (selection.index == i || selection.index - 1 == i) && selection.array == "points" ? REVERSED_UNFINISHED_COLOR : REVERSED_PATH_COLOR;
+        ctx.fillStyle = (selection.index == i || selection.index - 1 == i) && selection.array == "points" ? PATH_COLORS[points[i].step].toUnfinished().toString() : PATH_COLORS[points[i].step].toString();
 
         const distance = Math.sqrt(
             (points[i].x - points[i + 1]?.x) ** 2 +
@@ -398,7 +423,7 @@ function tick() {
 
     if (mouseDown && !shiftDown && selection.array == "none") {
         ctx.lineWidth = 3;
-        ctx.strokeStyle = reverseKey ? REVERSED_UNFINISHED_COLOR : UNFINISHED_COLOR;
+        ctx.strokeStyle = PATH_COLORS[numberKey].toUnfinished().toString();
 
         ctx.beginPath();
         if (points.length == 0) ctx.moveTo(mouseX, mouseY);
@@ -407,7 +432,7 @@ function tick() {
         ctx.stroke();
         ctx.closePath();
 
-        drawDot(mouseX, mouseY, reverseKey ? REVERSED_UNFINISHED_COLOR : UNFINISHED_COLOR, ctx);
+        drawDot(mouseX, mouseY, PATH_COLORS[numberKey].toUnfinished().toString(), ctx);
     }
 
     const slots = localStorage.getItem("all-slots-list")?.split("|");

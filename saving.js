@@ -72,10 +72,12 @@ document.getElementById("clear-all-button").addEventListener("click", () => {
 export function save(slot, points, gameobjects) {
     let data = "";
 
+    console.log(points);
+
     points.forEach((point) => {
         data += point.x.toFixed(2) + "-";
         data += point.y.toFixed(2) + "-";
-        data += point.reversed ? "t" : "f";
+        data += point.step.toFixed(0);
         data += "/";
     });
     data += "|"
@@ -131,13 +133,13 @@ export function load(slot) {
         let raw = raw_point.split("-")
         let x = +raw[0];
         let y = +raw[1];
-        let reversed = raw[2] == "t" ? true : false;
+        let step = +raw[2];
 
         if (!isNaN(x) && !isNaN(y))
             points.push({
             x,
             y,
-            reversed
+            step
         });
     });
     raw_gameobjects.forEach(raw_gameobject => {
