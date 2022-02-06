@@ -287,7 +287,7 @@ function tick() {
 
     ctx.fillStyle = "rgb(255, 50, 50)"
     ctx.fillRect(FIELD_SIDE, 0, 150, 150);
-    ctx.fillStyle = "rgb(0, 0, 0)"
+    ctx.fillStyle = "rgb(50, 50, 50)"
     ctx.fillRect(FIELD_SIDE, 150, 150, FIELD_SIDE - 150);
 
     drawTrashCan(FIELD_SIDE, 0, ctx);

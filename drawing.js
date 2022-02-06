@@ -67,6 +67,7 @@ function drawPlatform(x, y, color, ctx) {
     const shortEdge = FIELD_SIDE / 6;
 
     ctx.strokeStyle = color;
+    ctx.lineCap = "butt";
     ctx.lineWidth = 10;
 
     ctx.beginPath();

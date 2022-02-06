@@ -25,12 +25,17 @@
         button,
         input {
             background-color: rgb(100, 100, 100);
-            color:rgb(10, 10, 10);
+            color: rgb(10, 10, 10);
         }
 
         p {
             color: rgb(180, 180, 180);
             border-color: rgb(180, 180, 180);
+        }
+
+        canvas {
+            margin: 0px;
+            padding: 0px;
         }
     </style>
 
@@ -41,7 +46,7 @@
     <div>
         <button id="clear-button">Delete Save</button>
         <button id="clear-all-button">Delete All Saves</button>
-        <input id="slot-selector" type="text" value="slot1"/>
+        <input id="slot-selector" type="text" value="slot1" />
         <p id="slots-list"></p>
         <canvas id="map-canvas" width="863.74" height="713.74" tabindex="0"></canvas>
     </div>
