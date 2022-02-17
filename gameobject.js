@@ -1,4 +1,4 @@
-import { 
+import {
     RED_ALLIANCE, BLUE_ALLIANCE, NEUTRAL_MOGO, RING_COLOR
 } from "./map.js";
 import { polygon, drawCircle } from "./drawing.js";
@@ -52,7 +52,7 @@ export class GameObject {
     pointInside(x, y) {
         throw new Error("Unimplemented");
     }
-    
+
     encode() {
         throw new Error("Unimplemented");
     }
@@ -65,6 +65,13 @@ export class GameObject {
     }
 }
 
+let skills = false;
+const skills_display = document.getElementById("skills-display");
+document.getElementById("skills-switch").addEventListener("click", (event) => {
+    skills = !skills;
+    skills_display.innerText = skills ? "Skills Mode" : "Alliance Mode";
+});
+
 export class Mogo extends GameObject {
     static regex = /mogo-(?<x>(?:\d|\.)+)-(?<y>(?:\d|\.)+)-(?<rotation>(?:\d|\.)+)-(?<variation>\d)/;
 
@@ -73,7 +80,15 @@ export class Mogo extends GameObject {
      * @param {CanvasRenderingContext2D} ctx The context to draw on
      */
     render(ctx) {
-        switch (this.variation) {
+        if (skills) switch (this.variation) {
+            case 0: ctx.fillStyle = NEUTRAL_MOGO;
+                break;
+            case 1: ctx.fillStyle = BLUE_ALLIANCE;
+                break;
+            case 2: ctx.fillStyle = RED_ALLIANCE;
+                break;
+        }
+        else switch (this.variation) {
             case 0: ctx.fillStyle = NEUTRAL_MOGO;
                 break;
             case 1: ctx.fillStyle = RED_ALLIANCE;
@@ -92,7 +107,7 @@ export class Mogo extends GameObject {
         (x - this.x) ** 2 + (y - this.y) ** 2 <= 25.94 ** 2;
 
     encode() {
-        return `mogo-${this.x.toFixed(2)}-${this.y.toFixed(2)}-${this.rotation.toFixed(0)}-${this.variation}`
+        return `mogo-${this.x.toFixed(2)}-${this.y.toFixed(2)}-${this.rotation.toFixed(0)}-${this.variation}`;
     }
     static decode(string) {
         const decoded = this.regex.exec(string).groups;
@@ -129,7 +144,7 @@ export class Ring extends GameObject {
         (x - this.x) ** 2 + (y - this.y) ** 2 <= 14 ** 2;
 
     encode() {
-        return `ring-${this.x.toFixed(2)}-${this.y.toFixed(2)}`
+        return `ring-${this.x.toFixed(2)}-${this.y.toFixed(2)}`;
     }
     static decode(string) {
         const decoded = this.regex.exec(string).groups;

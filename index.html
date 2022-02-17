@@ -7,47 +7,25 @@
     <link rel="icon" type="image/x-icon" href="./favicon.ico">
     <meta name="viewport" content="width=device-width">
 
-    <style>
-        html,
-        body {
-            width: 100%;
-            height: 100%;
-            margin: 0;
-            background-color: rgb(50, 50, 50);
-        }
-
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        button,
-        input {
-            background-color: rgb(100, 100, 100);
-            color: rgb(10, 10, 10);
-        }
-
-        p {
-            color: rgb(180, 180, 180);
-            border-color: rgb(180, 180, 180);
-        }
-
-        canvas {
-            margin: 0px;
-            padding: 0px;
-        }
-    </style>
+    <link href="./index.css" rel="stylesheet">
 
     <script src="./map.js" type="module" defer></script>
 </head>
 
 <body>
     <div>
-        <button id="clear-button">Delete Save</button>
-        <button id="clear-all-button">Delete All Saves</button>
-        <input id="slot-selector" type="text" value="slot1" />
+        <form>
+            <button id="clear-button">Delete Save</button>
+            <button id="clear-all-button">Delete All Saves</button>
+            <input id="slot-selector" type="text" value="slot1" />
+            <label class="switch">
+                <input id="skills-switch" type="checkbox">
+                <span class="slider"></span>
+            </label>
+            <span id="skills-display">Alliance Mode</span>
+        </form>
         <p id="slots-list"></p>
+
         <canvas id="map-canvas" width="863.74" height="713.74" tabindex="0"></canvas>
     </div>
 </body>
