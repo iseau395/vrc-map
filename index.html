@@ -4,7 +4,7 @@
 
 <head>
     <title>Field Map</title>
-    <link rel="icon" type="image/x-icon" href="./favicon.ico">
+    <link rel="icon" type="image/x-icon" href="./media/favicon.ico">
     <meta name="viewport" content="width=device-width">
 
     <link href="./index.css" rel="stylesheet">
@@ -13,20 +13,29 @@
 </head>
 
 <body>
-    <div>
-        <form>
-            <button id="clear-button">Delete Save</button>
-            <button id="clear-all-button">Delete All Saves</button>
-            <input id="slot-selector" type="text" value="slot1" />
+    <div></div>
+    <div class="map-panel">
+        <div>
+            <form>
+                <button id="clear-button">Delete Save</button>
+                <button id="clear-all-button">Delete All Saves</button>
+                <input id="slot-selector" type="text" value="slot1" />
+            </form>
+            <p id="slots-list"></p>
+    
+            <canvas id="map-canvas" width="863.74" height="713.74" tabindex="0"></canvas>
+        </div>
+    </div>
+    <div class="settings-panel">
+        <img src="./media/GrayGearIcon.png" class="gear-icon">
+        <input class="settings-button" type="checkbox">
+        <div class="settings-wrapper">
+            <span>Skills Mode: </span>
             <label class="switch">
                 <input id="skills-switch" type="checkbox">
                 <span class="slider"></span>
             </label>
-            <span id="skills-display">Alliance Mode</span>
-        </form>
-        <p id="slots-list"></p>
-
-        <canvas id="map-canvas" width="863.74" height="713.74" tabindex="0"></canvas>
+        </div>
     </div>
 </body>
 

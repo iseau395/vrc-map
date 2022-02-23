@@ -66,10 +66,8 @@ export class GameObject {
 }
 
 let skills = false;
-const skills_display = document.getElementById("skills-display");
-document.getElementById("skills-switch").addEventListener("click", (event) => {
+document.getElementById("skills-switch").addEventListener("click", () => {
     skills = !skills;
-    skills_display.innerText = skills ? "Skills Mode" : "Alliance Mode";
 });
 
 export class Mogo extends GameObject {
