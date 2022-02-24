@@ -12,8 +12,13 @@ document.getElementById("clear-button").addEventListener("click", () => {
 });
 
 document.getElementById("clear-all-button").addEventListener("click", () => {
+    const settings = localStorage.getItem("settings");
     localStorage.clear();
-    document.getElementById("slot-selector").value = "slot1";
+    localStorage.setItem("settings", settings);
+
+    slot = "slot1";
+    document.getElementById("slot-selector").value = slot;
+
     load(slot);
 });
 
@@ -23,6 +28,7 @@ document.getElementById("clear-all-button").addEventListener("click", () => {
  * @param {Array<GameObject>} gameobjects
  */
 export function save(slot, points, gameobjects) {
+    slot = `slot-${slot}`;
     let data = "";
 
     points.forEach((point) => {
@@ -55,7 +61,7 @@ export function save(slot, points, gameobjects) {
  * 
  */
 export async function load(slot) {
-    if (!localStorage.getItem("all-slots-list")) localStorage.setItem("all-slots-list", "slot1");
+    if (!localStorage.getItem("all-slots-list")) localStorage.setItem("all-slots-list", "slot-slot1");
 
     const data = window.localStorage.getItem(slot);
     let raw = data?.split("|");

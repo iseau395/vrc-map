@@ -3,7 +3,7 @@ import { drawDot, drawField, drawTrashCan } from "./drawing.js";
 
 import { load, save } from "./saving.js";
 
-import { isUnitMetric } from "./settings.js";
+import { isUnitImperial } from "./settings.js";
 
 export class Color {
     constructor(r, g, b, a = 1) {
@@ -351,7 +351,7 @@ function tick() {
             (points[i].y - points[i + 1]?.y) ** 2
         ) / 2;
         if (!isNaN(distance))
-            ctx.fillText(`${Math.round((isUnitMetric() ? distance : toImperial(distance)) * 100) / 100}${isUnitMetric() ? "cm" : "in"}`, points[i].x - (points[i].x - points[i + 1]?.x) / 2, points[i].y - (points[i].y - points[i + 1]?.y) / 2 - 20);
+            ctx.fillText(`${Math.round((isUnitImperial() ? toImperial(distance) : distance) * 100) / 100}${isUnitImperial() ? "in" : "cm"}`, points[i].x - (points[i].x - points[i + 1]?.x) / 2, points[i].y - (points[i].y - points[i + 1]?.y) / 2 - 20);
 
     }
 
@@ -369,7 +369,7 @@ function tick() {
         drawDot(mouseX, mouseY, PATH_COLORS[numberKey].toUnfinished().toString(), ctx);
     }
 
-    const slots = localStorage.getItem("all-slots-list")?.split("|");
+    const slots = localStorage.getItem("all-slots-list")?.split("|").map(v => v.substring(5));
     if (slots) slot_list.textContent = "Save Slots: " + slots.join(", ");
 }
 
