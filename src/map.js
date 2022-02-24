@@ -3,6 +3,8 @@ import { drawDot, drawField, drawTrashCan } from "./drawing.js";
 
 import { load, save } from "./saving.js";
 
+import { isUnitMetric } from "./settings.js";
+
 export class Color {
     constructor(r, g, b, a = 1) {
         this.r = r;
@@ -46,7 +48,11 @@ const PATH_COLORS = [
     new Color(110,  10, 210),
     new Color(210,  10, 210),
     new Color(210,  10, 110),
-]
+];
+
+function toImperial(cm) {
+    return cm * 0.393701
+}
 
 export let slot = "slot1";
 
@@ -345,7 +351,7 @@ function tick() {
             (points[i].y - points[i + 1]?.y) ** 2
         ) / 2;
         if (!isNaN(distance))
-            ctx.fillText(`${Math.round(distance * 100) / 100}cm`, points[i].x - (points[i].x - points[i + 1]?.x) / 2, points[i].y - (points[i].y - points[i + 1]?.y) / 2 - 20);
+            ctx.fillText(`${Math.round((isUnitMetric() ? distance : toImperial(distance)) * 100) / 100}${isUnitMetric() ? "cm" : "in"}`, points[i].x - (points[i].x - points[i + 1]?.x) / 2, points[i].y - (points[i].y - points[i + 1]?.y) / 2 - 20);
 
     }
 

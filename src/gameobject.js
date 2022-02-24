@@ -3,6 +3,8 @@ import {
 } from "./map.js";
 import { polygon, drawCircle } from "./drawing.js";
 
+import { isSkills } from "./settings.js";
+
 export class GameObject {
     /**
      * Create a new {@link GameObject GameObject}
@@ -65,10 +67,7 @@ export class GameObject {
     }
 }
 
-let skills = false;
-document.getElementById("skills-switch").addEventListener("click", () => {
-    skills = !skills;
-});
+
 
 export class Mogo extends GameObject {
     static regex = /mogo-(?<x>(?:\d|\.)+)-(?<y>(?:\d|\.)+)-(?<rotation>(?:\d|\.)+)-(?<variation>\d)/;
@@ -78,7 +77,7 @@ export class Mogo extends GameObject {
      * @param {CanvasRenderingContext2D} ctx The context to draw on
      */
     render(ctx) {
-        if (skills) switch (this.variation) {
+        if (isSkills()) switch (this.variation) {
             case 0: ctx.fillStyle = NEUTRAL_MOGO;
                 break;
             case 1: ctx.fillStyle = BLUE_ALLIANCE;
