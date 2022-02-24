@@ -1,7 +1,7 @@
 # vrc-map
 
 A map of the field for the VRC game Tipping Point. This map is ideal for doing things like planning skills routes and 
-for making images for the notebook. You can try it out at https://poetic1843.github.io/vrc-map/
+for making images for the notebook. You can try it out at https://iseau395.github.io/vrc-map/
 
 ### Controls
 
