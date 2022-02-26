@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Switch from "./Switch.svelte";
+    import Switch from "../Switch.svelte";
     import { skills, imperial } from "./settings.js";
     import { onMount } from "svelte";
 
