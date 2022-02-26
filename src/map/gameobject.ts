@@ -1,11 +1,23 @@
 import {
-    RED_ALLIANCE, BLUE_ALLIANCE, NEUTRAL_MOGO, RING_COLOR
-} from "./map.js";
-import { polygon, drawCircle } from "./drawing.js";
+    RED_ALLIANCE,
+    BLUE_ALLIANCE,
+    NEUTRAL_MOGO,
+    RING_COLOR,
+    drawPolygon,
+    drawCircle
+} from "./drawing";
 
-import { isSkills } from "./settings.js";
+import { skills as skills_store } from "../components/settings/settings";
+
+let skills = false;
+skills_store.subscribe(v => skills = v);
 
 export class GameObject {
+    x: number;
+    y: number;
+    rotation: number;
+    variation: number;
+
     /**
      * Create a new {@link GameObject GameObject}
      * @param {number} x The x coordinate to start at
@@ -58,99 +70,103 @@ export class GameObject {
     encode() {
         throw new Error("Unimplemented");
     }
-    static decode() {
+    static decode(string: string) {
         throw new Error("Unimplemented");
     }
 
-    static isEncode(value) {
+    static isEncode(value: string) {
         throw new Error("Unimplemented");
     }
 }
 
-
-
 export class Mogo extends GameObject {
-    static regex = /mogo-(?<x>(?:\d|\.)+)-(?<y>(?:\d|\.)+)-(?<rotation>(?:\d|\.)+)-(?<variation>\d)/;
+    static regex =
+        /mogo-(?<x>(?:\d|\.)+)-(?<y>(?:\d|\.)+)-(?<rotation>(?:\d|\.)+)-(?<variation>\d)/;
 
     /**
      * Draw the Mogo
      * @param {CanvasRenderingContext2D} ctx The context to draw on
      */
     render(ctx) {
-        if (isSkills()) switch (this.variation) {
-            case 0: ctx.fillStyle = NEUTRAL_MOGO;
-                break;
-            case 1: ctx.fillStyle = BLUE_ALLIANCE;
-                break;
-            case 2: ctx.fillStyle = RED_ALLIANCE;
-                break;
-        }
-        else switch (this.variation) {
-            case 0: ctx.fillStyle = NEUTRAL_MOGO;
-                break;
-            case 1: ctx.fillStyle = RED_ALLIANCE;
-                break;
-            case 2: ctx.fillStyle = BLUE_ALLIANCE;
-                break;
-        }
+        if (skills)
+            switch (this.variation) {
+                case 0:
+                    ctx.fillStyle = NEUTRAL_MOGO;
+                    break;
+                case 1:
+                    ctx.fillStyle = BLUE_ALLIANCE;
+                    break;
+                case 2:
+                    ctx.fillStyle = RED_ALLIANCE;
+                    break;
+            }
+        else
+            switch (this.variation) {
+                case 0:
+                    ctx.fillStyle = NEUTRAL_MOGO;
+                    break;
+                case 1:
+                    ctx.fillStyle = RED_ALLIANCE;
+                    break;
+                case 2:
+                    ctx.fillStyle = BLUE_ALLIANCE;
+                    break;
+            }
 
         let rotation = this.rotation + 14;
         ctx.strokeStyle = "rgb(50, 50, 50)";
         ctx.lineWidth = 3;
-        polygon(this.x, this.y, 25.94, 7, rotation, ctx);
+        drawPolygon(this.x, this.y, 25.94, 7, rotation, ctx);
     }
 
     pointInside = (x, y) =>
         (x - this.x) ** 2 + (y - this.y) ** 2 <= 25.94 ** 2;
 
     encode() {
-        return `mogo-${this.x.toFixed(2)}-${this.y.toFixed(2)}-${this.rotation.toFixed(0)}-${this.variation}`;
+        return `mogo-${this.x.toFixed(2)}-${this.y.toFixed(
+            2
+        )}-${this.rotation.toFixed(0)}-${this.variation}`;
     }
-    static decode(string) {
+    static decode(string: string) {
         const decoded = this.regex.exec(string).groups;
         return new Mogo(
             +decoded.x,
             +decoded.y,
             +decoded.rotation,
-            +decoded.variation,
+            +decoded.variation
         );
     }
 
-    static isEncode = (string) =>
-        this.regex.test(string);
+    static isEncode = (string: string) => this.regex.test(string);
 }
 
 export class Ring extends GameObject {
     static regex = /ring-(?<x>(?:\d|\.)+)-(?<y>(?:\d|\.)+)/;
 
     /**
-     * 
-     * @param {number} x 
-     * @param {number} y 
+     *
+     * @param {number} x
+     * @param {number} y
      */
-    constructor(x, y) {
+    constructor(x: number, y: number) {
         super(x, y, 0, 0);
     }
 
-    render(/**@type {CanvasRenderingContext2D}*/ctx) {
+    render(ctx: CanvasRenderingContext2D) {
         ctx.lineWidth = 2;
         drawCircle(this.x, this.y, 6, "rgba(0, 0, 0, 0)", RING_COLOR, ctx);
     }
 
-    pointInside = (x, y) =>
+    pointInside = (x: number, y: number) =>
         (x - this.x) ** 2 + (y - this.y) ** 2 <= 14 ** 2;
 
     encode() {
         return `ring-${this.x.toFixed(2)}-${this.y.toFixed(2)}`;
     }
-    static decode(string) {
+    static decode(string: string) {
         const decoded = this.regex.exec(string).groups;
-        return new Ring(
-            +decoded.x,
-            +decoded.y
-        );
+        return new Ring(+decoded.x, +decoded.y);
     }
 
-    static isEncode = (string) =>
-        this.regex.test(string);
+    static isEncode = (string: string) => this.regex.test(string);
 }

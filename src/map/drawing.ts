@@ -1,18 +1,53 @@
-import { BLUE_ALLIANCE, RED_ALLIANCE, FIELD_SIDE, GRID_COLOR, gameobjects } from "./map.js";
+const FIELD_SIDE = 713.74;
+
+export class Color {
+    r: number;
+    g: number;
+    b: number;
+    a: number;
+
+    constructor(r, g, b, a = 1) {
+        this.r = r;
+        this.g = g;
+        this.b = b;
+        this.a = a;
+    }
+
+    toUnfinished = () =>
+        new Color(this.r + 40, this.g + 40, this.b + 40, this.a);
+
+    toTransparent = () => new Color(this.r, this.g, this.b, 0.1);
+
+    toString = () => `rgba(${this.r}, ${this.g}, ${this.b}, ${this.a})`;
+}
+
+export const NEUTRAL_MOGO = new Color(255, 255, 0);
+export const RED_ALLIANCE = new Color(255, 0, 0);
+export const BLUE_ALLIANCE = new Color(0, 0, 255);
+export const RING_COLOR = new Color(255, 0, 255);
+
+export const GRID_COLOR = "rgba(155, 155, 155, 0.5)";
 
 const FIELD_COLOR = "rgb(125, 125, 125)";
 const LINE_COLOR = "rgb(255, 255, 255)";
 
 /**
- * 
- * @param {number} centerX 
- * @param {number} centerY 
- * @param {number} radius 
- * @param {string | CanvasGradient | CanvasPattern | null} fillStyle 
- * @param {string | CanvasGradient | CanvasPattern | null} strokeStyle 
- * @param {CanvasRenderingContext2D} ctx 
+ *
+ * @param {number} centerX
+ * @param {number} centerY
+ * @param {number} radius
+ * @param {string | CanvasGradient | CanvasPattern | null} fillStyle
+ * @param {string | CanvasGradient | CanvasPattern | null} strokeStyle
+ * @param {CanvasRenderingContext2D} ctx
  */
-export function drawCircle(centerX, centerY, radius, fillStyle, strokeStyle, ctx) {
+export function drawCircle(
+    centerX,
+    centerY,
+    radius,
+    fillStyle,
+    strokeStyle,
+    ctx
+) {
     ctx.beginPath();
     ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
     ctx.fillStyle = fillStyle;
@@ -24,13 +59,13 @@ export function drawCircle(centerX, centerY, radius, fillStyle, strokeStyle, ctx
 }
 
 /**
- * 
- * @param {number} centerX 
- * @param {number} centerY 
- * @param {number} radius 
- * @param {string | CanvasGradient | CanvasPattern} fillStyle 
- * @param {string | CanvasGradient | CanvasPattern} strokeStyle 
- * @param {CanvasRenderingContext2D} ctx 
+ *
+ * @param {number} centerX
+ * @param {number} centerY
+ * @param {number} radius
+ * @param {string | CanvasGradient | CanvasPattern} fillStyle
+ * @param {string | CanvasGradient | CanvasPattern} strokeStyle
+ * @param {CanvasRenderingContext2D} ctx
  */
 export function drawDot(centerX, centerY, style, ctx) {
     ctx.lineWidth = 1;
@@ -39,28 +74,30 @@ export function drawDot(centerX, centerY, style, ctx) {
 }
 
 /**
- * 
- * @param {number} x 
- * @param {number} y 
- * @param {number} radius 
- * @param {number} nsides 
- * @param {number} rotation 
- * @param {CanvasRenderingContext2D} ctx 
+ *
+ * @param {number} x
+ * @param {number} y
+ * @param {number} radius
+ * @param {number} nsides
+ * @param {number} rotation
+ * @param {CanvasRenderingContext2D} ctx
  */
-export function polygon(x, y, radius, nsides, rotation, ctx) {
-    const step = 2 * Math.PI / nsides,
+export function drawPolygon(x, y, radius, nsides, rotation, ctx) {
+    const step = (2 * Math.PI) / nsides,
         shift = Math.PI + (rotation / 360) * (Math.PI * 2);
 
     ctx.beginPath();
     for (let i = 0; i <= nsides; i++) {
         const curStep = i * step + shift;
-        ctx.lineTo(x + radius * Math.cos(curStep), y + radius * Math.sin(curStep));
+        ctx.lineTo(
+            x + radius * Math.cos(curStep),
+            y + radius * Math.sin(curStep)
+        );
     }
     ctx.fill();
     ctx.stroke();
     ctx.closePath();
 }
-
 
 function drawPlatform(x, y, color, ctx) {
     const longEdge = FIELD_SIDE / 3;
@@ -118,7 +155,6 @@ export function drawField(ctx) {
     }
     ctx.stroke();
 
-
     ctx.strokeStyle = LINE_COLOR;
     ctx.beginPath();
 
@@ -143,48 +179,48 @@ export function drawField(ctx) {
 
     ctx.closePath();
 
-
     drawPlatform(0, (FIELD_SIDE / 6) * 2, RED_ALLIANCE, ctx);
-    drawPlatform((FIELD_SIDE / 6) * 5, (FIELD_SIDE / 6) * 2, BLUE_ALLIANCE, ctx);
-
-    gameobjects.forEach((gameobject) =>
-        gameobject.render(ctx)
+    drawPlatform(
+        (FIELD_SIDE / 6) * 5,
+        (FIELD_SIDE / 6) * 2,
+        BLUE_ALLIANCE,
+        ctx
     );
 }
 
 /**
- * 
- * @param {number} x 
- * @param {number} y 
- * @param {CanvasRenderingContext2D} ctx 
+ *
+ * @param {number} x
+ * @param {number} y
+ * @param {CanvasRenderingContext2D} ctx
  */
 export function drawTrashCan(x, y, ctx) {
     ctx.strokeStyle = "rgb(255, 255, 255)";
-    ctx.lineCap = "round"
+    ctx.lineCap = "round";
     ctx.lineWidth = 5;
 
     ctx.beginPath();
-    ctx.moveTo(x + (150)/4, y + (150)/4);
-    ctx.lineTo(x + (150)*(3/4), y + (150)/4);
-    
-    ctx.moveTo(x + 150 * (4/12), y + 150/4);
-    ctx.lineTo(x + 150 * (4/12), y + 150*(3/4));
-    ctx.moveTo(x + 150 * (5/12), y + 150/4);
-    ctx.lineTo(x + 150 * (5/12), y + 150*(3/4));
-    ctx.moveTo(x + 150 * (6/12), y + 150/4);
-    ctx.lineTo(x + 150 * (6/12), y + 150*(3/4));
-    ctx.moveTo(x + 150 * (7/12), y + 150/4);
-    ctx.lineTo(x + 150 * (7/12), y + 150*(3/4));
-    ctx.moveTo(x + 150 * (8/12), y + 150/4);
-    ctx.lineTo(x + 150 * (8/12), y + 150*(3/4));
+    ctx.moveTo(x + 150 / 4, y + 150 / 4);
+    ctx.lineTo(x + 150 * (3 / 4), y + 150 / 4);
 
-    ctx.moveTo(x + 150 * (1/3), y + 150*(3/4));
-    ctx.lineTo(x + 150 * (2/3), y + 150*(3/4));
+    ctx.moveTo(x + 150 * (4 / 12), y + 150 / 4);
+    ctx.lineTo(x + 150 * (4 / 12), y + 150 * (3 / 4));
+    ctx.moveTo(x + 150 * (5 / 12), y + 150 / 4);
+    ctx.lineTo(x + 150 * (5 / 12), y + 150 * (3 / 4));
+    ctx.moveTo(x + 150 * (6 / 12), y + 150 / 4);
+    ctx.lineTo(x + 150 * (6 / 12), y + 150 * (3 / 4));
+    ctx.moveTo(x + 150 * (7 / 12), y + 150 / 4);
+    ctx.lineTo(x + 150 * (7 / 12), y + 150 * (3 / 4));
+    ctx.moveTo(x + 150 * (8 / 12), y + 150 / 4);
+    ctx.lineTo(x + 150 * (8 / 12), y + 150 * (3 / 4));
 
-    ctx.moveTo(x+ 150 * (5/12), y + 150/4);
-    ctx.lineTo(x+ 150 * (5/12), y + 150/4 - 10);
-    ctx.lineTo(x+ 150 * (7/12), y + 150/4 - 10);
-    ctx.lineTo(x+ 150 * (7/12), y + 150/4);
+    ctx.moveTo(x + 150 * (1 / 3), y + 150 * (3 / 4));
+    ctx.lineTo(x + 150 * (2 / 3), y + 150 * (3 / 4));
+
+    ctx.moveTo(x + 150 * (5 / 12), y + 150 / 4);
+    ctx.lineTo(x + 150 * (5 / 12), y + 150 / 4 - 10);
+    ctx.lineTo(x + 150 * (7 / 12), y + 150 / 4 - 10);
+    ctx.lineTo(x + 150 * (7 / 12), y + 150 / 4);
 
     ctx.stroke();
     ctx.closePath();
