@@ -75,23 +75,23 @@
         let numberKey = 0;
 
         {
-            document
-                .getElementById("slot-selector")
-                .addEventListener("input", (event) => {
-                    if (
-                        (event.target as HTMLInputElement).value ==
-                        "all-slots-list"
-                    ) {
-                        (event.target as HTMLInputElement).value =
-                            "invalid value!";
-                        return;
-                    }
+            // document
+            //     .getElementById("slot-selector")
+            //     .addEventListener("input", (event) => {
+            //         if (
+            //             (event.target as HTMLInputElement).value ==
+            //             "all-slots-list"
+            //         ) {
+            //             (event.target as HTMLInputElement).value =
+            //                 "invalid value!";
+            //             return;
+            //         }
 
-                    if (localStorage.getItem($slot))
-                        save($slot, $points, $gameobjects);
-                    $slot = (event.target as HTMLInputElement).value;
-                    load($slot);
-                });
+            //         if (localStorage.getItem($slot))
+            //             save($slot, $points, $gameobjects);
+            //         $slot = (event.target as HTMLInputElement).value;
+            //         load($slot);
+            //     });
 
             canvas.addEventListener("mousedown", (event) => {
                 if (event.button != 0) return;

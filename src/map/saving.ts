@@ -45,7 +45,7 @@ export async function load(slot: string) {
     if (!localStorage.getItem("all-slots-list"))
         localStorage.setItem("all-slots-list", "slot-slot1");
 
-    const data = window.localStorage.getItem(slot);
+    const data = window.localStorage.getItem(`slot-${slot}`);
     let raw = data?.split("|");
 
     const points_temp = new Array<Point>();

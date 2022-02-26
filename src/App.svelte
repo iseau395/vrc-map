@@ -3,9 +3,12 @@
     import Button from "./components/Button.svelte";
     import Map from "./map/Map.svelte";
 
+    import { points, gameobjects } from "./map/objects";
+
     import { slot } from "./map/var";
-    import { load } from "./map/saving";
+    import { load, save } from "./map/saving";
     import TextBox from "./components/TextBox.svelte";
+import { onDestroy } from "svelte";
 
     function deleteSave() {
         localStorage.removeItem($slot);
@@ -25,10 +28,19 @@
         localStorage.setItem("settings", settings);
 
         $slot = "slot1";
-        (document.getElementById("slot-selector") as HTMLInputElement).value = "slot1";
 
         load($slot);
     }
+
+    let old_slot = $slot;
+    const unsubscribe = slot.subscribe(() => {
+        const slots = localStorage.getItem("all-slots-list")?.split("|");
+        if (slots.includes(old_slot)) save(old_slot, $points, $gameobjects);
+        old_slot = $slot;
+        load($slot);
+    });
+
+    onDestroy((() => unsubscribe()));
 </script>
 
 <div />
