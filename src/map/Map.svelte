@@ -153,8 +153,8 @@
             });
 
             canvas.addEventListener("mousemove", (event) => {
-                const x = event.x - canvas.offsetLeft;
-                const y = event.y - canvas.offsetTop;
+                const x = (event.x - canvas.offsetLeft) / canvas.clientWidth * canvas.width;
+                const y = (event.y - canvas.offsetTop) / canvas.clientHeight * canvas.height;
 
                 mouseX = !event.ctrlKey
                     ? event.altKey
