@@ -52,29 +52,29 @@ export class GameObject {
 
     /**
      * Draw the GameObject
-     * @param {CanvasRenderingContext2D} ctx The context to draw on
+     * @param {CanvasRenderingContext2D} _ctx The context to draw on
      */
-    render(ctx: CanvasRenderingContext2D) {
+    render(_ctx: CanvasRenderingContext2D) {
         throw new Error("Unimplemented");
     }
 
     /**
      * Check if a point is inside of a GameObject
-     * @param {number} x
-     * @param {number} y
+     * @param {number} _x
+     * @param {number} _y
      */
-    pointInside(x: number, y: number): boolean {
+    pointInside(_x: number, _y: number): boolean {
         throw new Error("Unimplemented");
     }
 
     encode() {
         throw new Error("Unimplemented");
     }
-    static decode(string: string) {
+    static decode(_string: string) {
         throw new Error("Unimplemented");
     }
 
-    static isEncode(value: string) {
+    static isEncode(_value: string) {
         throw new Error("Unimplemented");
     }
 }

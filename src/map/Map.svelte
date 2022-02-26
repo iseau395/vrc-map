@@ -1,7 +1,7 @@
 <script lang="ts">
     import { tick, onMount } from "svelte";
 
-    import { Mogo, Ring } from "./gameobject";
+    import { Ring } from "./gameobject";
     import {
         drawDot,
         drawField,
@@ -11,7 +11,7 @@
     } from "./drawing";
     import { load, save } from "./saving";
     import { imperial } from "../components/settings/settings";
-    import { slot } from "./var";
+    import { Point, slot } from "./var";
 
     import { points, gameobjects } from "./objects";
     
@@ -51,15 +51,12 @@
 
         const ctx = canvas.getContext("2d");
 
-        /**
-         * @type {Array<{x:number,y:number}}
-         */
-        let undo = new Array();
+        let undo = new Array<Point>();
 
-        /**
-         * @type {{array:string,index:number}}
-         */
-        let selection = {
+        let selection: {
+            array: "none" | "gameobjects" | "points",
+            index: number
+        } = {
             array: "none",
             index: NaN,
         };
@@ -327,9 +324,6 @@
                 ctx.stroke();
                 ctx.closePath();
 
-                /**
-                 * @type {number}
-                 */
                 let angle =
                     (Math.atan2(
                         $points[i].y - $points[i + 1]?.y,
