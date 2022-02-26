@@ -12,20 +12,3 @@ body {
     display: grid;
     grid-template-columns: 20% 60% 20%;
 }
-
-.map-panel {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-input {
-    background-color: rgb(100, 100, 100);
-    color: rgb(10, 10, 10);
-}
-
-canvas {
-    margin: 0px;
-    padding: 0px;
-    width: 100%;
-}

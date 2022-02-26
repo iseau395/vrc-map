@@ -421,3 +421,11 @@
 </script>
 
 <canvas bind:this={canvas} width="863.74" height="713.74" tabindex="0" />
+
+<style>
+    canvas {
+        margin: 0px;
+        padding: 0px;
+        width: 100%;
+    }
+</style>

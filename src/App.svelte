@@ -8,7 +8,7 @@
     import { slot } from "./map/var";
     import { load, save } from "./map/saving";
     import TextBox from "./components/TextBox.svelte";
-import { onDestroy } from "svelte";
+    import { onDestroy } from "svelte";
 
     function deleteSave() {
         localStorage.removeItem($slot);
@@ -40,16 +40,18 @@ import { onDestroy } from "svelte";
         load($slot);
     });
 
-    onDestroy((() => unsubscribe()));
+    onDestroy(() => unsubscribe());
 </script>
 
-<div />
+<div class="left-panel">
+    <a href="https://github.com/iseau395/vrc-map" target="_blank" rel="noopener noreferrer">Github Repository</a>
+</div>
 <div class="map-panel">
     <div>
         <form>
             <Button label="Delete Save" onclick={deleteSave} />
             <Button label="Delete All Saves" onclick={deleteAllSaves} />
-            <TextBox bind:value={$slot}></TextBox>
+            <TextBox bind:value={$slot} />
         </form>
         <p id="slots-list" />
 
@@ -57,3 +59,22 @@ import { onDestroy } from "svelte";
     </div>
 </div>
 <SettingsPanel />
+
+<style>
+
+    .map-panel {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .left-panel {
+        display: flex;
+        align-items: end;
+    }
+
+    a {
+        margin: 10px;
+        color: rgb(0, 50, 200);
+    }
+</style>
