@@ -1,10 +1,9 @@
-let slot = "slot1";
+import { writable } from "svelte/store";
 
-export function setSlot(v: string) {
-    slot = v;
-}
-export function getSlot(): string {
-    return slot;
-}
+export let slot = writable("slot1");
 
-export interface Point { x: number, y: number, step: number };
+export interface Point {
+    x: number,
+    y: number,
+    step: number
+};

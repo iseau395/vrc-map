@@ -25,7 +25,7 @@ export class GameObject {
      * @param {number} rotation The rotation to start at
      * @param {number} variation The variation of the gameobject
      */
-    constructor(x, y, rotation, variation) {
+    constructor(x: number, y: number, rotation: number, variation: number) {
         this.x = x;
         this.y = y;
         this.rotation = rotation;
@@ -37,7 +37,7 @@ export class GameObject {
      * @param {number} x The x to move to
      * @param {number} y The y to move to
      */
-    moveTo(x, y) {
+    moveTo(x: number, y: number) {
         this.x = x;
         this.y = y;
     }
@@ -46,7 +46,7 @@ export class GameObject {
      * Rotate the gameobject to a specific rotation
      * @param {number} rotation The rotation to turn to
      */
-    rotateTo(rotation) {
+    rotateTo(rotation: number) {
         this.rotation = rotation;
     }
 
@@ -54,7 +54,7 @@ export class GameObject {
      * Draw the GameObject
      * @param {CanvasRenderingContext2D} ctx The context to draw on
      */
-    render(ctx) {
+    render(ctx: CanvasRenderingContext2D) {
         throw new Error("Unimplemented");
     }
 
@@ -63,7 +63,7 @@ export class GameObject {
      * @param {number} x
      * @param {number} y
      */
-    pointInside(x, y) {
+    pointInside(x: number, y: number) {
         throw new Error("Unimplemented");
     }
 
@@ -87,29 +87,29 @@ export class Mogo extends GameObject {
      * Draw the Mogo
      * @param {CanvasRenderingContext2D} ctx The context to draw on
      */
-    render(ctx) {
+    render(ctx: CanvasRenderingContext2D) {
         if (skills)
             switch (this.variation) {
                 case 0:
-                    ctx.fillStyle = NEUTRAL_MOGO;
+                    ctx.fillStyle = NEUTRAL_MOGO.toString();
                     break;
                 case 1:
-                    ctx.fillStyle = BLUE_ALLIANCE;
+                    ctx.fillStyle = BLUE_ALLIANCE.toString();
                     break;
                 case 2:
-                    ctx.fillStyle = RED_ALLIANCE;
+                    ctx.fillStyle = RED_ALLIANCE.toString();
                     break;
             }
         else
             switch (this.variation) {
                 case 0:
-                    ctx.fillStyle = NEUTRAL_MOGO;
+                    ctx.fillStyle = NEUTRAL_MOGO.toString();
                     break;
                 case 1:
-                    ctx.fillStyle = RED_ALLIANCE;
+                    ctx.fillStyle = RED_ALLIANCE.toString();
                     break;
                 case 2:
-                    ctx.fillStyle = BLUE_ALLIANCE;
+                    ctx.fillStyle = BLUE_ALLIANCE.toString();
                     break;
             }
 
@@ -119,7 +119,7 @@ export class Mogo extends GameObject {
         drawPolygon(this.x, this.y, 25.94, 7, rotation, ctx);
     }
 
-    pointInside = (x, y) =>
+    pointInside = (x: number, y: number) =>
         (x - this.x) ** 2 + (y - this.y) ** 2 <= 25.94 ** 2;
 
     encode() {

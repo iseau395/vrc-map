@@ -1,7 +1,7 @@
 <script lang="ts">
     import { tick, onMount } from "svelte";
 
-    import { Mogo, Ring } from "./gameobject.js";
+    import { Mogo, Ring } from "./gameobject";
     import {
         drawDot,
         drawField,
@@ -10,8 +10,8 @@
         Color,
     } from "./drawing";
     import { load, save } from "./saving";
-    import { imperial } from "../components/settings/settings.js";
-    import { getSlot, setSlot, Point } from "./var";
+    import { imperial } from "../components/settings/settings";
+    import { slot } from "./var";
 
     import { points, gameobjects } from "./objects";
     
@@ -90,10 +90,10 @@
                         return;
                     }
 
-                    if (localStorage.getItem(getSlot()))
-                        save(getSlot(), $points, $gameobjects);
-                    setSlot((event.target as HTMLInputElement).value);
-                    load(getSlot());
+                    if (localStorage.getItem($slot))
+                        save($slot, $points, $gameobjects);
+                    $slot = (event.target as HTMLInputElement).value;
+                    load($slot);
                 });
 
             canvas.addEventListener("mousedown", (event) => {
@@ -141,7 +141,7 @@
                     };
                 }
 
-                save(getSlot(), $points, $gameobjects);
+                save($slot, $points, $gameobjects);
             });
             canvas.addEventListener("contextmenu", (event) => {
                 event.preventDefault();
@@ -149,7 +149,7 @@
                 if (mouseX < FIELD_SIDE)
                     $gameobjects.push(new Ring(mouseX, mouseY));
 
-                save(getSlot(), $points, $gameobjects);
+                save($slot, $points, $gameobjects);
             });
 
             canvas.addEventListener("mousemove", (event) => {
@@ -420,7 +420,7 @@
             setTimeout(onTick, 0);
         }
 
-        load(getSlot());
+        load($slot);
 
         onTick();
     });

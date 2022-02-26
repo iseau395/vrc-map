@@ -3,19 +3,20 @@
     import Button from "./components/Button.svelte";
     import Map from "./map/Map.svelte";
 
-    import { getSlot, setSlot } from "./map/var";
+    import { slot } from "./map/var";
     import { load } from "./map/saving";
+    import TextBox from "./components/TextBox.svelte";
 
     function deleteSave() {
-        localStorage.removeItem(getSlot());
+        localStorage.removeItem($slot);
         const slots = localStorage.getItem("all-slots-list")?.split("|");
         if (slots)
             localStorage.setItem(
                 "all-slots-list",
-                slots.filter((v) => v != getSlot()).join("|")
+                slots.filter((v) => v != $slot).join("|")
             );
-        else localStorage.setItem("all-slots-list", getSlot());
-        load(getSlot());
+        else localStorage.setItem("all-slots-list", $slot);
+        load($slot);
     }
 
     function deleteAllSaves() {
@@ -23,10 +24,10 @@
         localStorage.clear();
         localStorage.setItem("settings", settings);
 
-        setSlot("slot1");
+        $slot = "slot1";
         (document.getElementById("slot-selector") as HTMLInputElement).value = "slot1";
 
-        load(getSlot());
+        load($slot);
     }
 </script>
 
@@ -36,7 +37,7 @@
         <form>
             <Button label="Delete Save" onclick={deleteSave} />
             <Button label="Delete All Saves" onclick={deleteAllSaves} />
-            <input id="slot-selector" type="text" value="slot1" />
+            <TextBox bind:value={$slot}></TextBox>
         </form>
         <p id="slots-list" />
 
