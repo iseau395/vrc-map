@@ -63,7 +63,7 @@ export class GameObject {
      * @param {number} x
      * @param {number} y
      */
-    pointInside(x: number, y: number) {
+    pointInside(x: number, y: number): boolean {
         throw new Error("Unimplemented");
     }
 
@@ -154,7 +154,7 @@ export class Ring extends GameObject {
 
     render(ctx: CanvasRenderingContext2D) {
         ctx.lineWidth = 2;
-        drawCircle(this.x, this.y, 6, "rgba(0, 0, 0, 0)", RING_COLOR, ctx);
+        drawCircle(this.x, this.y, 6, "rgba(0, 0, 0, 0)", RING_COLOR.toString(), ctx);
     }
 
     pointInside = (x: number, y: number) =>

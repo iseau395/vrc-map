@@ -1,11 +1,11 @@
 import { writable } from 'svelte/store';
 import type { Point } from './var';
-import { Mogo, Ring } from './gameobject';
+import { GameObject, Mogo, Ring } from './gameobject';
 
 const FIELD_SIDE = 713.74;
 
 export const points = writable(new Array<Point>());
-export const gameobjects = writable([
+export const gameobjects = writable<GameObject[]>([
     new Mogo(FIELD_SIDE / 2, FIELD_SIDE / 4, 180, 0),
     new Mogo(FIELD_SIDE / 2, (FIELD_SIDE / 4) * 2, 0, 0),
     new Mogo(FIELD_SIDE / 2, (FIELD_SIDE / 4) * 3, 0, 0),

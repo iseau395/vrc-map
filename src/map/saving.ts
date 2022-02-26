@@ -48,8 +48,8 @@ export async function load(slot: string) {
     const data = window.localStorage.getItem(slot);
     let raw = data?.split("|");
 
-    const points_temp = [];
-    const gameobjects_temp = [];
+    const points_temp = new Array<Point>();
+    const gameobjects_temp = new Array<GameObject>();
 
     if (data == null) {
         raw = default_save.split("|");

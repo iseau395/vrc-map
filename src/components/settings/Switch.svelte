@@ -1,6 +1,6 @@
 <script lang="ts">
-    export let label;
-    let checkbox;
+    export let label: string;
+    let checkbox: HTMLInputElement;
     export function click() {
         checkbox.click();
     }

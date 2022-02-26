@@ -35,7 +35,7 @@
             new Color(210, 10, 110),
         ];
 
-        function toImperial(cm) {
+        function toImperial(cm: number) {
             return cm * 0.393701;
         }
 
@@ -69,8 +69,8 @@
 
         let mouseDown = false;
 
-        let mouseX;
-        let mouseY;
+        let mouseX = 0;
+        let mouseY = 0;
 
         let ctrlDown = false;
         let shiftDown = false;

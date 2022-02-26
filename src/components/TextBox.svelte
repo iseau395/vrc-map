@@ -1,5 +1,5 @@
 <script lang="ts">
-    export let value;
+    export let value: string;
 </script>
 
-<input id="slot-selector" bind:value on:input/>
+<input bind:value on:input/>

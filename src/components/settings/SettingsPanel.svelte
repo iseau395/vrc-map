@@ -3,8 +3,8 @@
     import { skills, imperial } from "./settings.js";
     import { onMount } from "svelte";
 
-    let skills_switch;
-    let unit_switch;
+    let skills_switch: Switch;
+    let unit_switch: Switch;
 
     const onskills = () => {
         $skills = !$skills;

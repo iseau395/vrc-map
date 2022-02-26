@@ -6,7 +6,7 @@ export class Color {
     b: number;
     a: number;
 
-    constructor(r, g, b, a = 1) {
+    constructor(r: number, g: number, b: number, a = 1) {
         this.r = r;
         this.g = g;
         this.b = b;
@@ -41,12 +41,12 @@ const LINE_COLOR = "rgb(255, 255, 255)";
  * @param {CanvasRenderingContext2D} ctx
  */
 export function drawCircle(
-    centerX,
-    centerY,
-    radius,
-    fillStyle,
-    strokeStyle,
-    ctx
+    centerX: number,
+    centerY: number,
+    radius: number,
+    fillStyle: CanvasRenderingContext2D["fillStyle"],
+    strokeStyle: CanvasRenderingContext2D["strokeStyle"],
+    ctx: CanvasRenderingContext2D
 ) {
     ctx.beginPath();
     ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
@@ -67,7 +67,12 @@ export function drawCircle(
  * @param {string | CanvasGradient | CanvasPattern} strokeStyle
  * @param {CanvasRenderingContext2D} ctx
  */
-export function drawDot(centerX, centerY, style, ctx) {
+export function drawDot(
+    centerX: number,
+    centerY: number,
+    style: CanvasRenderingContext2D["fillStyle"],
+    ctx: CanvasRenderingContext2D) {
+
     ctx.lineWidth = 1;
     drawCircle(centerX, centerY, 13, null, style, ctx);
     drawCircle(centerX, centerY, 5, style, null, ctx);
@@ -82,7 +87,7 @@ export function drawDot(centerX, centerY, style, ctx) {
  * @param {number} rotation
  * @param {CanvasRenderingContext2D} ctx
  */
-export function drawPolygon(x, y, radius, nsides, rotation, ctx) {
+export function drawPolygon(x: number, y: number, radius: number, nsides: number, rotation: number, ctx: CanvasRenderingContext2D) {
     const step = (2 * Math.PI) / nsides,
         shift = Math.PI + (rotation / 360) * (Math.PI * 2);
 
@@ -99,7 +104,7 @@ export function drawPolygon(x, y, radius, nsides, rotation, ctx) {
     ctx.closePath();
 }
 
-function drawPlatform(x, y, color, ctx) {
+function drawPlatform(x: number, y: number, color: CanvasRenderingContext2D["strokeStyle"], ctx: CanvasRenderingContext2D) {
     const longEdge = FIELD_SIDE / 3;
     const shortEdge = FIELD_SIDE / 6;
 
@@ -135,7 +140,7 @@ function drawPlatform(x, y, color, ctx) {
     ctx.closePath();
 }
 
-export function drawField(ctx) {
+export function drawField(ctx: CanvasRenderingContext2D) {
     ctx.fillStyle = FIELD_COLOR;
     ctx.lineWidth = 5;
     ctx.fillRect(0, 0, FIELD_SIDE, FIELD_SIDE);
@@ -179,11 +184,11 @@ export function drawField(ctx) {
 
     ctx.closePath();
 
-    drawPlatform(0, (FIELD_SIDE / 6) * 2, RED_ALLIANCE, ctx);
+    drawPlatform(0, (FIELD_SIDE / 6) * 2, RED_ALLIANCE.toString(), ctx);
     drawPlatform(
         (FIELD_SIDE / 6) * 5,
         (FIELD_SIDE / 6) * 2,
-        BLUE_ALLIANCE,
+        BLUE_ALLIANCE.toString(),
         ctx
     );
 }
@@ -194,7 +199,7 @@ export function drawField(ctx) {
  * @param {number} y
  * @param {CanvasRenderingContext2D} ctx
  */
-export function drawTrashCan(x, y, ctx) {
+export function drawTrashCan(x: number, y: number, ctx: CanvasRenderingContext2D) {
     ctx.strokeStyle = "rgb(255, 255, 255)";
     ctx.lineCap = "round";
     ctx.lineWidth = 5;
