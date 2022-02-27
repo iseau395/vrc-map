@@ -11,14 +11,15 @@
     import { onDestroy } from "svelte";
 
     function deleteSave() {
-        localStorage.removeItem($slot);
+        localStorage.removeItem(`slot-${$slot}`);
         const slots = localStorage.getItem("all-slots-list")?.split("|");
         if (slots)
             localStorage.setItem(
                 "all-slots-list",
-                slots.filter((v) => v != $slot).join("|")
+                slots.filter((v) => v != `slot-${$slot}`).join("|")
             );
-        else localStorage.setItem("all-slots-list", $slot);
+        // else localStorage.setItem("all-slots-list", $slot);
+        $slot = slots[0] ?? "slot1";
         load($slot);
     }
 
@@ -61,7 +62,6 @@
 <SettingsPanel />
 
 <style>
-
     .map-panel {
         display: flex;
         justify-content: center;
