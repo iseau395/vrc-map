@@ -1,5 +1,5 @@
 <script lang="ts">
-    import SettingsPanel from "./components/settings/SettingsPanel.svelte";
+    import SettingsPanel from "./components/SettingsPanel.svelte";
     import Button from "./components/Button.svelte";
     import Map from "./map/Map.svelte";
 
