@@ -7,7 +7,7 @@ import {
     drawCircle
 } from "./drawing";
 
-import { skills as skills_store } from "../components/settings/settings";
+import { skills as skills_store } from "../stores/settings";
 
 let skills = false;
 skills_store.subscribe(v => skills = v);

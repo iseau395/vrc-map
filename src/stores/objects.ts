@@ -1,6 +1,6 @@
 import { writable } from 'svelte/store';
-import type { Point } from './var';
-import { GameObject, Mogo, Ring } from './gameobject';
+import type { Point } from '../map/var';
+import { GameObject, Mogo, Ring } from '../map/gameobject';
 
 const FIELD_SIDE = 713.74;
 

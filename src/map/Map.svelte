@@ -10,10 +10,10 @@
         Color,
     } from "./drawing";
     import { load, save } from "./saving";
-    import { imperial } from "../components/settings/settings";
+    import { imperial } from "../stores/settings";
     import { Point, slot } from "./var";
 
-    import { points, gameobjects } from "./objects";
+    import { points, gameobjects } from "../stores/objects";
     
     let canvas: HTMLCanvasElement;
 

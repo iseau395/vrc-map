@@ -3,7 +3,7 @@
     import Button from "./components/Button.svelte";
     import Map from "./map/Map.svelte";
 
-    import { points, gameobjects } from "./map/objects";
+    import { points, gameobjects } from "./stores/objects";
 
     import { slot } from "./map/var";
     import { load, save } from "./map/saving";

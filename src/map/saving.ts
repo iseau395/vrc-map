@@ -3,7 +3,7 @@ import { Ring, Mogo, GameObject } from "./gameobject";
 import {
     points,
     gameobjects,
-} from "./objects";
+} from "../stores/objects";
 import type { Point } from "./var";
 
 const default_save =
