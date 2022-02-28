@@ -45,7 +45,6 @@
     <img
         src="./media/GrayGearIcon.png"
         alt="Toggle Settings"
-        class="gear-icon"
     />
     <input class="settings-button" type="checkbox" />
     <div class="settings-wrapper">
@@ -82,7 +81,7 @@
         display: block;
     }
 
-    .gear-icon {
+    img {
         position: absolute;
 
         width: 50px;

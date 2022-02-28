@@ -7,15 +7,15 @@
 </script>
 
 <span>{label}: </span>
-<label class="switch">
+<label>
     <input type="checkbox" bind:this={checkbox} on:click />
     <span class="slider" />
 </label>
 
 <style>
-    /* yoinked from https://www.w3schools.com/howto/howto_css_switch.asp */
+    /* yoinked from https://www.w3schools.com/howto/howto_css_switch.asp (with some alterations) */
 
-    .switch {
+    label {
         position: relative;
         display: inline-block;
         width: 33px;
@@ -23,7 +23,7 @@
     }
 
     /* Hide default HTML checkbox */
-    .switch input {
+    input {
         opacity: 0;
         width: 0;
         height: 0;
