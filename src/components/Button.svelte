@@ -1,9 +1,8 @@
 <script lang="ts">
     export let label: string;
-    export let onclick: svelte.JSX.MouseEventHandler<HTMLButtonElement>;
 </script>
 
-<button on:click={onclick}>{label}</button>
+<button on:click>{label}</button>
 
 <style>
     button {

@@ -14,7 +14,7 @@
     import { Point, slot } from "./var";
 
     import { points, gameobjects } from "../stores/objects";
-    
+
     let canvas: HTMLCanvasElement;
 
     onMount(() => {

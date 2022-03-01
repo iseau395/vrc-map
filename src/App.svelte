@@ -50,8 +50,8 @@
 <div class="map-panel">
     <div>
         <form>
-            <Button label="Delete Save" onclick={deleteSave} />
-            <Button label="Delete All Saves" onclick={deleteAllSaves} />
+            <Button label="Delete Save" on:click={deleteSave} />
+            <Button label="Delete All Saves" on:click={deleteAllSaves} />
             <TextBox bind:value={$slot} />
         </form>
         <p id="slots-list" />
