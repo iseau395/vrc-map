@@ -34,7 +34,6 @@
             save[2] == "true" && unit_switch.click();
     }
 
-
     onMount(() => {
         if (!localStorage.getItem("settings")) reloadSave();
         loadSave();

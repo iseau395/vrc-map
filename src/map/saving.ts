@@ -1,4 +1,3 @@
-
 import { Ring, Mogo, GameObject } from "./gameobject";
 import {
     points,
