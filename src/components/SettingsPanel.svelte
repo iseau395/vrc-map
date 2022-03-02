@@ -8,7 +8,7 @@
     let skills_switch: Switch;
     let unit_switch: Switch;
 
-    let visible = true;
+    let visible = false;
 
     const onskills = () => {
         $skills = !$skills;
@@ -35,10 +35,10 @@
         if (!regex.test(raw_save)) reloadSave();
         const save = regex.exec(raw_save);
         if (new Boolean(save[1])) {
-            skills_switch.click();
+            onskills();
         };
         if (new Boolean(save[2])) {
-            unit_switch.click();
+            onunit();
         };
     }
 
