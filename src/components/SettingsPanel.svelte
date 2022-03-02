@@ -3,8 +3,12 @@
     import { skills, imperial } from "./../stores/settings";
     import { onMount } from "svelte";
 
+    import { fly, fade } from "svelte/transition";
+
     let skills_switch: Switch;
     let unit_switch: Switch;
+
+    let visible = true;
 
     const onskills = () => {
         $skills = !$skills;
@@ -30,8 +34,12 @@
 
         if (!regex.test(raw_save)) reloadSave();
         const save = regex.exec(raw_save);
-            save[1] == "true" && skills_switch.click();
-            save[2] == "true" && unit_switch.click();
+        if (new Boolean(save[1])) {
+            skills_switch.click();
+        };
+        if (new Boolean(save[2])) {
+            unit_switch.click();
+        };
     }
 
     onMount(() => {
@@ -41,16 +49,25 @@
 </script>
 
 <div class="settings-panel">
-    <img
-        src="./media/GrayGearIcon.png"
-        alt="Toggle Settings"
-    />
-    <input class="settings-button" type="checkbox" />
-    <div class="settings-wrapper">
-        <Switch bind:this={skills_switch} label="Skills Mode" on:click={onskills} />
-        <br /><br />
-        <Switch bind:this={unit_switch} label="Imperial Mode" on:click={onunit} />
-    </div>
+    <img src="./media/GrayGearIcon.png" alt="Toggle Settings" />
+    <input class="settings-button" type="checkbox" bind:checked={visible}/>
+    {#if visible}
+        <div class="settings-wrapper" transition:fly={{ y: 20, duration: 200 }}>
+            <Switch
+                bind:this={skills_switch}
+                label="Skills Mode"
+                bind:value={$skills}
+                on:click={onskills}
+            />
+            <br /><br />
+            <Switch
+                bind:this={unit_switch}
+                label="Imperial Mode"
+                bind:value={$imperial}
+                on:click={onunit}
+            />
+        </div>
+    {/if}
 </div>
 
 <style>

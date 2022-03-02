@@ -1,5 +1,7 @@
 <script lang="ts">
     export let label: string;
+    export let value = false;
+
     let checkbox: HTMLInputElement;
     export function click() {
         checkbox.click();
@@ -8,7 +10,7 @@
 
 <span>{label}: </span>
 <label>
-    <input type="checkbox" bind:this={checkbox} on:click />
+    <input type="checkbox" bind:this={checkbox} on:click bind:checked={value}/>
     <span class="slider" />
 </label>
 
