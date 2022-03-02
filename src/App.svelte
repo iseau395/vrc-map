@@ -35,7 +35,7 @@
 
     let old_slot = $slot;
     const unsubscribe = slot.subscribe(() => {
-        const slots = localStorage.getItem("all-slots-list")?.split("|");
+        const slots = localStorage.getItem("all-slots-list")?.split("|") ?? [];
         if (slots.includes(old_slot)) save(old_slot, $points, $gameobjects);
         old_slot = $slot;
         load($slot);
