@@ -3,10 +3,7 @@
     import { skills, imperial } from "./../stores/settings";
     import { onMount } from "svelte";
 
-    import { fly, fade } from "svelte/transition";
-
-    let skills_switch: Switch;
-    let unit_switch: Switch;
+    import { fly } from "svelte/transition";
 
     let visible = false;
 
@@ -54,14 +51,12 @@
     {#if visible}
         <div class="settings-wrapper" transition:fly={{ y: 20, duration: 200 }}>
             <Switch
-                bind:this={skills_switch}
                 label="Skills Mode"
                 bind:value={$skills}
                 on:click={onskills}
             />
             <br /><br />
             <Switch
-                bind:this={unit_switch}
                 label="Imperial Mode"
                 bind:value={$imperial}
                 on:click={onunit}
