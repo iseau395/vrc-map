@@ -34,10 +34,10 @@
 
         if (!regex.test(raw_save)) reloadSave();
         const save = regex.exec(raw_save);
-        if (new Boolean(save[1])) {
+        if (save[1] == "true") {
             onskills();
         };
-        if (new Boolean(save[2])) {
+        if (save[2] == "true") {
             onunit();
         };
     }
