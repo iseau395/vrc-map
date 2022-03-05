@@ -1,0 +1,29 @@
+- type: textarea
+  attributes:
+    label: Bug
+    description: What is the bug you are experiancing?
+    placeholder: Example: The page doesn't load
+    value: bug
+  validations:
+    required: true
+
+- type: textarea
+  attributes:
+    label: Steps to reproduce
+    description: A list of steps to reproduce this bug
+    placeholder: Example:
+      1. Go to ...
+      2. Click on ...
+      3. It doesn't work
+- type: markdown
+  attributes:
+    value: "Thanks for completing our bug form!"
+
+- type: textarea
+  attributes:
+    label: Browser
+    description: What browser are you using?
+    placeholder: Example: Chrome
+    value: browser
+  validations:
+    required: true
