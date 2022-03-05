@@ -11,9 +11,11 @@
     } from "./drawing";
     import { load, save } from "./saving";
     import { imperial } from "../stores/settings";
-    import { Point, slot } from "./var";
+    import { slot } from "./var";
 
     import { points, gameobjects } from "../stores/objects";
+
+    import { add_undo, ArrayType, redo, undo, UndoType } from "./undo";
 
     let canvas: HTMLCanvasElement;
 
@@ -51,14 +53,16 @@
 
         const ctx = canvas.getContext("2d");
 
-        let undo = new Array<Point>();
-
         let selection: {
             array: "none" | "gameobjects" | "points",
-            index: number
+            index: number,
+            start_x: number | null,
+            start_y: number | null,
         } = {
             array: "none",
             index: NaN,
+            start_x: null,
+            start_y: null,
         };
 
         let lastX = 0;
@@ -75,24 +79,6 @@
         let numberKey = 0;
 
         {
-            // document
-            //     .getElementById("slot-selector")
-            //     .addEventListener("input", (event) => {
-            //         if (
-            //             (event.target as HTMLInputElement).value ==
-            //             "all-slots-list"
-            //         ) {
-            //             (event.target as HTMLInputElement).value =
-            //                 "invalid value!";
-            //             return;
-            //         }
-
-            //         if (localStorage.getItem($slot))
-            //             save($slot, $points, $gameobjects);
-            //         $slot = (event.target as HTMLInputElement).value;
-            //         load($slot);
-            //     });
-
             canvas.addEventListener("mousedown", (event) => {
                 if (event.button != 0) return;
 
@@ -109,32 +95,80 @@
                             step: numberKey,
                         });
 
-                        undo = [];
+                        if (
+                            mouseX < FIELD_SIDE
+                        ) {
+                            add_undo(
+                                UndoType.Add,
+                                {
+                                    array: "points",
+                                    key: $points.length-1
+                                }
+                            );
+                        }
+
+                        return;
                     }
 
                     if (
                         selection.array == "gameobjects" &&
                         mouseX > FIELD_SIDE &&
                         mouseY <= 160
-                    )
+                    ) {
+                        $gameobjects[selection.index].x = selection.start_x;
+                        $gameobjects[selection.index].y = selection.start_y;
+
+                        add_undo(
+                            UndoType.Remove,
+                            {
+                                array: "gameobjects",
+                                key: selection.index,
+                                object: $gameobjects[selection.index]
+                            }
+                        );
+
                         $gameobjects.splice(selection.index, 1);
+                    }
                     if (
                         selection.array == "points" &&
                         mouseX > FIELD_SIDE &&
                         mouseY <= 160
-                    )
-                        $points.splice(selection.index, 1);
+                    ) {
+                        $points[selection.index].x = selection.start_x;
+                        $points[selection.index].y = selection.start_y;
 
-                    if (
-                        $points.length > 0 &&
-                        $points[$points.length - 1].x > FIELD_SIDE &&
-                        $points[$points.length - 1].y <= 160
-                    )
-                        $points.splice($points.length - 1, 1);
+                        add_undo(
+                            UndoType.Remove,
+                            {
+                                array: "points",
+                                key: selection.index,
+                                object: $points[selection.index]
+                            }
+                        );
+
+                        $points.splice(selection.index, 1);
+                    }
+
+                    if (!(
+                        mouseX > FIELD_SIDE
+                    )) {
+                        console.log(selection.array);
+                        add_undo(
+                            UndoType.Move,
+                            {
+                                array: selection.array as ArrayType,
+                                key: selection.index,
+                                old_x: selection.start_x,
+                                old_y: selection.start_y
+                            }
+                        )
+                    }
 
                     selection = {
                         array: "none",
                         index: NaN,
+                        start_x: null,
+                        start_y: null,
                     };
                 }
 
@@ -143,8 +177,16 @@
             canvas.addEventListener("contextmenu", (event) => {
                 event.preventDefault();
 
-                if (mouseX < FIELD_SIDE)
+                if (mouseX < FIELD_SIDE) {
                     $gameobjects.push(new Ring(mouseX, mouseY));
+                    add_undo(
+                        UndoType.Add,
+                        {
+                            array: "gameobjects",
+                            key: $gameobjects.length - 1
+                        }
+                    )
+                }
 
                 save($slot, $points, $gameobjects);
             });
@@ -188,6 +230,8 @@
                             selection = {
                                 array: "gameobjects",
                                 index: i,
+                                start_x: gameobject.x,
+                                start_y: gameobject.y,
                             };
                         }
                     });
@@ -200,6 +244,8 @@
                             selection = {
                                 array: "points",
                                 index: i,
+                                start_x: point.x,
+                                start_y: point.y,
                             };
                         }
                     });
@@ -207,6 +253,8 @@
                     selection = {
                         array: "none",
                         index: NaN,
+                        start_x: null,
+                        start_y: null,
                     };
                 }
 
@@ -224,12 +272,10 @@
 
             canvas.addEventListener("keydown", (event) => {
                 if (event.ctrlKey && event.code == "KeyZ") {
-                    const point = $points.pop();
-                    if (point) undo.push(point);
+                    undo();
                 }
                 if (event.ctrlKey && event.code == "KeyY") {
-                    const point = undo.pop();
-                    if (point) $points.push(point);
+                    redo();
                 }
 
                 ctrlDown = event.ctrlKey;
