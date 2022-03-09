@@ -18,7 +18,7 @@
                 "all-slots-list",
                 slots.filter((v) => v != $slot).join("|")
             );
-        console.log(slots);
+
         $slot = slots[0] ?? "slot1";
         load($slot);
     }
@@ -34,11 +34,10 @@
     }
 
     const slots = localStorage.getItem("all-slots-list")?.split("|") ?? [];
-    let old_slot = slots[0];
+    let old_slot: null | string = null;
     const unsub = slot.subscribe((v) => {
         const slots = localStorage.getItem("all-slots-list")?.split("|") ?? [];
-        console.log(slots.includes(old_slot));
-        if (slots.includes(old_slot)) save(old_slot, $points, $gameobjects);
+        if (old_slot && slots.includes(old_slot)) save(old_slot, $points, $gameobjects);
         old_slot = v;
         load($slot);
     });
