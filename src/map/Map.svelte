@@ -152,7 +152,6 @@
                     if (!(
                         mouseX > FIELD_SIDE
                     )) {
-                        console.log(selection.array);
                         add_undo(
                             UndoType.Move,
                             {
@@ -459,7 +458,7 @@
             setTimeout(onTick, 0);
         }
 
-        load($slot);
+        load("slot1");
 
         onTick();
     });

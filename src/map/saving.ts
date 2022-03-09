@@ -46,6 +46,8 @@ export async function load(slot: string) {
     const data = localStorage.getItem(`slot-${slot}`);
     let raw = data?.split("|");
 
+    console.log(raw);
+
     const points_temp = new Array<Point>();
     const gameobjects_temp = new Array<GameObject>();
 

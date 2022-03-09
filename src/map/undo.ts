@@ -132,10 +132,7 @@ function process_change(array: "undos" | "redos") {
                         }
                     ));
 
-                        console.log(change.options.key);
-
                     const object = gameobjects[change.options.key];
-                    console.log(object);
                     object.x = change.options.old_x;
                     object.y = change.options.old_y;
                     gameobjects[change.options.key] = object;
@@ -178,8 +175,6 @@ export function redo() {
 }
 
 export function add_undo<T extends UndoType>(type: T, options: UndoOptions[T]) {
-    console.log("undo");
-
     undos.push(new Undo(
         type,
         options
