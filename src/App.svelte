@@ -33,7 +33,6 @@
         load($slot);
     }
 
-    const slots = localStorage.getItem("all-slots-list")?.split("|") ?? [];
     let old_slot: null | string = null;
     const unsub = slot.subscribe((v) => {
         const slots = localStorage.getItem("all-slots-list")?.split("|") ?? [];
