@@ -16,9 +16,9 @@
         if (slots)
             localStorage.setItem(
                 "all-slots-list",
-                slots.filter((v) => v != `slot-${$slot}`).join("|")
+                slots.filter((v) => v != $slot).join("|")
             );
-        // else localStorage.setItem("all-slots-list", $slot);
+        console.log(slots);
         $slot = slots[0] ?? "slot1";
         load($slot);
     }
@@ -33,15 +33,17 @@
         load($slot);
     }
 
-    let old_slot = $slot;
-    const unsubscribe = slot.subscribe(() => {
-        const slots = localStorage.getItem("all-slots-list")?.split("|");
+    const slots = localStorage.getItem("all-slots-list")?.split("|") ?? [];
+    let old_slot = slots[0];
+    const unsub = slot.subscribe((v) => {
+        const slots = localStorage.getItem("all-slots-list")?.split("|") ?? [];
+        console.log(slots.includes(old_slot));
         if (slots.includes(old_slot)) save(old_slot, $points, $gameobjects);
-        old_slot = $slot;
+        old_slot = v;
         load($slot);
     });
 
-    onDestroy(() => unsubscribe());
+    onDestroy(unsub);
 </script>
 
 <div class="left-panel">
@@ -49,11 +51,9 @@
 </div>
 <div class="map-panel">
     <div>
-        <form>
-            <Button label="Delete Save" on:click={deleteSave} />
-            <Button label="Delete All Saves" on:click={deleteAllSaves} />
-            <TextBox bind:value={$slot} />
-        </form>
+        <Button label="Delete Save" on:click={deleteSave} />
+        <Button label="Delete All Saves" on:click={deleteAllSaves} />
+        <TextBox bind:value={$slot} />
         <p id="slots-list" />
 
         <Map />

@@ -13,7 +13,6 @@ export function save(
     points: Point[],
     gameobjects: GameObject[]
 ) {
-    slot = `slot-${slot}`;
     let data = "";
 
     points.forEach((point) => {
@@ -27,7 +26,7 @@ export function save(
         data += gameobject.encode() + "/";
     });
 
-    window.localStorage.setItem(slot, data);
+    localStorage.setItem(`slot-${slot}`, data);
 
     const slots = localStorage.getItem("all-slots-list")?.split("|");
     if (slots) {
@@ -42,9 +41,9 @@ export function save(
 
 export async function load(slot: string) {
     if (!localStorage.getItem("all-slots-list"))
-        localStorage.setItem("all-slots-list", "slot-slot1");
+        localStorage.setItem("all-slots-list", slot);
 
-    const data = window.localStorage.getItem(`slot-${slot}`);
+    const data = localStorage.getItem(`slot-${slot}`);
     let raw = data?.split("|");
 
     const points_temp = new Array<Point>();

@@ -451,8 +451,7 @@
 
             const slots = localStorage
                 .getItem("all-slots-list")
-                ?.split("|")
-                .map((v) => v.substring(5));
+                ?.split("|");
             if (slots)
                 slot_list.textContent = "Save Slots: " + slots.join(", ");
 
