@@ -88,6 +88,10 @@
         margin-bottom: 10px;
     }
 
+    input {
+        cursor: pointer
+    }
+
     input:checked + .settings-wrapper {
         display: block;
     }
