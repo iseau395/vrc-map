@@ -20,7 +20,7 @@
     let canvas: HTMLCanvasElement;
 
     onMount(() => {
-        const FIELD_SIDE = 713.74;
+        const FIELD_SIDE = 1427.48;
 
         const PATH_COLORS = [
             new Color(210, 10, 10),
@@ -451,8 +451,8 @@
             const slots = localStorage
                 .getItem("all-slots-list")
                 ?.split("|");
-            if (slots)
-                slot_list.textContent = "Save Slots: " + slots.join(", ");
+            // if (slots)
+                // slot_list.textContent = "Save Slots: " + slots.join(", ");
 
             await tick();
             setTimeout(onTick, 0);
@@ -464,12 +464,13 @@
     });
 </script>
 
-<canvas bind:this={canvas} width="863.74" height="713.74" tabindex="0" />
+<canvas bind:this={canvas} width="1577.48" height="1427.48" tabindex="0" />
 
 <style>
     canvas {
         margin: 0px;
         padding: 0px;
-        width: 100%;
+
+        width: 53%;
     }
 </style>

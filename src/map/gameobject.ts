@@ -116,11 +116,11 @@ export class Mogo extends GameObject {
         let rotation = this.rotation + 14;
         ctx.strokeStyle = "rgb(50, 50, 50)";
         ctx.lineWidth = 3;
-        drawPolygon(this.x, this.y, 25.94, 7, rotation, ctx);
+        drawPolygon(this.x, this.y, 32.9438 * 2, 7, rotation, ctx);
     }
 
     pointInside = (x: number, y: number) =>
-        (x - this.x) ** 2 + (y - this.y) ** 2 <= 25.94 ** 2;
+        (x - this.x) ** 2 + (y - this.y) ** 2 <= 51.88 ** 2;
 
     encode() {
         return `mogo-${this.x.toFixed(2)}-${this.y.toFixed(
@@ -153,12 +153,12 @@ export class Ring extends GameObject {
     }
 
     render(ctx: CanvasRenderingContext2D) {
-        ctx.lineWidth = 2;
-        drawCircle(this.x, this.y, 6, "rgba(0, 0, 0, 0)", RING_COLOR.toString(), ctx);
+        ctx.lineWidth = 5.08 * 2;
+        drawCircle(this.x, this.y, 5.08 * 2, "rgba(0, 0, 0, 0)", RING_COLOR.toString(), ctx);
     }
 
     pointInside = (x: number, y: number) =>
-        (x - this.x) ** 2 + (y - this.y) ** 2 <= 14 ** 2;
+        (x - this.x) ** 2 + (y - this.y) ** 2 <= (10.16 * 2) ** 2;
 
     encode() {
         return `ring-${this.x.toFixed(2)}-${this.y.toFixed(2)}`;
