@@ -54,10 +54,10 @@
         const ctx = canvas.getContext("2d");
 
         let selection: {
-            array: "none" | "gameobjects" | "points",
-            index: number,
-            start_x: number | null,
-            start_y: number | null,
+            array: "none" | "gameobjects" | "points";
+            index: number;
+            start_x: number | null;
+            start_y: number | null;
         } = {
             array: "none",
             index: NaN,
@@ -95,16 +95,11 @@
                             step: numberKey,
                         });
 
-                        if (
-                            mouseX < FIELD_SIDE
-                        ) {
-                            add_undo(
-                                UndoType.Add,
-                                {
-                                    array: "points",
-                                    key: $points.length-1
-                                }
-                            );
+                        if (mouseX < FIELD_SIDE) {
+                            add_undo(UndoType.Add, {
+                                array: "points",
+                                key: $points.length - 1,
+                            });
                         }
 
                         return;
@@ -118,14 +113,11 @@
                         $gameobjects[selection.index].x = selection.start_x;
                         $gameobjects[selection.index].y = selection.start_y;
 
-                        add_undo(
-                            UndoType.Remove,
-                            {
-                                array: "gameobjects",
-                                key: selection.index,
-                                object: $gameobjects[selection.index]
-                            }
-                        );
+                        add_undo(UndoType.Remove, {
+                            array: "gameobjects",
+                            key: selection.index,
+                            object: $gameobjects[selection.index],
+                        });
 
                         $gameobjects.splice(selection.index, 1);
                     }
@@ -137,30 +129,22 @@
                         $points[selection.index].x = selection.start_x;
                         $points[selection.index].y = selection.start_y;
 
-                        add_undo(
-                            UndoType.Remove,
-                            {
-                                array: "points",
-                                key: selection.index,
-                                object: $points[selection.index]
-                            }
-                        );
+                        add_undo(UndoType.Remove, {
+                            array: "points",
+                            key: selection.index,
+                            object: $points[selection.index],
+                        });
 
                         $points.splice(selection.index, 1);
                     }
 
-                    if (!(
-                        mouseX > FIELD_SIDE
-                    )) {
-                        add_undo(
-                            UndoType.Move,
-                            {
-                                array: selection.array as ArrayType,
-                                key: selection.index,
-                                old_x: selection.start_x,
-                                old_y: selection.start_y
-                            }
-                        )
+                    if (!(mouseX > FIELD_SIDE)) {
+                        add_undo(UndoType.Move, {
+                            array: selection.array as ArrayType,
+                            key: selection.index,
+                            old_x: selection.start_x,
+                            old_y: selection.start_y,
+                        });
                     }
 
                     selection = {
@@ -178,21 +162,22 @@
 
                 if (mouseX < FIELD_SIDE) {
                     $gameobjects.push(new Ring(mouseX, mouseY));
-                    add_undo(
-                        UndoType.Add,
-                        {
-                            array: "gameobjects",
-                            key: $gameobjects.length - 1
-                        }
-                    )
+                    add_undo(UndoType.Add, {
+                        array: "gameobjects",
+                        key: $gameobjects.length - 1,
+                    });
                 }
 
                 save($slot, $points, $gameobjects);
             });
 
             canvas.addEventListener("mousemove", (event) => {
-                const x = (event.x - canvas.offsetLeft) / canvas.clientWidth * canvas.width;
-                const y = (event.y - canvas.offsetTop) / canvas.clientHeight * canvas.height;
+                const x =
+                    ((event.x - canvas.offsetLeft) / canvas.clientWidth) *
+                    canvas.width;
+                const y =
+                    ((event.y - canvas.offsetTop) / canvas.clientHeight) *
+                    canvas.height;
 
                 mouseX = !event.ctrlKey
                     ? event.altKey
@@ -395,8 +380,8 @@
                 if (!isNaN(angle))
                     ctx.fillText(
                         `${Math.round(angle)}\u00B0`,
-                        $points[i].x + 20,
-                        $points[i].y + 20
+                        $points[i].x + 30,
+                        $points[i].y + 30
                     );
 
                 ctx.fillStyle =
@@ -414,6 +399,21 @@
                         ($points[i].x - $points[i + 1]?.x) ** 2 +
                             ($points[i].y - $points[i + 1]?.y) ** 2
                     ) / 2;
+
+                angle = (Math.atan2(
+                        $points[i].y - $points[i + 1]?.y,
+                        $points[i].x - $points[i + 1]?.x
+                    ) * 180) /
+                        Math.PI;
+
+                ctx.save();
+                ctx.translate(
+                    $points[i].x - ($points[i].x - $points[i + 1]?.x) / 2,
+                    $points[i].y - ($points[i].y - $points[i + 1]?.y) / 2
+                );
+                ctx.rotate(
+                     (angle + (Math.abs(angle) > 90 ? 180 : 0)) / 57
+                );
                 if (!isNaN(distance))
                     ctx.fillText(
                         `${
@@ -422,9 +422,10 @@
                                     100
                             ) / 100
                         }${$imperial ? "in" : "cm"}`,
-                        $points[i].x - ($points[i].x - $points[i + 1]?.x) / 2,
-                        $points[i].y - ($points[i].y - $points[i + 1]?.y) / 2 - 20
+                        0,
+                        -20
                     );
+                ctx.restore();
             }
 
             if (mouseDown && !shiftDown && selection.array == "none") {
@@ -448,11 +449,9 @@
                 );
             }
 
-            const slots = localStorage
-                .getItem("all-slots-list")
-                ?.split("|");
+            const slots = localStorage.getItem("all-slots-list")?.split("|");
             // if (slots)
-                // slot_list.textContent = "Save Slots: " + slots.join(", ");
+            // slot_list.textContent = "Save Slots: " + slots.join(", ");
 
             await tick();
             setTimeout(onTick, 0);
@@ -460,6 +459,8 @@
 
         load("slot1");
 
+        ctx.font = "20px serif";
+        ctx.textAlign = "center";
         onTick();
     });
 </script>
