@@ -72,9 +72,9 @@ export function drawDot(
     style: CanvasRenderingContext2D["fillStyle"],
     ctx: CanvasRenderingContext2D) {
 
-    ctx.lineWidth = 1;
-    drawCircle(centerX, centerY, 13, null, style, ctx);
-    drawCircle(centerX, centerY, 5, style, null, ctx);
+    ctx.lineWidth = 7.5;
+    drawCircle(centerX, centerY, 19.5, null, style, ctx);
+    drawCircle(centerX, centerY, 7.25, style, null, ctx);
 }
 
 /**

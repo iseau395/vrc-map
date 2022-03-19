@@ -358,7 +358,7 @@
                         ? PATH_COLORS[$points[i].step].toUnfinished().toString()
                         : PATH_COLORS[$points[i].step].toString();
 
-                ctx.lineWidth = 3;
+                ctx.lineWidth = 4.5;
                 ctx.beginPath();
                 ctx.moveTo(
                     $points[i - 1]?.x ?? $points[i].x,
