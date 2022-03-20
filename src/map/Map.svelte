@@ -459,7 +459,7 @@
 
         load("slot1");
 
-        ctx.font = "20px serif";
+        ctx.font = "20px monospace";
         ctx.textAlign = "center";
         onTick();
     });
