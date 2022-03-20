@@ -380,8 +380,8 @@
                 if (!isNaN(angle))
                     ctx.fillText(
                         `${Math.round(angle)}\u00B0`,
-                        $points[i].x + 30,
-                        $points[i].y + 30
+                        $points[i].x + 40,
+                        $points[i].y + 40
                     );
 
                 ctx.fillStyle =
