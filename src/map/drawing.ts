@@ -160,15 +160,16 @@ export function drawField(ctx: CanvasRenderingContext2D) {
     ctx.stroke();
 
     ctx.strokeStyle = LINE_COLOR;
+    ctx.lineWidth = 5;
     ctx.beginPath();
 
     ctx.moveTo(FIELD_SIDE / 3, 0);
     ctx.lineTo(FIELD_SIDE / 3, FIELD_SIDE);
 
-    ctx.moveTo(FIELD_SIDE / 2 - 2, 0);
-    ctx.lineTo(FIELD_SIDE / 2 - 2, FIELD_SIDE);
-    ctx.moveTo(FIELD_SIDE / 2 + 2, 0);
-    ctx.lineTo(FIELD_SIDE / 2 + 2, FIELD_SIDE);
+    ctx.moveTo(FIELD_SIDE / 2 - 5, 0);
+    ctx.lineTo(FIELD_SIDE / 2 - 5, FIELD_SIDE);
+    ctx.moveTo(FIELD_SIDE / 2 + 5, 0);
+    ctx.lineTo(FIELD_SIDE / 2 + 5, FIELD_SIDE);
 
     ctx.moveTo((FIELD_SIDE / 3) * 2, 0);
     ctx.lineTo((FIELD_SIDE / 3) * 2, FIELD_SIDE);
