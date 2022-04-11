@@ -6,8 +6,3 @@ body {
     background-color: rgb(50, 50, 50);
     color: rgb(180, 180, 180);
 }
-
-body {
-    display: grid;
-    grid-template-columns: 20% 60% 20%;
-}

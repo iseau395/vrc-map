@@ -1,4 +1,4 @@
-const FIELD_SIDE = 713.74;
+const FIELD_SIDE = 1427.48;
 
 export class Color {
     r: number;
@@ -52,7 +52,6 @@ export function drawCircle(
     ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
     ctx.fillStyle = fillStyle;
     if (fillStyle) ctx.fill();
-    ctx.lineWidth = 5;
     ctx.strokeStyle = strokeStyle;
     if (strokeStyle) ctx.stroke();
     ctx.closePath();
@@ -73,9 +72,9 @@ export function drawDot(
     style: CanvasRenderingContext2D["fillStyle"],
     ctx: CanvasRenderingContext2D) {
 
-    ctx.lineWidth = 1;
-    drawCircle(centerX, centerY, 13, null, style, ctx);
-    drawCircle(centerX, centerY, 5, style, null, ctx);
+    ctx.lineWidth = 7.5;
+    drawCircle(centerX, centerY, 19.5, null, style, ctx);
+    drawCircle(centerX, centerY, 7.25, style, null, ctx);
 }
 
 /**
@@ -110,7 +109,7 @@ function drawPlatform(x: number, y: number, color: CanvasRenderingContext2D["str
 
     ctx.strokeStyle = color;
     ctx.lineCap = "butt";
-    ctx.lineWidth = 10;
+    ctx.lineWidth = 20;
 
     ctx.beginPath();
 
@@ -118,7 +117,7 @@ function drawPlatform(x: number, y: number, color: CanvasRenderingContext2D["str
     ctx.lineTo(x + shortEdge - shortEdge / 10, y + longEdge / 8);
     ctx.lineTo(x + shortEdge - shortEdge / 10, y + (longEdge / 8) * 7);
     ctx.lineTo(x + shortEdge / 10, y + (longEdge / 8) * 7);
-    ctx.lineTo(x + shortEdge / 10, y + longEdge / 8 - 5);
+    ctx.lineTo(x + shortEdge / 10, y + longEdge / 8 - 10);
 
     ctx.stroke();
     ctx.closePath();
@@ -161,15 +160,16 @@ export function drawField(ctx: CanvasRenderingContext2D) {
     ctx.stroke();
 
     ctx.strokeStyle = LINE_COLOR;
+    ctx.lineWidth = 5;
     ctx.beginPath();
 
     ctx.moveTo(FIELD_SIDE / 3, 0);
     ctx.lineTo(FIELD_SIDE / 3, FIELD_SIDE);
 
-    ctx.moveTo(FIELD_SIDE / 2 - 2, 0);
-    ctx.lineTo(FIELD_SIDE / 2 - 2, FIELD_SIDE);
-    ctx.moveTo(FIELD_SIDE / 2 + 2, 0);
-    ctx.lineTo(FIELD_SIDE / 2 + 2, FIELD_SIDE);
+    ctx.moveTo(FIELD_SIDE / 2 - 5, 0);
+    ctx.lineTo(FIELD_SIDE / 2 - 5, FIELD_SIDE);
+    ctx.moveTo(FIELD_SIDE / 2 + 5, 0);
+    ctx.lineTo(FIELD_SIDE / 2 + 5, FIELD_SIDE);
 
     ctx.moveTo((FIELD_SIDE / 3) * 2, 0);
     ctx.lineTo((FIELD_SIDE / 3) * 2, FIELD_SIDE);

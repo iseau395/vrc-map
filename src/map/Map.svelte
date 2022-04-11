@@ -11,14 +11,16 @@
     } from "./drawing";
     import { load, save } from "./saving";
     import { imperial } from "../stores/settings";
-    import { Point, slot } from "./var";
+    import { slot } from "./var";
 
     import { points, gameobjects } from "../stores/objects";
+
+    import { add_undo, ArrayType, redo, undo, UndoType } from "./undo";
 
     let canvas: HTMLCanvasElement;
 
     onMount(() => {
-        const FIELD_SIDE = 713.74;
+        const FIELD_SIDE = 1427.48;
 
         const PATH_COLORS = [
             new Color(210, 10, 10),
@@ -51,14 +53,16 @@
 
         const ctx = canvas.getContext("2d");
 
-        let undo = new Array<Point>();
-
         let selection: {
-            array: "none" | "gameobjects" | "points",
-            index: number
+            array: "none" | "gameobjects" | "points";
+            index: number;
+            start_x: number | null;
+            start_y: number | null;
         } = {
             array: "none",
             index: NaN,
+            start_x: null,
+            start_y: null,
         };
 
         let lastX = 0;
@@ -75,24 +79,6 @@
         let numberKey = 0;
 
         {
-            // document
-            //     .getElementById("slot-selector")
-            //     .addEventListener("input", (event) => {
-            //         if (
-            //             (event.target as HTMLInputElement).value ==
-            //             "all-slots-list"
-            //         ) {
-            //             (event.target as HTMLInputElement).value =
-            //                 "invalid value!";
-            //             return;
-            //         }
-
-            //         if (localStorage.getItem($slot))
-            //             save($slot, $points, $gameobjects);
-            //         $slot = (event.target as HTMLInputElement).value;
-            //         load($slot);
-            //     });
-
             canvas.addEventListener("mousedown", (event) => {
                 if (event.button != 0) return;
 
@@ -109,32 +95,63 @@
                             step: numberKey,
                         });
 
-                        undo = [];
+                        if (mouseX < FIELD_SIDE) {
+                            add_undo(UndoType.Add, {
+                                array: "points",
+                                key: $points.length - 1,
+                            });
+                        }
+
+                        return;
                     }
 
                     if (
                         selection.array == "gameobjects" &&
                         mouseX > FIELD_SIDE &&
                         mouseY <= 160
-                    )
+                    ) {
+                        $gameobjects[selection.index].x = selection.start_x;
+                        $gameobjects[selection.index].y = selection.start_y;
+
+                        add_undo(UndoType.Remove, {
+                            array: "gameobjects",
+                            key: selection.index,
+                            object: $gameobjects[selection.index],
+                        });
+
                         $gameobjects.splice(selection.index, 1);
+                    }
                     if (
                         selection.array == "points" &&
                         mouseX > FIELD_SIDE &&
                         mouseY <= 160
-                    )
-                        $points.splice(selection.index, 1);
+                    ) {
+                        $points[selection.index].x = selection.start_x;
+                        $points[selection.index].y = selection.start_y;
 
-                    if (
-                        $points.length > 0 &&
-                        $points[$points.length - 1].x > FIELD_SIDE &&
-                        $points[$points.length - 1].y <= 160
-                    )
-                        $points.splice($points.length - 1, 1);
+                        add_undo(UndoType.Remove, {
+                            array: "points",
+                            key: selection.index,
+                            object: $points[selection.index],
+                        });
+
+                        $points.splice(selection.index, 1);
+                    }
+
+                    if (!(mouseX > FIELD_SIDE)) {
+                        add_undo(UndoType.Move, {
+                            array: selection.array as ArrayType,
+                            key: selection.index,
+                            old_x: selection.start_x,
+                            old_y: selection.start_y,
+                        });
+                    }
 
                     selection = {
                         array: "none",
                         index: NaN,
+                        start_x: null,
+                        start_y: null,
                     };
                 }
 
@@ -143,15 +160,24 @@
             canvas.addEventListener("contextmenu", (event) => {
                 event.preventDefault();
 
-                if (mouseX < FIELD_SIDE)
+                if (mouseX < FIELD_SIDE) {
                     $gameobjects.push(new Ring(mouseX, mouseY));
+                    add_undo(UndoType.Add, {
+                        array: "gameobjects",
+                        key: $gameobjects.length - 1,
+                    });
+                }
 
                 save($slot, $points, $gameobjects);
             });
 
             canvas.addEventListener("mousemove", (event) => {
-                const x = (event.x - canvas.offsetLeft) / canvas.clientWidth * canvas.width;
-                const y = (event.y - canvas.offsetTop) / canvas.clientHeight * canvas.height;
+                const x =
+                    ((event.x - canvas.offsetLeft) / canvas.clientWidth) *
+                    canvas.width;
+                const y =
+                    ((event.y - canvas.offsetTop) / canvas.clientHeight) *
+                    canvas.height;
 
                 mouseX = !event.ctrlKey
                     ? event.altKey
@@ -188,6 +214,8 @@
                             selection = {
                                 array: "gameobjects",
                                 index: i,
+                                start_x: gameobject.x,
+                                start_y: gameobject.y,
                             };
                         }
                     });
@@ -200,6 +228,8 @@
                             selection = {
                                 array: "points",
                                 index: i,
+                                start_x: point.x,
+                                start_y: point.y,
                             };
                         }
                     });
@@ -207,6 +237,8 @@
                     selection = {
                         array: "none",
                         index: NaN,
+                        start_x: null,
+                        start_y: null,
                     };
                 }
 
@@ -224,12 +256,10 @@
 
             canvas.addEventListener("keydown", (event) => {
                 if (event.ctrlKey && event.code == "KeyZ") {
-                    const point = $points.pop();
-                    if (point) undo.push(point);
+                    undo();
                 }
                 if (event.ctrlKey && event.code == "KeyY") {
-                    const point = undo.pop();
-                    if (point) $points.push(point);
+                    redo();
                 }
 
                 ctrlDown = event.ctrlKey;
@@ -313,7 +343,7 @@
                         ? PATH_COLORS[$points[i].step].toUnfinished().toString()
                         : PATH_COLORS[$points[i].step].toString();
 
-                ctx.lineWidth = 3;
+                ctx.lineWidth = 4.5;
                 ctx.beginPath();
                 ctx.moveTo(
                     $points[i - 1]?.x ?? $points[i].x,
@@ -350,8 +380,8 @@
                 if (!isNaN(angle))
                     ctx.fillText(
                         `${Math.round(angle)}\u00B0`,
-                        $points[i].x + 20,
-                        $points[i].y + 20
+                        $points[i].x + 40,
+                        $points[i].y + 40
                     );
 
                 ctx.fillStyle =
@@ -368,7 +398,22 @@
                     Math.sqrt(
                         ($points[i].x - $points[i + 1]?.x) ** 2 +
                             ($points[i].y - $points[i + 1]?.y) ** 2
-                    ) / 2;
+                    ) / 4;
+
+                angle = (Math.atan2(
+                        $points[i].y - $points[i + 1]?.y,
+                        $points[i].x - $points[i + 1]?.x
+                    ) * 180) /
+                        Math.PI;
+
+                ctx.save();
+                ctx.translate(
+                    $points[i].x - ($points[i].x - $points[i + 1]?.x) / 2,
+                    $points[i].y - ($points[i].y - $points[i + 1]?.y) / 2
+                );
+                ctx.rotate(
+                     (angle + (Math.abs(angle) > 90 ? 180 : 0)) / 57
+                );
                 if (!isNaN(distance))
                     ctx.fillText(
                         `${
@@ -377,9 +422,10 @@
                                     100
                             ) / 100
                         }${$imperial ? "in" : "cm"}`,
-                        $points[i].x - ($points[i].x - $points[i + 1]?.x) / 2,
-                        $points[i].y - ($points[i].y - $points[i + 1]?.y) / 2 - 20
+                        0,
+                        -20
                     );
+                ctx.restore();
             }
 
             if (mouseDown && !shiftDown && selection.array == "none") {
@@ -403,29 +449,29 @@
                 );
             }
 
-            const slots = localStorage
-                .getItem("all-slots-list")
-                ?.split("|")
-                .map((v) => v.substring(5));
-            if (slots)
-                slot_list.textContent = "Save Slots: " + slots.join(", ");
+            const slots = localStorage.getItem("all-slots-list")?.split("|");
+            // if (slots)
+            // slot_list.textContent = "Save Slots: " + slots.join(", ");
 
             await tick();
             setTimeout(onTick, 0);
         }
 
-        load($slot);
+        load("slot1");
 
+        ctx.font = "20px monospace";
+        ctx.textAlign = "center";
         onTick();
     });
 </script>
 
-<canvas bind:this={canvas} width="863.74" height="713.74" tabindex="0" />
+<canvas bind:this={canvas} width="1577.48" height="1427.48" tabindex="0" />
 
 <style>
     canvas {
         margin: 0px;
         padding: 0px;
-        width: 100%;
+
+        width: 53%;
     }
 </style>
