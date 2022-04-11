@@ -398,7 +398,7 @@
                     Math.sqrt(
                         ($points[i].x - $points[i + 1]?.x) ** 2 +
                             ($points[i].y - $points[i + 1]?.y) ** 2
-                    ) / 2;
+                    ) / 4;
 
                 angle = (Math.atan2(
                         $points[i].y - $points[i + 1]?.y,
