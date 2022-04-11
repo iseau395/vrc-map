@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Link from "../components/link.svelte";
+    import Link from "../components/Link.svelte";
 </script>
 
 <Link label="Github Repository" link="https://github.com/iseau395/vrc-map/"/>
