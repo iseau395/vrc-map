@@ -45,6 +45,7 @@ function createConfig(input, output) {
             name: 'app',
             file: `public/${output}.build.js`
         },
+        inlineDynamicImports: true,
         plugins: [
             svelte({
                 preprocess: sveltePreprocess({
@@ -73,7 +74,7 @@ function createConfig(input, output) {
 
             !production && livereload('public'),
 
-            // production && terser()
+            production && terser()
         ],
         watch: {
             clearScreen: false,
@@ -84,7 +85,5 @@ function createConfig(input, output) {
 const config = [
     createConfig("index", "build/index")
 ];
-
-console.log(config);
 
 export default config;
