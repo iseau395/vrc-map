@@ -44,6 +44,12 @@ export default class InputController {
         this._shiftKey = ev.shiftKey;
     }
 
+    private keyup(ev: KeyboardEvent) {
+        this._altKey = ev.altKey;
+        this._ctrlKey = ev.ctrlKey;
+        this._shiftKey = ev.shiftKey;
+    }
+
     constructor() {
         window.addEventListener("mousemove", ev => this.mousemove(ev));
 
@@ -56,6 +62,8 @@ export default class InputController {
         window.addEventListener("scroll", ev => this.scroll(ev));
 
         window.addEventListener("keydown", ev => this.keydown(ev));
+
+        window.addEventListener("keyup", ev => this.keyup(ev));
     }
 
     get dragX() {
