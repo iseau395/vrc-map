@@ -1,16 +1,16 @@
 export default class InputController {
-    private dragXValue: number = 0;
-    private dragYValue: number = 0;
-    private mouseButtonValue: number = -1;
-    private zoomValue = 1;
+    private _dragX: number = 0;
+    private _dragY: number = 0;
+    private _mouseButton: number = -1;
+    private _zoom = 1;
 
     public mouseX = 0;
     public mouseY = 0;
 
     private mousemove(ev: MouseEvent) {
-        if (this.mouseButtonValue == 1) {
-            this.dragXValue += ev.movementX;
-            this.dragYValue += ev.movementY;
+        if (this._mouseButton == 0) {
+            this._dragX += ev.movementX;
+            this._dragY += ev.movementY;
         }
 
         this.mouseX = ev.x;
@@ -18,16 +18,16 @@ export default class InputController {
     }
     
     private mousedown(ev: MouseEvent) {
-        this.mouseButtonValue = ev.button;
+        this._mouseButton = ev.button;
     }
     
     private mouseup(ev: MouseEvent) {
-        this.mouseButtonValue = -1;
+        this._mouseButton = -1;
     }
 
     private wheel(ev: WheelEvent) {
-        this.zoomValue += ev.deltaY * -0.002;
-        this.zoomValue = Math.min(Math.max(.125, this.zoomValue), 4);
+        this._zoom += ev.deltaY * -0.002;
+        this._zoom = Math.min(Math.max(.125, this._zoom), 4);
     }
 
     private scroll(ev: Event) {
@@ -46,24 +46,24 @@ export default class InputController {
     }
 
     get dragX() {
-        const ret = this.dragXValue;
-        this.dragXValue = 0;
+        const ret = this._dragX;
+        this._dragX = 0;
         return ret;
     }
 
     get dragY() {
-        const ret = this.dragYValue;
-        this.dragYValue = 0;
+        const ret = this._dragY;
+        this._dragY = 0;
         return ret;
     }
 
     get mouseButton() {
-        return this.mouseButtonValue;
+        return this._mouseButton;
     }
 
     get zoom() {
-        const ret = this.zoomValue;
-        this.zoomValue = 1;
+        const ret = this._zoom;
+        this._zoom = 1;
         return ret;
     }
 }

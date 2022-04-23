@@ -3,6 +3,8 @@
 
     "compilerOptions": {
         "types": ["node", "svelte"],
+        "noImplicitAny": true,
+        "module": "es2020"
     },
     "include": ["src/**/*.ts"],
     "exclude": ["node_modules/**/*", "public/**/*"],
