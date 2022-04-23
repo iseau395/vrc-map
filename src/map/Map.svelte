@@ -8,14 +8,15 @@
 
     const game = getContext(Symbol.for("game")) as GameType;
 
-    let fieldX = 10;
-    let fieldY = 10;
-    let fieldScale = 2;
-
     let interval: NodeJS.Timeout;
     let animationFrame: number;
 
     let redraw = true;
+
+    if (isProduction)
+        window.onbeforeunload = function() {
+            return true;
+        };
 
     onMount(async () => {
         const background_ctx = background_canvas.getContext("2d", {
