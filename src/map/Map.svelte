@@ -1,6 +1,7 @@
 <script lang="ts">
     import { onMount, onDestroy, getContext } from "svelte";
     import type { GameType } from "../util/constants";
+    import { get_game } from "../games/game";
 
     let background_canvas: HTMLCanvasElement;
     let forground_canvas: HTMLCanvasElement;
@@ -26,6 +27,7 @@
 
         const InputController = new (await import("../field/input")).default();
         const FieldRenderer = new (await import("../field/field-renderer")).default();
+        const GameRenderer = await get_game(game);
 
         const resize = () => {
             background_canvas.width = window.innerWidth;
