@@ -7,7 +7,7 @@
         <NavBarButton><p>VRC Field Map</p></NavBarButton>
     </span>
     <div class="hamburger-button">
-        <NavBarButton>≡</NavBarButton>
+        <NavBarButton>&equiv;</NavBarButton>
     </div>
 </div>
 
