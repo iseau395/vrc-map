@@ -54,16 +54,19 @@
                 FieldRenderer.translate(background_ctx);
                 FieldRenderer.render(background_ctx);
 
+                GameRenderer.render_static(background_ctx);
+
                 background_ctx.restore();
 
                 redraw = false;
             }
 
-            // forground_ctx.save();
+            forground_ctx.save();
+            FieldRenderer.translate(forground_ctx);
 
-            // FieldRenderer.translate(forground_ctx);
+            GameRenderer.render(forground_ctx);
 
-            // forground_ctx.restore();
+            forground_ctx.restore();
 
             animationFrame = requestAnimationFrame(render);
         }
@@ -74,6 +77,12 @@
                 InputController.dragY,
                 InputController.zoom,
             );
+
+            GameRenderer.tick(
+                InputController.mouseX,
+                InputController.mouseY,
+                InputController.mouseButton
+            )
         }
 
         interval = setInterval(tick, 10);

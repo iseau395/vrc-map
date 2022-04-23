@@ -4,7 +4,8 @@
     "compilerOptions": {
         "types": ["node", "svelte"],
         "noImplicitAny": true,
-        "module": "es2020"
+        "module": "es2020",
+        "baseUrl": "./src"
     },
     "include": ["src/**/*.ts"],
     "exclude": ["node_modules/**/*", "public/**/*"],
