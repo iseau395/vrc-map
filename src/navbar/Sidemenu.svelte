@@ -1,4 +1,8 @@
-<div>
+<script lang="ts">
+    import { fly } from 'svelte/transition';
+</script>
+
+<div transition:fly="{{ x: 200, duration: 100 }}">
 
 </div>
 
