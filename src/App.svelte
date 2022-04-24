@@ -1,22 +1,36 @@
 <script lang="ts">
     import NavBar from "./navbar/NavBar.svelte";
     import Map from "./map/Map.svelte";
-    import { mobileAndTabletCheck } from "./util/mobile-check";
 
-    const mobile = mobileAndTabletCheck();
+    const hasMouse = 'onmousemove' in window;
 </script>
 
 <NavBar />
-{#if !mobile}
+{#if hasMouse}
 <Map />
 {:else}
 <p>
-    Hey, it looks like you are on a mobile device like a phone or tablet! This field map doesn't work on mobile devices, so try to instead use a computer.
+    Hey, it looks like you are on a touchscreen only device like a phone or tablet!
+    This field map doesn't work on touchscreen devices (yet), so try to instead use a computer.
 </p>
 {/if}
 
 <style>
     p {
-        color: red;
+        color: white;
+        background-color: rgb(230, 125, 125);
+        display: block;
+
+        margin: 1cm;
+
+        border-style: solid;
+        border-width: 2px;
+        border-color: red;
+
+        max-width: 500px;
+
+        border-radius: 10px;
+
+        padding: 0.2cm;
     }
 </style>
