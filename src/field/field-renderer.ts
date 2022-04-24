@@ -4,11 +4,11 @@ import type { Tickable, Renderable } from "../util/class-bases";
 export default class FieldRenderer implements Renderable, Tickable {
     private fieldX = 10;
     private fieldY = 10;
-    private fieldScale = 0.45;
+    private fieldZoom = 0.065;
 
     private prevFieldX = this.fieldX;
     private prevFieldY = this.fieldY;
-    private prevFieldScale = this.fieldScale;
+    private prevFieldScale = this.fieldZoom;
 
     private cache_ctx: CanvasRenderingContext2D;
 
@@ -18,13 +18,13 @@ export default class FieldRenderer implements Renderable, Tickable {
         this.fieldX = Math.floor(this.fieldX);
         this.fieldY = Math.floor(this.fieldY);
 
-        this.fieldScale *= zoom;
-        this.fieldScale = Math.min(Math.max(0.09*FIELD_SCALE, this.fieldScale), 0.3*FIELD_SCALE );
+        this.fieldZoom *= zoom;
+        this.fieldZoom = Math.min(Math.max(0.065*FIELD_SCALE, this.fieldZoom), 0.3*FIELD_SCALE );
     }
 
     translate(ctx: CanvasRenderingContext2D) {
         ctx.translate(this.fieldX, this.fieldY);
-        ctx.scale(this.fieldScale, this.fieldScale);
+        ctx.scale(this.fieldZoom, this.fieldZoom);
     }
 
     render(ctx: CanvasRenderingContext2D) {
@@ -36,11 +36,11 @@ export default class FieldRenderer implements Renderable, Tickable {
     changed() {
         const changed =     this.fieldX != this.prevFieldX ||
                             this.fieldY != this.prevFieldY ||
-                        this.fieldScale != this.prevFieldScale;
+                         this.fieldZoom != this.prevFieldScale;
 
         this.prevFieldX = this.fieldX;
         this.prevFieldY = this.fieldY;
-        this.prevFieldScale = this.fieldScale;
+        this.prevFieldScale = this.fieldZoom;
 
         return changed;
     }
