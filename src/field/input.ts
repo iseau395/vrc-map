@@ -50,19 +50,13 @@ export default class InputController {
         this._shiftKey = ev.shiftKey;
     }
 
-    constructor() {
-        window.addEventListener("mousemove", ev => this.mousemove(ev));
-
-        window.addEventListener("mousedown", ev => this.mousedown(ev));
-
-        window.addEventListener("mouseup", ev => this.mouseup(ev));
-
-        window.addEventListener("wheel", ev => this.wheel(ev));
-
-        window.addEventListener("scroll", ev => this.scroll(ev));
-
+    constructor(canvas: HTMLCanvasElement) {
+        canvas.addEventListener("mousemove", ev => this.mousemove(ev));
+        canvas.addEventListener("mousedown", ev => this.mousedown(ev));
+        canvas.addEventListener("mouseup", ev => this.mouseup(ev));
+        canvas.addEventListener("wheel", ev => this.wheel(ev));
+        canvas.addEventListener("scroll", ev => this.scroll(ev));
         window.addEventListener("keydown", ev => this.keydown(ev));
-
         window.addEventListener("keyup", ev => this.keyup(ev));
     }
 

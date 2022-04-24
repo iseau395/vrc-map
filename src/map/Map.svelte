@@ -26,7 +26,7 @@
             alpha: true
         });
 
-        const InputController = new (await import("../field/input")).default();
+        const InputController = new (await import("../field/input")).default(forground_canvas);
         const FieldRenderer = new (await import("../field/field-renderer")).default();
         const GameRenderer = await get_game(game);
 

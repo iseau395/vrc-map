@@ -14,6 +14,8 @@ const production = !process.env.ROLLUP_WATCH;
 function serve() {
     let server;
 
+    served = true;
+
     function toExit() {
         if (server) server.kill(0);
     }
@@ -31,6 +33,9 @@ function serve() {
         }
     };
 }
+
+let served = false;
+
 /**
  * 
  * @param {string} input 
@@ -44,7 +49,7 @@ function createConfig(input, output) {
             sourcemap: !production,
             format: 'iife',
             name: 'app',
-            file: `public/${output}.build.js`
+            file: `public/${output}/build.js`
         },
         inlineDynamicImports: true,
         plugins: [
@@ -61,10 +66,10 @@ function createConfig(input, output) {
                 }),
                 compilerOptions: {
                     dev: !production,
-                    filename: `public/${output}.js`
+                    filename: `public/${output}/build.js`
                 }
             }),
-            css({ output: `${output.split("/").at(-1)}.build.css` }),
+            css({ output: `build.css` }),
 
             resolve({
                 browser: true,
@@ -78,7 +83,7 @@ function createConfig(input, output) {
                 tsconfig: "./tsconfig.json"
             }),
 
-            !production && serve(),
+            (!production && !served) && serve(),
 
             !production && livereload('public'),
 
@@ -91,7 +96,8 @@ function createConfig(input, output) {
 }
 
 const config = [
-    createConfig("index", "build/index")
+    createConfig("tipping-point", "tipping-point/build"),
+    createConfig("spin-up", "spin-up/build")
 ];
 
 export default config;
