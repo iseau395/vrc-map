@@ -41,7 +41,6 @@
         }
 
         window.addEventListener("resize", resize);
-        resize();
 
         function render() {
             const changed = FieldRenderer.changed();
@@ -58,6 +57,8 @@
                 GameRenderer.render_static(background_ctx);
 
                 background_ctx.restore();
+
+                background_ctx.clip
 
                 redraw = false;
             }
@@ -87,6 +88,8 @@
         }
 
         interval = setInterval(tick, 10);
+        tick();
+        resize();
     });
 
     onDestroy(() => {
