@@ -19,7 +19,7 @@ export default class FieldRenderer implements Renderable, Tickable {
         this.fieldY = Math.floor(this.fieldY);
 
         this.fieldZoom *= zoom;
-        this.fieldZoom = Math.min(Math.max(0.065*FIELD_SCALE, this.fieldZoom), 0.3*FIELD_SCALE );
+        this.fieldZoom = Math.min(Math.max(0.08*FIELD_SCALE, this.fieldZoom), 0.3*FIELD_SCALE );
     }
 
     translate(ctx: CanvasRenderingContext2D) {
