@@ -21,4 +21,8 @@
     div:hover {
         background-color: slategray;
     }
+
+    div:active {
+        background-color: darkslategray;
+    }
 </style>

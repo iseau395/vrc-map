@@ -1,15 +1,22 @@
 <script lang="ts">
     import NavBarButton from "./NavBarButton.svelte";
+    import Sidemenu from "./Sidemenu.svelte";
+
+    let sidemenu = false;
 </script>
 
 <div>
     <span>
-        <NavBarButton><p>VRC Field Map</p></NavBarButton>
+        <p>VRC Field Map</p>
     </span>
     <div class="hamburger-button">
-        <NavBarButton>&equiv;</NavBarButton>
+        <NavBarButton on:click={() => sidemenu = !sidemenu}>&equiv;</NavBarButton>
     </div>
 </div>
+
+{#if sidemenu}
+    <Sidemenu></Sidemenu>
+{/if}
 
 <style>
     div {
