@@ -1,4 +1,4 @@
-import type { GameRenderer } from "../game";
+import type { GameRenderer } from "../generic/game-renderer";
 import { FIELD_SIDE } from "util/constants";
 
 export default class TippingPoint implements GameRenderer {

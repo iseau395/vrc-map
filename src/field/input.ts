@@ -4,6 +4,8 @@ export default class InputController {
     private _mouseButton: number = -1;
     private _zoom = 1;
 
+    private _deltaScroll = 0;
+
     private _mouseX = 0;
     private _mouseY = 0;
 
@@ -32,6 +34,8 @@ export default class InputController {
     private wheel(ev: WheelEvent) {
         this._zoom += ev.deltaY * -0.002;
         this._zoom = Math.min(Math.max(.125, this._zoom), 4);
+
+        this._deltaScroll += ev.deltaY;
     }
 
     private scroll(ev: Event) {
@@ -75,6 +79,12 @@ export default class InputController {
     get zoom() {
         const ret = this._zoom;
         this._zoom = 1;
+        return ret;
+    }
+
+    get deltaScroll() {
+        const ret = this._deltaScroll;
+        this._deltaScroll = 0;
         return ret;
     }
 

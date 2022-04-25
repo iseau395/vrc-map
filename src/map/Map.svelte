@@ -58,13 +58,14 @@
 
                 background_ctx.restore();
 
-                background_ctx.clip
-
                 redraw = false;
             }
 
+            forground_ctx.clearRect(0, 0, forground_canvas.width, forground_canvas.height);
+
             forground_ctx.save();
             FieldRenderer.translate(forground_ctx);
+
 
             GameRenderer.render(forground_ctx);
 
@@ -81,13 +82,15 @@
             );
 
             GameRenderer.tick(
-                InputController.mouseX,
-                InputController.mouseY,
-                InputController.mouseButton
-            )
+                (InputController.mouseX - FieldRenderer.x) / FieldRenderer.zoom,
+                (InputController.mouseY - FieldRenderer.y) / FieldRenderer.zoom,
+                InputController.mouseButton,
+                InputController.shiftKey,
+                InputController.deltaScroll
+            );
         }
 
-        interval = setInterval(tick, 10);
+        interval = setInterval(tick, 20);
         tick();
         resize();
     });
