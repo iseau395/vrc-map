@@ -14,7 +14,9 @@ export default class TippingPoint implements GameRenderer {
     };
 
     private mogos = [
-        new Mogo(50, 50, 0, 0)
+        new Mogo(0, 0, 180, 0),
+        new Mogo(200, 50, 0, 1),
+        new Mogo(50, 200, 0, 2)
     ];
     private rings = new Array<Ring>();
 

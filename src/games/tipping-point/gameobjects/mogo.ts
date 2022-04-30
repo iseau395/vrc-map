@@ -48,12 +48,12 @@ export default class Mogo implements Gameobject {
     }
 
     pointInside(x: number, y: number) {
-        return (x - this.x) ** 2 + (y - this.y) ** 2 <= (this.radius * FIELD_SCALE) ** 2;
+        return (x - this.x) ** 2 + (y - this.y) ** 2 <= (this.radius * FIELD_SCALE / 2) ** 2;
     }
 
     update(mouseX: number, mouseY: number, deltaScroll: number) {
-        this.x = mouseX - (this.radius * FIELD_SCALE / 2);
-        this.y = mouseY - (this.radius * FIELD_SCALE / 2);
+        this.x = mouseX;
+        this.y = mouseY;
     }
 
     render(ctx: CanvasRenderingContext2D) {
@@ -70,7 +70,11 @@ export default class Mogo implements Gameobject {
                     this.drawMogo(Mogo.red_cache);
                 }
 
-                ctx.drawImage(Mogo.red_cache.canvas, this.x, this.y);
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.r);
+                ctx.drawImage(Mogo.red_cache.canvas, -this.radius / 2 * FIELD_SCALE, -this.radius / 2 * FIELD_SCALE);
+                ctx.restore();
             } break;
 
             case MogoVariation.BLUE_ALLIANCE: {
@@ -85,7 +89,11 @@ export default class Mogo implements Gameobject {
                     this.drawMogo(Mogo.blue_cache);
                 }
 
-                ctx.drawImage(Mogo.blue_cache.canvas, this.x, this.y);
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.r);
+                ctx.drawImage(Mogo.blue_cache.canvas, -this.radius / 2 * FIELD_SCALE, -this.radius / 2 * FIELD_SCALE);
+                ctx.restore();
             } break;
             
             
@@ -101,7 +109,11 @@ export default class Mogo implements Gameobject {
                     this.drawMogo(Mogo.neutral_cache);
                 }
 
-                ctx.drawImage(Mogo.neutral_cache.canvas, this.x, this.y);
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.r);
+                ctx.drawImage(Mogo.neutral_cache.canvas, -this.radius / 2 * FIELD_SCALE, -this.radius / 2 * FIELD_SCALE);
+                ctx.restore();
             } break;
         }
     }
