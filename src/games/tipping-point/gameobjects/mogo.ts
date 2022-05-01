@@ -54,6 +54,11 @@ export default class Mogo implements Gameobject {
     update(mouseX: number, mouseY: number, deltaScroll: number) {
         this.x = mouseX;
         this.y = mouseY;
+
+        deltaScroll /= 1.25;
+
+        this.r += Math.floor(deltaScroll / 90) * 90;
+        console.log(this.r);
     }
 
     render(ctx: CanvasRenderingContext2D) {

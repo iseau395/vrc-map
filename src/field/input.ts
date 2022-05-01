@@ -32,8 +32,10 @@ export default class InputController {
     }
 
     private wheel(ev: WheelEvent) {
-        this._zoom += ev.deltaY * -0.002;
-        this._zoom = Math.min(Math.max(.125, this._zoom), 4);
+        if (!this._shiftKey) {
+            this._zoom += ev.deltaY * -0.002;
+            this._zoom = Math.min(Math.max(.125, this._zoom), 4);
+        }
 
         this._deltaScroll += ev.deltaY;
     }
