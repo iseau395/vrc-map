@@ -16,11 +16,11 @@ export default class TippingPoint implements GameRenderer {
     private mogos = [
         // Red Alliance Goals
         new Mogo(FIELD_SIDE/4, FIELD_SIDE/12 * 11, 90, 0),
-        new Mogo(FIELD_SIDE/12, FIELD_SIDE/3, 0, 0),
+        new Mogo(FIELD_SIDE/12, FIELD_SIDE/48 * 15, 0, 0),
 
         // Blue Alliance Goals
         new Mogo(FIELD_SIDE/4 * 3, FIELD_SIDE/12, 270, 1),
-        new Mogo(FIELD_SIDE/12 * 11, FIELD_SIDE/3 * 2, 180, 1),
+        new Mogo(FIELD_SIDE/12 * 11, FIELD_SIDE/48 * 33, 180, 1),
 
         // Neutral Goals
         new Mogo(FIELD_SIDE/2, FIELD_SIDE/4, 180, 2),
