@@ -42,12 +42,12 @@ export class MovableGameobject implements Gameobject {
 }
 
 export class RoundMovableGameobject extends MovableGameobject {
-    protected readonly radius: number;
+    protected readonly diameter: number;
 
     pointInside(x: number, y: number) {
-        if (!this.radius)
-            throw new Error("Missing radius!");
+        if (!this.diameter)
+            throw new Error("Missing diameter!");
 
-        return (x - this.x) ** 2 + (y - this.y) ** 2 <= (this.radius * FIELD_SCALE / 2) ** 2;
+        return (x - this.x) ** 2 + (y - this.y) ** 2 <= (this.diameter * FIELD_SCALE) ** 2;
     }
 }

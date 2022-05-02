@@ -2,7 +2,7 @@ import { RoundMovableGameobject } from "games/generic/gameobject";
 import { FIELD_SCALE } from "util/constants";
 
 export default class Ring extends RoundMovableGameobject {
-    radius = 5.23875;
+    diameter = 5.23875;
     rotate_step = 1;
 
     render(ctx: CanvasRenderingContext2D) {

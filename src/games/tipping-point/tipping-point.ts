@@ -10,7 +10,7 @@ export default class TippingPoint implements GameRenderer {
 
     private selection = {
         arr: -1,
-        index: -1,
+        index: -1
     };
 
     private mogos = [

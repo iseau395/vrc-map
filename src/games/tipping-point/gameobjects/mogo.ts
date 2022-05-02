@@ -14,7 +14,7 @@ export default class Mogo extends RoundMovableGameobject {
     private static blue_cache: CanvasRenderingContext2D;
     private static neutral_cache: CanvasRenderingContext2D;
 
-    protected readonly radius = 33;
+    protected readonly diameter = 33;
 
     protected readonly rotate_step = 90;
     
@@ -35,7 +35,7 @@ export default class Mogo extends RoundMovableGameobject {
 
         ctx.strokeStyle = "rgb(50, 50, 50)";
         ctx.lineWidth = 0.5 * FIELD_SCALE;
-        drawPolygon(this.radius/2 * FIELD_SCALE, this.radius/2 * FIELD_SCALE, this.radius/2 * FIELD_SCALE, 7, 14, ctx);
+        drawPolygon(this.diameter/2 * FIELD_SCALE, this.diameter/2 * FIELD_SCALE, this.diameter/2 * FIELD_SCALE, 7, Math.PI * 4, ctx);
     }
 
     constructor(x: number, y: number, r: number, variation: number) {
@@ -51,8 +51,8 @@ export default class Mogo extends RoundMovableGameobject {
                         document.createElement("canvas")
                         .getContext("2d");
 
-                    Mogo.red_cache.canvas.width = this.radius * FIELD_SCALE;
-                    Mogo.red_cache.canvas.height = this.radius * FIELD_SCALE;
+                    Mogo.red_cache.canvas.width = this.diameter * FIELD_SCALE;
+                    Mogo.red_cache.canvas.height = this.diameter * FIELD_SCALE;
 
                     this.drawMogo(Mogo.red_cache);
                 }
@@ -60,7 +60,7 @@ export default class Mogo extends RoundMovableGameobject {
                 ctx.save();
                 ctx.translate(this.x, this.y);
                 ctx.rotate(this.r);
-                ctx.drawImage(Mogo.red_cache.canvas, -this.radius / 2 * FIELD_SCALE, -this.radius / 2 * FIELD_SCALE);
+                ctx.drawImage(Mogo.red_cache.canvas, -this.diameter / 2 * FIELD_SCALE, -this.diameter / 2 * FIELD_SCALE);
                 ctx.restore();
             } break;
 
@@ -70,8 +70,8 @@ export default class Mogo extends RoundMovableGameobject {
                         document.createElement("canvas")
                         .getContext("2d");
 
-                    Mogo.blue_cache.canvas.width = this.radius * FIELD_SCALE;
-                    Mogo.blue_cache.canvas.height = this.radius * FIELD_SCALE;
+                    Mogo.blue_cache.canvas.width = this.diameter * FIELD_SCALE;
+                    Mogo.blue_cache.canvas.height = this.diameter * FIELD_SCALE;
 
                     this.drawMogo(Mogo.blue_cache);
                 }
@@ -79,7 +79,7 @@ export default class Mogo extends RoundMovableGameobject {
                 ctx.save();
                 ctx.translate(this.x, this.y);
                 ctx.rotate(this.r);
-                ctx.drawImage(Mogo.blue_cache.canvas, -this.radius / 2 * FIELD_SCALE, -this.radius / 2 * FIELD_SCALE);
+                ctx.drawImage(Mogo.blue_cache.canvas, -this.diameter / 2 * FIELD_SCALE, -this.diameter / 2 * FIELD_SCALE);
                 ctx.restore();
             } break;
             
@@ -90,8 +90,8 @@ export default class Mogo extends RoundMovableGameobject {
                         document.createElement("canvas")
                         .getContext("2d");
 
-                    Mogo.neutral_cache.canvas.width = this.radius * FIELD_SCALE;
-                    Mogo.neutral_cache.canvas.height = this.radius * FIELD_SCALE;
+                    Mogo.neutral_cache.canvas.width = this.diameter * FIELD_SCALE;
+                    Mogo.neutral_cache.canvas.height = this.diameter * FIELD_SCALE;
 
                     this.drawMogo(Mogo.neutral_cache);
                 }
@@ -99,7 +99,7 @@ export default class Mogo extends RoundMovableGameobject {
                 ctx.save();
                 ctx.translate(this.x, this.y);
                 ctx.rotate(this.r);
-                ctx.drawImage(Mogo.neutral_cache.canvas, -this.radius / 2 * FIELD_SCALE, -this.radius / 2 * FIELD_SCALE);
+                ctx.drawImage(Mogo.neutral_cache.canvas, -this.diameter / 2 * FIELD_SCALE, -this.diameter / 2 * FIELD_SCALE);
                 ctx.restore();
             } break;
         }
