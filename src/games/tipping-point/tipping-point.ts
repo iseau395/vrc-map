@@ -1,6 +1,6 @@
 import type { GameRenderer } from "../generic/game-renderer";
 import Mogo from "./gameobjects/mogo";
-import type Ring from "./gameobjects/ring";
+import Ring from "./gameobjects/ring";
 
 import { FIELD_SCALE, FIELD_SIDE } from "util/constants";
 import { LINE_COLOR, RED_ALLIANCE, BLUE_ALLIANCE } from "./colors";
@@ -14,11 +14,22 @@ export default class TippingPoint implements GameRenderer {
     };
 
     private mogos = [
-        new Mogo(0, 0, 180, 0),
-        new Mogo(200, 50, 0, 1),
-        new Mogo(50, 200, 0, 2)
+        // Red Alliance Goals
+        new Mogo(FIELD_SIDE/4, FIELD_SIDE/12 * 11, 90, 0),
+        new Mogo(FIELD_SIDE/12, FIELD_SIDE/3, 0, 0),
+
+        // Blue Alliance Goals
+        new Mogo(FIELD_SIDE/4 * 3, FIELD_SIDE/12, 270, 1),
+        new Mogo(FIELD_SIDE/12 * 11, FIELD_SIDE/3 * 2, 180, 1),
+
+        // Neutral Goals
+        new Mogo(FIELD_SIDE/2, FIELD_SIDE/4, 180, 2),
+        new Mogo(FIELD_SIDE/2, FIELD_SIDE/4 * 2, 180, 2),
+        new Mogo(FIELD_SIDE/2, FIELD_SIDE/4 * 3, 0, 2),
     ];
-    private rings = new Array<Ring>();
+    private rings = [
+        new Ring(50, 50, 0)
+    ];
 
     private drawPlatform(x: number, y: number, color: CanvasRenderingContext2D["strokeStyle"], ctx: CanvasRenderingContext2D) {
         const longEdge = 134.62 * FIELD_SCALE;
