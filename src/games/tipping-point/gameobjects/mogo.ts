@@ -1,4 +1,4 @@
-import type Gameobject from "games/generic/gameobject";
+import { RoundMovableGameobject } from "games/generic/gameobject";
 import { FIELD_SCALE } from "util/constants";
 import { drawPolygon } from "util/drawing";
 import { BLUE_ALLIANCE, NEUTRAL_MOGO, RED_ALLIANCE } from "../colors";
@@ -9,16 +9,14 @@ export enum MogoVariation {
     NEUTRAL
 }
 
-export default class Mogo implements Gameobject {
+export default class Mogo extends RoundMovableGameobject {
     private static red_cache: CanvasRenderingContext2D;
     private static blue_cache: CanvasRenderingContext2D;
     private static neutral_cache: CanvasRenderingContext2D;
 
-    private readonly radius = 33;
+    protected readonly radius = 33;
 
-    private x: number;
-    private y: number;
-    private r: number;
+    protected readonly rotate_step = 90;
     
     private variation: MogoVariation;
 
@@ -41,24 +39,8 @@ export default class Mogo implements Gameobject {
     }
 
     constructor(x: number, y: number, r: number, variation: number) {
-        this.x = x;
-        this.y = y;
-        this.r = r;
+        super(x, y, r);
         this.variation = variation;
-    }
-
-    pointInside(x: number, y: number) {
-        return (x - this.x) ** 2 + (y - this.y) ** 2 <= (this.radius * FIELD_SCALE / 2) ** 2;
-    }
-
-    update(mouseX: number, mouseY: number, deltaScroll: number) {
-        this.x = mouseX;
-        this.y = mouseY;
-
-        deltaScroll /= 1.25;
-
-        this.r += Math.floor(deltaScroll / 90) * 90;
-        console.log(this.r);
     }
 
     render(ctx: CanvasRenderingContext2D) {

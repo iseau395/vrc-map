@@ -66,7 +66,6 @@
             forground_ctx.save();
             FieldRenderer.translate(forground_ctx);
 
-
             GameRenderer.render(forground_ctx);
 
             forground_ctx.restore();
