@@ -2,15 +2,24 @@ import { FIELD_SCALE, FIELD_SIDE } from "../util/constants";
 import type { Tickable, Renderable } from "../util/class-bases";
 
 export default class FieldRenderer implements Renderable, Tickable {
-    private fieldX = 10;
-    private fieldY = 10;
+    private fieldX;
+    private fieldY;
     private fieldZoom = 0.065;
 
-    private prevFieldX = this.fieldX;
-    private prevFieldY = this.fieldY;
-    private prevFieldScale = this.fieldZoom;
+    private prevFieldX;
+    private prevFieldY;
+    private prevFieldZoom = this.fieldZoom;
 
     private cache_ctx: CanvasRenderingContext2D;
+
+    constructor(canvasWidth: number, canvasHeight: number) {
+        console.log(FIELD_SIDE * this.fieldZoom);
+        this.fieldX = canvasWidth / 2 - FIELD_SIDE * this.fieldZoom * 3.05;
+        this.fieldY = canvasHeight / 2 - FIELD_SIDE * this.fieldZoom * 3.05;
+
+        this.prevFieldX = this.fieldX;
+        this.prevFieldY = this.fieldY;
+    }
 
     tick(deltaX: number, deltaY: number, zoom: number) {
         this.fieldX += deltaX;
@@ -36,11 +45,11 @@ export default class FieldRenderer implements Renderable, Tickable {
     changed() {
         const changed =     this.fieldX != this.prevFieldX ||
                             this.fieldY != this.prevFieldY ||
-                         this.fieldZoom != this.prevFieldScale;
+                         this.fieldZoom != this.prevFieldZoom;
 
         this.prevFieldX = this.fieldX;
         this.prevFieldY = this.fieldY;
-        this.prevFieldScale = this.fieldZoom;
+        this.prevFieldZoom = this.fieldZoom;
 
         return changed;
     }

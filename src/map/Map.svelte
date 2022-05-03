@@ -26,8 +26,10 @@
             alpha: true
         });
 
-        const InputController = new (await import("../field/input")).default(forground_canvas);
-        const FieldRenderer = new (await import("../field/field-renderer")).default();
+        const InputController = new (await import("../field/input"))
+            .default(forground_canvas);
+        const FieldRenderer = new (await import("../field/field-renderer"))
+            .default(window.innerWidth, window.innerHeight - 50);
         const GameRenderer = await get_game(game);
 
         const resize = () => {
@@ -73,7 +75,14 @@
             animationFrame = requestAnimationFrame(render);
         }
 
+        let previousTime = Date.now();
+
         function tick() {
+            const dT = Date.now() - previousTime;
+
+            const mouseX = (InputController.mouseX - FieldRenderer.x) / FieldRenderer.zoom;
+            const mouseY = (InputController.mouseY - FieldRenderer.y) / FieldRenderer.zoom;
+
             FieldRenderer.tick(
                 InputController.dragX,
                 InputController.dragY,
@@ -81,12 +90,14 @@
             );
 
             GameRenderer.tick(
-                (InputController.mouseX - FieldRenderer.x) / FieldRenderer.zoom,
-                (InputController.mouseY - FieldRenderer.y) / FieldRenderer.zoom,
+                mouseX,
+                mouseY,
                 InputController.mouseButton,
                 InputController.shiftKey,
                 InputController.deltaScroll
             );
+
+            previousTime = Date.now();
         }
 
         interval = setInterval(tick, 20);
