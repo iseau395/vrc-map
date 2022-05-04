@@ -15,7 +15,9 @@
 
     import { points, gameobjects } from "../stores/objects";
 
-    import { add_undo, ArrayType, redo, undo, UndoType } from "./undo";
+    import { add_undo, redo, undo, UndoType } from "./undo";
+    import type { ArrayType } from "./undo"
+
 
     let canvas: HTMLCanvasElement;
 

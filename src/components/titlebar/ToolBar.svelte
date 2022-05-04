@@ -2,6 +2,7 @@
     import Slot from "./sections/Slot.svelte";
     import View from "./sections/View.svelte";
     import Help from "./sections/Help.svelte";
+    import Beta from "./sections/Beta.svelte";
 
     const bar_contents = [
         {
@@ -15,6 +16,10 @@
         {
             label: "Help",
             component: Help
+        },
+        {
+            label: "New - Beta",
+            component: Beta
         }
     ];
 </script>
