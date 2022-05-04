@@ -13,7 +13,6 @@ export default class FieldRenderer implements Renderable, Tickable {
     private cache_ctx: CanvasRenderingContext2D;
 
     constructor(canvasWidth: number, canvasHeight: number) {
-        console.log(FIELD_SIDE * this.fieldZoom);
         this.fieldX = canvasWidth / 2 - FIELD_SIDE * this.fieldZoom * 3.05;
         this.fieldY = canvasHeight / 2 - FIELD_SIDE * this.fieldZoom * 3.05;
 
