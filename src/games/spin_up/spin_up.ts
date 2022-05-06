@@ -1,8 +1,15 @@
 import type { GameRenderer } from "../generic/game-renderer";
 import { FIELD_SIDE } from "util/constants";
+import Disk from "./gameobjects/disk";
 
 export default class TippingPoint implements GameRenderer {
     private cache_ctx: CanvasRenderingContext2D;
+
+    private selected_disk = -1;
+
+    private readonly disks = [
+        new Disk(50, 50, 0)
+    ]
 
     private cache() {
         this.cache_ctx =
@@ -12,12 +19,34 @@ export default class TippingPoint implements GameRenderer {
         this.cache_ctx.canvas.height = FIELD_SIDE;
     }
 
-    tick(mouseX: number, mouseY: number, mouseButton: number) {
+    tick(mouseX: number, mouseY: number, mouseButton: number, shiftKey: boolean, deltaScroll: number) {
+        if (shiftKey && mouseButton == 0) {
+            if (this.selected_disk == -1) {
+                for (const disk of this.disks) {
+                    if (disk.pointInside(mouseX, mouseY)) {
+                        this.selected_disk = this.disks.indexOf(disk);
 
+                        break;
+                    }
+                }
+            }
+
+            if (this.selected_disk >= 0)
+                this.disks[this.selected_disk]
+                    .update(
+                        mouseX,
+                        mouseY,
+                        deltaScroll
+                    );
+        } else {
+            this.selected_disk = -1;
+        }
     }
 
     render(ctx: CanvasRenderingContext2D) {
-
+        this.disks.forEach(disk => {
+            disk.render(ctx);
+        })
     }
 
     render_static(ctx: CanvasRenderingContext2D) {
