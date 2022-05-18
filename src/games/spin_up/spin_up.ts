@@ -1,6 +1,7 @@
 import type { GameRenderer } from "../generic/game-renderer";
-import { FIELD_SIDE } from "util/constants";
+import { FIELD_SCALE, FIELD_SIDE } from "util/constants";
 import Disk from "./gameobjects/disk";
+import { LINE_COLOR } from "games/generic/colors";
 
 export default class TippingPoint implements GameRenderer {
     private cache_ctx: CanvasRenderingContext2D;
@@ -17,6 +18,19 @@ export default class TippingPoint implements GameRenderer {
             .getContext("2d");
         this.cache_ctx.canvas.width = FIELD_SIDE;
         this.cache_ctx.canvas.height = FIELD_SIDE;
+
+        this.cache_ctx.strokeStyle = LINE_COLOR;
+        this.cache_ctx.lineWidth = 1.1 * FIELD_SCALE;
+        this.cache_ctx.lineCap = "square";
+        this.cache_ctx.beginPath();
+
+        this.cache_ctx.moveTo(5 * FIELD_SCALE, 0);
+        this.cache_ctx.lineTo(FIELD_SIDE, FIELD_SIDE - 5 * FIELD_SCALE);
+        
+        this.cache_ctx.moveTo(0, 5 * FIELD_SCALE);
+        this.cache_ctx.lineTo(FIELD_SIDE - 5 * FIELD_SCALE, FIELD_SIDE);
+
+        this.cache_ctx.stroke();
     }
 
     tick(mouseX: number, mouseY: number, mouseButton: number, shiftKey: boolean, deltaScroll: number) {

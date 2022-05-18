@@ -3,7 +3,7 @@ import Mogo from "./gameobjects/mogo";
 import Ring from "./gameobjects/ring";
 
 import { FIELD_SCALE, FIELD_SIDE } from "util/constants";
-import { LINE_COLOR, RED_ALLIANCE, BLUE_ALLIANCE } from "./colors";
+import { BLUE_ALLIANCE, LINE_COLOR, RED_ALLIANCE } from "../generic/colors";
 
 export default class TippingPoint implements GameRenderer {
     private cache_ctx: CanvasRenderingContext2D;

@@ -48,6 +48,6 @@ export class RoundMovableGameobject extends MovableGameobject {
         if (!this.diameter)
             throw new Error("Missing diameter!");
 
-        return (x - this.x) ** 2 + (y - this.y) ** 2 <= (this.diameter * FIELD_SCALE) ** 2;
+        return (x - this.x) ** 2 + (y - this.y) ** 2 <= (this.diameter / 2 * FIELD_SCALE + 1 * FIELD_SCALE) ** 2;
     }
 }

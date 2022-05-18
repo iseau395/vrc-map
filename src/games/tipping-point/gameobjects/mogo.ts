@@ -1,7 +1,7 @@
 import { RoundMovableGameobject } from "games/generic/gameobject";
 import { FIELD_SCALE } from "util/constants";
 import { drawPolygon } from "util/drawing";
-import { BLUE_ALLIANCE, NEUTRAL_MOGO, RED_ALLIANCE } from "../colors";
+import { BLUE_ALLIANCE, NEUTRAL, RED_ALLIANCE } from "../../generic/colors";
 
 export enum MogoVariation {
     RED_ALLIANCE,
@@ -29,7 +29,7 @@ export default class Mogo extends RoundMovableGameobject {
                 ctx.fillStyle = BLUE_ALLIANCE;
                 break;
             case 2:
-                ctx.fillStyle = NEUTRAL_MOGO;
+                ctx.fillStyle = NEUTRAL;
                 break;
         }
 
