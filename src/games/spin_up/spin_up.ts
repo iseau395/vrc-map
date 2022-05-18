@@ -1,7 +1,7 @@
 import type { GameRenderer } from "../generic/game-renderer";
 import { FIELD_SCALE, FIELD_SIDE } from "util/constants";
 import Disk from "./gameobjects/disk";
-import { LINE_COLOR } from "games/generic/colors";
+import { LINE_COLOR, RED_ALLIANCE, BLUE_ALLIANCE } from "games/generic/colors";
 
 export default class TippingPoint implements GameRenderer {
     private cache_ctx: CanvasRenderingContext2D;
@@ -30,6 +30,23 @@ export default class TippingPoint implements GameRenderer {
         this.cache_ctx.moveTo(0, 5 * FIELD_SCALE);
         this.cache_ctx.lineTo(FIELD_SIDE - 5 * FIELD_SCALE, FIELD_SIDE);
 
+        this.cache_ctx.stroke();
+        this.cache_ctx.strokeStyle = RED_ALLIANCE;
+        this.cache_ctx.lineWidth = 5.08 / 2 * FIELD_SCALE;
+        this.cache_ctx.lineCap = "round";
+
+        this.cache_ctx.beginPath();
+        this.cache_ctx.moveTo(FIELD_SIDE / 6, FIELD_SIDE / 3 * 2);
+        this.cache_ctx.lineTo(FIELD_SIDE / 3, FIELD_SIDE / 3 * 2);
+        this.cache_ctx.lineTo(FIELD_SIDE / 3, FIELD_SIDE / 6 * 5);
+        this.cache_ctx.stroke();
+
+        this.cache_ctx.strokeStyle = BLUE_ALLIANCE;
+
+        this.cache_ctx.beginPath();
+        this.cache_ctx.moveTo(FIELD_SIDE / 3 * 2, FIELD_SIDE / 6);
+        this.cache_ctx.lineTo(FIELD_SIDE / 3 * 2, FIELD_SIDE / 3);
+        this.cache_ctx.lineTo(FIELD_SIDE / 6 * 5, FIELD_SIDE / 3);
         this.cache_ctx.stroke();
     }
 

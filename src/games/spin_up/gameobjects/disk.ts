@@ -13,5 +13,12 @@ export default class Disk extends RoundMovableGameobject {
         ctx.arc(this.x, this.y, this.diameter/2 * FIELD_SCALE, 0, Math.PI * 2);
         ctx.closePath();
         ctx.fill();
+
+        ctx.fillStyle = "rgb(220, 200, 21)";
+
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.diameter/2 * FIELD_SCALE - 2.54 * FIELD_SCALE, 0, Math.PI * 2);
+        ctx.closePath();
+        ctx.fill();
     }
 }
