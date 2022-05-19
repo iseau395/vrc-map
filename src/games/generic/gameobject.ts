@@ -2,7 +2,7 @@ import type { Renderable } from "util/class-bases";
 import { FIELD_SCALE } from "util/constants";
 
 export interface Gameobject extends Renderable {
-    update(x: number, y: number, z: number): void;
+    update(...params: any): void;
 
     pointInside(x: number, y: number): boolean;
 }

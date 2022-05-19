@@ -2,6 +2,7 @@ import type { GameRenderer } from "../generic/game-renderer";
 import { FIELD_SCALE, FIELD_SIDE } from "util/constants";
 import Disk from "./gameobjects/disk";
 import { LINE_COLOR, RED_ALLIANCE, BLUE_ALLIANCE } from "games/generic/colors";
+import Roller from "./gameobjects/roller";
 
 export default class TippingPoint implements GameRenderer {
     private cache_ctx: CanvasRenderingContext2D;
@@ -10,6 +11,10 @@ export default class TippingPoint implements GameRenderer {
 
     private readonly disks = [
         new Disk(50, 50, 0)
+    ]
+
+    private readonly rollers = [
+        new Roller(10, 10, false)
     ]
 
     private cache() {
@@ -72,12 +77,20 @@ export default class TippingPoint implements GameRenderer {
         } else {
             this.selected_disk = -1;
         }
+
+        for (const roller of this.rollers) {
+            roller.update(mouseX, mouseY, mouseButton);
+        }
     }
 
     render(ctx: CanvasRenderingContext2D) {
         this.disks.forEach(disk => {
             disk.render(ctx);
         })
+
+        this.rollers.forEach(roller => {
+            roller.render(ctx);
+        });
     }
 
     render_static(ctx: CanvasRenderingContext2D) {
