@@ -14,7 +14,10 @@ export default class TippingPoint implements GameRenderer {
     ]
 
     private readonly rollers = [
-        new Roller(10, 10, false)
+        new Roller(0, FIELD_SIDE / 6, false),
+        new Roller(FIELD_SIDE / 6, 0, true),
+        new Roller(FIELD_SIDE - Roller.short_side, FIELD_SIDE / 6 * 5 - Roller.long_side, false),
+        new Roller(FIELD_SIDE / 6 * 5 - Roller.long_side, FIELD_SIDE - Roller.short_side, true)
     ]
 
     private cache() {
@@ -84,13 +87,13 @@ export default class TippingPoint implements GameRenderer {
     }
 
     render(ctx: CanvasRenderingContext2D) {
-        this.disks.forEach(disk => {
-            disk.render(ctx);
-        })
-
         this.rollers.forEach(roller => {
             roller.render(ctx);
         });
+
+        this.disks.forEach(disk => {
+            disk.render(ctx);
+        })
     }
 
     render_static(ctx: CanvasRenderingContext2D) {

@@ -3,20 +3,20 @@ import type { Gameobject } from "games/generic/gameobject";
 import { FIELD_SCALE } from "util/constants";
 
 export default class Roller implements Gameobject {
-    private static long_side = 24.892 * FIELD_SCALE;
-    private static short_side = 6.096 * FIELD_SCALE;
+    static readonly long_side = 24.892 * FIELD_SCALE;
+    static readonly short_side = 6.096 * FIELD_SCALE;
 
     private x: number;
     private y: number;
-    private vetical: boolean;
+    private horrizontal: boolean;
     private state: -1 | 0 | 1;
 
     private was_pressed = false;
 
-    constructor(x: number, y: number, vertical: boolean, state: -1 | 0 | 1 = 0) {
+    constructor(x: number, y: number, horrizontal: boolean, state: -1 | 0 | 1 = 0) {
         this.x = x;
         this.y = y;
-        this.vetical = vertical;
+        this.horrizontal = horrizontal;
         this.state = state
     }
 
@@ -31,11 +31,11 @@ export default class Roller implements Gameobject {
 
             ctx.fillRect(
                 this.x, this.y,
-                (this.vetical ? Roller.long_side : Roller.short_side),
-                (this.vetical ? Roller.short_side : Roller.long_side)
+                (this.horrizontal ? Roller.long_side : Roller.short_side),
+                (this.horrizontal ? Roller.short_side : Roller.long_side)
             );
         } else {
-            if (this.vetical) {
+            if (this.horrizontal) {
                 ctx.fillStyle = BLUE_ALLIANCE;
                 ctx.fillRect(
                     this.x,
@@ -83,7 +83,7 @@ export default class Roller implements Gameobject {
     pointInside(x: number, y: number): boolean {
         return x > this.x &&
             y > this.y &&
-            x < this.x + (this.vetical ? Roller.long_side : Roller.short_side) &&
-            y < this.y + (this.vetical ? Roller.short_side : Roller.long_side)
+            x < this.x + (this.horrizontal ? Roller.long_side : Roller.short_side) &&
+            y < this.y + (this.horrizontal ? Roller.short_side : Roller.long_side)
     }
 }
