@@ -81,9 +81,10 @@ export default class TippingPoint implements GameRenderer {
             this.selected_disk = -1;
         }
 
-        for (const roller of this.rollers) {
-            roller.update(mouseX, mouseY, mouseButton);
-        }
+        if (!shiftKey)
+            for (const roller of this.rollers) {
+                roller.update(mouseX, mouseY, mouseButton);
+            }
     }
 
     render(ctx: CanvasRenderingContext2D) {

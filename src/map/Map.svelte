@@ -89,13 +89,14 @@
                 InputController.zoom,
             );
 
-            GameRenderer.tick(
-                mouseX,
-                mouseY,
-                InputController.mouseButton,
-                InputController.shiftKey,
-                InputController.deltaScroll
-            );
+            if (!InputController.altKey)
+                GameRenderer.tick(
+                    mouseX,
+                    mouseY,
+                    InputController.mouseButton,
+                    InputController.shiftKey,
+                    InputController.deltaScroll
+                );
 
             previousTime = Date.now();
         }
