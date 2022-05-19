@@ -20,7 +20,7 @@ export class MovableGameobject implements Gameobject {
         this.r = r;
     }
 
-    pointInside(x: number, y: number): boolean {
+    pointInside(_x: number, _y: number): boolean {
         throw new Error("Unimplimented")
     }
 
@@ -36,7 +36,7 @@ export class MovableGameobject implements Gameobject {
         this.r += Math.floor(deltaScroll / this.rotate_step) * this.rotate_step;
     }
 
-    render(ctx: CanvasRenderingContext2D) {
+    render(_ctx: CanvasRenderingContext2D) {
         throw new Error("Unimplimented")
     }
 }

@@ -75,11 +75,7 @@
             animationFrame = requestAnimationFrame(render);
         }
 
-        let previousTime = Date.now();
-
         function tick() {
-            const dT = Date.now() - previousTime;
-
             const mouseX = (InputController.mouseX - FieldRenderer.x) / FieldRenderer.zoom;
             const mouseY = (InputController.mouseY - FieldRenderer.y) / FieldRenderer.zoom;
 
@@ -97,8 +93,6 @@
                     InputController.shiftKey,
                     InputController.deltaScroll
                 );
-
-            previousTime = Date.now();
         }
 
         interval = setInterval(tick, 20);

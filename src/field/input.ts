@@ -27,7 +27,7 @@ export default class InputController {
         this._mouseButton = ev.button;
     }
     
-    private mouseup(ev: MouseEvent) {
+    private mouseup(_ev: MouseEvent) {
         this._mouseButton = -1;
     }
 
