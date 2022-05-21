@@ -27,18 +27,53 @@ export default class TippingPoint implements GameRenderer {
         this.cache_ctx.canvas.width = FIELD_SIDE;
         this.cache_ctx.canvas.height = FIELD_SIDE;
 
+        ////// Tape //////
+
         this.cache_ctx.strokeStyle = LINE_COLOR;
         this.cache_ctx.lineWidth = 1.1 * FIELD_SCALE;
         this.cache_ctx.lineCap = "square";
         this.cache_ctx.beginPath();
 
+        // Diagnal Lines
+
         this.cache_ctx.moveTo(5 * FIELD_SCALE, 0);
         this.cache_ctx.lineTo(FIELD_SIDE, FIELD_SIDE - 5 * FIELD_SCALE);
-        
+
         this.cache_ctx.moveTo(0, 5 * FIELD_SCALE);
         this.cache_ctx.lineTo(FIELD_SIDE - 5 * FIELD_SCALE, FIELD_SIDE);
 
+        // Starting lines
+
+        this.cache_ctx.moveTo(0, FIELD_SIDE / 6);
+        this.cache_ctx.lineTo(FIELD_SIDE / 12, FIELD_SIDE / 6);
+
+        this.cache_ctx.moveTo(FIELD_SIDE / 3, 0);
+        this.cache_ctx.lineTo(FIELD_SIDE / 3, FIELD_SIDE / 12);
+
+        this.cache_ctx.moveTo(FIELD_SIDE, FIELD_SIDE / 6 * 5);
+        this.cache_ctx.lineTo(FIELD_SIDE / 12 * 11, FIELD_SIDE / 6 * 5);
+
+        this.cache_ctx.moveTo(FIELD_SIDE / 3 * 2, FIELD_SIDE);
+        this.cache_ctx.lineTo(FIELD_SIDE / 3 * 2, FIELD_SIDE / 12 * 11);
+
+        // Low Goal Lines
+
+        this.cache_ctx.moveTo(FIELD_SIDE / 3 * 2, 0);
+        this.cache_ctx.lineTo(FIELD_SIDE / 3 * 2, FIELD_SIDE / 6);
+
+        this.cache_ctx.moveTo(FIELD_SIDE, FIELD_SIDE / 3);
+        this.cache_ctx.lineTo(FIELD_SIDE / 6 * 5, FIELD_SIDE / 3);
+
+        this.cache_ctx.moveTo(0, FIELD_SIDE / 3 * 2);
+        this.cache_ctx.lineTo(FIELD_SIDE / 6, FIELD_SIDE / 3 * 2);
+
+        this.cache_ctx.moveTo(FIELD_SIDE / 3, FIELD_SIDE);
+        this.cache_ctx.lineTo(FIELD_SIDE / 3, FIELD_SIDE / 6 * 5);
+
         this.cache_ctx.stroke();
+
+        ////// Bumpers //////
+
         this.cache_ctx.strokeStyle = RED_ALLIANCE;
         this.cache_ctx.lineWidth = 5.08 / 2 * FIELD_SCALE;
         this.cache_ctx.lineCap = "round";
