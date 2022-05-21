@@ -10,7 +10,39 @@ export default class TippingPoint implements GameRenderer {
     private selected_disk = -1;
 
     private readonly disks = [
-        new Disk(50, 50, 0)
+        new Disk(FIELD_SIDE / 12 * 1, FIELD_SIDE / 12 * 1),
+        new Disk(FIELD_SIDE / 12 * 2, FIELD_SIDE / 12 * 2),
+        new Disk(FIELD_SIDE / 12 * 3, FIELD_SIDE / 12 * 3),
+        new Disk(FIELD_SIDE / 12 * 3, FIELD_SIDE / 12 * 3),
+        new Disk(FIELD_SIDE / 12 * 3, FIELD_SIDE / 12 * 3),
+        new Disk(FIELD_SIDE / 12 * 4, FIELD_SIDE / 12 * 4),
+        new Disk(FIELD_SIDE / 12 * 5, FIELD_SIDE / 12 * 5),
+
+        new Disk(FIELD_SIDE / 12 * 7, FIELD_SIDE / 12 * 7),
+        new Disk(FIELD_SIDE / 12 * 8, FIELD_SIDE / 12 * 8),
+        new Disk(FIELD_SIDE / 12 * 9, FIELD_SIDE / 12 * 9),
+        new Disk(FIELD_SIDE / 12 * 9, FIELD_SIDE / 12 * 9),
+        new Disk(FIELD_SIDE / 12 * 9, FIELD_SIDE / 12 * 9),
+        new Disk(FIELD_SIDE / 12 * 10, FIELD_SIDE / 12 * 10),
+        new Disk(FIELD_SIDE / 12 * 11, FIELD_SIDE / 12 * 11),
+
+
+        new Disk(FIELD_SIDE / 12 * 5, FIELD_SIDE / 12 * 3),
+        new Disk(FIELD_SIDE / 12 * 6, FIELD_SIDE / 12 * 4),
+        new Disk(FIELD_SIDE / 12 * 7, FIELD_SIDE / 12 * 5),
+        
+        new Disk(FIELD_SIDE / 12 * 9, FIELD_SIDE / 12 * 7),
+        new Disk(FIELD_SIDE / 12 * 9, FIELD_SIDE / 12 * 7),
+        new Disk(FIELD_SIDE / 12 * 9, FIELD_SIDE / 12 * 7),
+
+
+        new Disk(FIELD_SIDE / 12 * 5, FIELD_SIDE / 12 * 7),
+        new Disk(FIELD_SIDE / 12 * 6, FIELD_SIDE / 12 * 8),
+        new Disk(FIELD_SIDE / 12 * 7, FIELD_SIDE / 12 * 9),
+        
+        new Disk(FIELD_SIDE / 12 * 3, FIELD_SIDE / 12 * 5),
+        new Disk(FIELD_SIDE / 12 * 3, FIELD_SIDE / 12 * 5),
+        new Disk(FIELD_SIDE / 12 * 3, FIELD_SIDE / 12 * 5),
     ]
 
     private readonly rollers = [

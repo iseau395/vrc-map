@@ -5,6 +5,10 @@ export default class Disk extends RoundMovableGameobject {
     diameter = 14;
     rotate_step = 1;
 
+    constructor(x: number, y: number) {
+        super(x, y, 0);
+    }
+
     render(ctx: CanvasRenderingContext2D) {
         ctx.fillStyle = "rgb(232, 212, 33)";
         ctx.lineWidth = 2.6985 * FIELD_SCALE;
