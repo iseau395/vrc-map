@@ -1,0 +1,1 @@
+export const HIGH_GOAL_SUPPORT = "rgb(200, 200, 200)"

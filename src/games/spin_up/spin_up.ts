@@ -3,6 +3,7 @@ import { FIELD_SCALE, FIELD_SIDE } from "util/constants";
 import Disk from "./gameobjects/disk";
 import { LINE_COLOR, RED_ALLIANCE, BLUE_ALLIANCE } from "games/generic/colors";
 import Roller from "./gameobjects/roller";
+import { HIGH_GOAL_SUPPORT } from "./colors";
 
 export default class TippingPoint implements GameRenderer {
     private cache_ctx: CanvasRenderingContext2D;
@@ -150,6 +151,36 @@ export default class TippingPoint implements GameRenderer {
         this.cache_ctx.lineTo(FIELD_SIDE / 3 * 2, FIELD_SIDE / 3);
         this.cache_ctx.lineTo(FIELD_SIDE / 6 * 5, FIELD_SIDE / 3);
         this.cache_ctx.stroke();
+
+        ////// High Goals //////
+
+        this.cache_ctx.strokeStyle = HIGH_GOAL_SUPPORT;
+        this.cache_ctx.lineWidth = 5.08 * FIELD_SCALE;
+        this.cache_ctx.lineCap = "square";
+
+        this.cache_ctx.beginPath();
+        this.cache_ctx.moveTo(FIELD_SIDE / 3 * 2, 0);
+        this.cache_ctx.lineTo(FIELD_SIDE, FIELD_SIDE / 3);
+        
+        this.cache_ctx.moveTo(0, FIELD_SIDE / 3 * 2);
+        this.cache_ctx.lineTo(FIELD_SIDE / 3, FIELD_SIDE);
+        this.cache_ctx.stroke();
+
+
+        const high_goal_diameter = 39.9542;
+        this.cache_ctx.fillStyle = RED_ALLIANCE;
+
+        this.cache_ctx.beginPath();
+        this.cache_ctx.arc(FIELD_SIDE / 6 * 5, FIELD_SIDE / 6, high_goal_diameter/2 * FIELD_SCALE, 0, Math.PI * 2);
+        this.cache_ctx.closePath();
+        this.cache_ctx.fill();
+
+        this.cache_ctx.fillStyle = BLUE_ALLIANCE;
+
+        this.cache_ctx.beginPath();
+        this.cache_ctx.arc(FIELD_SIDE / 6, FIELD_SIDE / 6 * 5, high_goal_diameter/2 * FIELD_SCALE, 0, Math.PI * 2);
+        this.cache_ctx.closePath();
+        this.cache_ctx.fill();
     }
 
     tick(mouseX: number, mouseY: number, mouseButton: number, shiftKey: boolean, deltaScroll: number) {
