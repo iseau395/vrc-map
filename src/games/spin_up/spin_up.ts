@@ -12,17 +12,17 @@ export default class TippingPoint implements GameRenderer {
     private readonly disks = [
         new Disk(FIELD_SIDE / 12 * 1, FIELD_SIDE / 12 * 1),
         new Disk(FIELD_SIDE / 12 * 2, FIELD_SIDE / 12 * 2),
-        new Disk(FIELD_SIDE / 12 * 3, FIELD_SIDE / 12 * 3),
-        new Disk(FIELD_SIDE / 12 * 3, FIELD_SIDE / 12 * 3),
-        new Disk(FIELD_SIDE / 12 * 3, FIELD_SIDE / 12 * 3),
+        new Disk(FIELD_SIDE / 12 * 3, FIELD_SIDE / 12 * 3 - 1 * FIELD_SCALE),
+        new Disk(FIELD_SIDE / 12 * 3, FIELD_SIDE / 12 * 3 - 2 * FIELD_SCALE),
+        new Disk(FIELD_SIDE / 12 * 3, FIELD_SIDE / 12 * 3 - 3 * FIELD_SCALE),
         new Disk(FIELD_SIDE / 12 * 4, FIELD_SIDE / 12 * 4),
         new Disk(FIELD_SIDE / 12 * 5, FIELD_SIDE / 12 * 5),
 
         new Disk(FIELD_SIDE / 12 * 7, FIELD_SIDE / 12 * 7),
         new Disk(FIELD_SIDE / 12 * 8, FIELD_SIDE / 12 * 8),
-        new Disk(FIELD_SIDE / 12 * 9, FIELD_SIDE / 12 * 9),
-        new Disk(FIELD_SIDE / 12 * 9, FIELD_SIDE / 12 * 9),
-        new Disk(FIELD_SIDE / 12 * 9, FIELD_SIDE / 12 * 9),
+        new Disk(FIELD_SIDE / 12 * 9, FIELD_SIDE / 12 * 9 - 1 * FIELD_SCALE),
+        new Disk(FIELD_SIDE / 12 * 9, FIELD_SIDE / 12 * 9 - 2 * FIELD_SCALE),
+        new Disk(FIELD_SIDE / 12 * 9, FIELD_SIDE / 12 * 9 - 3 * FIELD_SCALE),
         new Disk(FIELD_SIDE / 12 * 10, FIELD_SIDE / 12 * 10),
         new Disk(FIELD_SIDE / 12 * 11, FIELD_SIDE / 12 * 11),
 
@@ -31,18 +31,45 @@ export default class TippingPoint implements GameRenderer {
         new Disk(FIELD_SIDE / 12 * 6, FIELD_SIDE / 12 * 4),
         new Disk(FIELD_SIDE / 12 * 7, FIELD_SIDE / 12 * 5),
         
-        new Disk(FIELD_SIDE / 12 * 9, FIELD_SIDE / 12 * 7),
-        new Disk(FIELD_SIDE / 12 * 9, FIELD_SIDE / 12 * 7),
-        new Disk(FIELD_SIDE / 12 * 9, FIELD_SIDE / 12 * 7),
+        new Disk(FIELD_SIDE / 12 * 9, FIELD_SIDE / 12 * 7 - 1 * FIELD_SCALE),
+        new Disk(FIELD_SIDE / 12 * 9, FIELD_SIDE / 12 * 7 - 2 * FIELD_SCALE),
+        new Disk(FIELD_SIDE / 12 * 9, FIELD_SIDE / 12 * 7 - 3 * FIELD_SCALE),
 
 
         new Disk(FIELD_SIDE / 12 * 5, FIELD_SIDE / 12 * 7),
         new Disk(FIELD_SIDE / 12 * 6, FIELD_SIDE / 12 * 8),
         new Disk(FIELD_SIDE / 12 * 7, FIELD_SIDE / 12 * 9),
         
-        new Disk(FIELD_SIDE / 12 * 3, FIELD_SIDE / 12 * 5),
-        new Disk(FIELD_SIDE / 12 * 3, FIELD_SIDE / 12 * 5),
-        new Disk(FIELD_SIDE / 12 * 3, FIELD_SIDE / 12 * 5),
+        new Disk(FIELD_SIDE / 12 * 3, FIELD_SIDE / 12 * 5 - 1 * FIELD_SCALE),
+        new Disk(FIELD_SIDE / 12 * 3, FIELD_SIDE / 12 * 5 - 2 * FIELD_SCALE),
+        new Disk(FIELD_SIDE / 12 * 3, FIELD_SIDE / 12 * 5 - 3 * FIELD_SCALE),
+
+        // Preloads and Match Loads
+        new Disk(-FIELD_SIDE / 12, FIELD_SIDE / 20 * 7),
+        new Disk(-FIELD_SIDE / 12, FIELD_SIDE / 20 * 8),
+        new Disk(-FIELD_SIDE / 12, FIELD_SIDE / 20 * 13),
+        new Disk(-FIELD_SIDE / 12, FIELD_SIDE / 20 * 12),
+
+        new Disk(FIELD_SIDE + FIELD_SIDE / 12, FIELD_SIDE / 20 * 7),
+        new Disk(FIELD_SIDE + FIELD_SIDE / 12, FIELD_SIDE / 20 * 8),
+        new Disk(FIELD_SIDE + FIELD_SIDE / 12, FIELD_SIDE / 20 * 13),
+        new Disk(FIELD_SIDE + FIELD_SIDE / 12, FIELD_SIDE / 20 * 12),
+        
+        new Disk(-FIELD_SIDE / 12 * 2, FIELD_SIDE / 20 * 7),
+        new Disk(-FIELD_SIDE / 12 * 2, FIELD_SIDE / 20 * 8),
+        new Disk(-FIELD_SIDE / 12 * 2, FIELD_SIDE / 20 * 9),
+        new Disk(-FIELD_SIDE / 12 * 2, FIELD_SIDE / 20 * 10),
+        new Disk(-FIELD_SIDE / 12 * 2, FIELD_SIDE / 20 * 11),
+        new Disk(-FIELD_SIDE / 12 * 2, FIELD_SIDE / 20 * 12),
+        new Disk(-FIELD_SIDE / 12 * 2, FIELD_SIDE / 20 * 13),
+
+        new Disk(FIELD_SIDE + FIELD_SIDE / 12 * 2, FIELD_SIDE / 20 * 7),
+        new Disk(FIELD_SIDE + FIELD_SIDE / 12 * 2, FIELD_SIDE / 20 * 8),
+        new Disk(FIELD_SIDE + FIELD_SIDE / 12 * 2, FIELD_SIDE / 20 * 9),
+        new Disk(FIELD_SIDE + FIELD_SIDE / 12 * 2, FIELD_SIDE / 20 * 10),
+        new Disk(FIELD_SIDE + FIELD_SIDE / 12 * 2, FIELD_SIDE / 20 * 11),
+        new Disk(FIELD_SIDE + FIELD_SIDE / 12 * 2, FIELD_SIDE / 20 * 12),
+        new Disk(FIELD_SIDE + FIELD_SIDE / 12 * 2, FIELD_SIDE / 20 * 13),
     ]
 
     private readonly rollers = [
@@ -66,7 +93,7 @@ export default class TippingPoint implements GameRenderer {
         this.cache_ctx.lineCap = "square";
         this.cache_ctx.beginPath();
 
-        // Diagnal Lines
+        // Diagonal Lines
 
         this.cache_ctx.moveTo(5 * FIELD_SCALE, 0);
         this.cache_ctx.lineTo(FIELD_SIDE, FIELD_SIDE - 5 * FIELD_SCALE);
@@ -155,6 +182,28 @@ export default class TippingPoint implements GameRenderer {
     }
 
     render(ctx: CanvasRenderingContext2D) {
+        // Alliance Stations
+
+        ctx.strokeStyle = RED_ALLIANCE;
+        ctx.lineWidth = 3 * FIELD_SCALE;
+        ctx.lineCap = "square";
+        
+        ctx.beginPath();
+        ctx.moveTo(-FIELD_SIDE / 12 * 3, FIELD_SIDE / 12);
+        ctx.lineTo(-FIELD_SIDE / 12 / 2, FIELD_SIDE / 12);
+        ctx.lineTo(-FIELD_SIDE / 12 / 2, FIELD_SIDE / 12 * 11);
+        ctx.lineTo(-FIELD_SIDE / 12 * 3, FIELD_SIDE / 12 * 11);
+        ctx.stroke();
+        
+        ctx.strokeStyle = BLUE_ALLIANCE;
+
+        ctx.beginPath();
+        ctx.moveTo(FIELD_SIDE + FIELD_SIDE / 12 * 3, FIELD_SIDE / 12);
+        ctx.lineTo(FIELD_SIDE + FIELD_SIDE / 12 / 2, FIELD_SIDE / 12);
+        ctx.lineTo(FIELD_SIDE + FIELD_SIDE / 12 / 2, FIELD_SIDE / 12 * 11);
+        ctx.lineTo(FIELD_SIDE + FIELD_SIDE / 12 * 3, FIELD_SIDE / 12 * 11);
+        ctx.stroke();
+
         this.rollers.forEach(roller => {
             roller.render(ctx);
         });
