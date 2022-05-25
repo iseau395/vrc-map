@@ -73,7 +73,6 @@ export default class Roller implements Gameobject {
         if (this.pointInside(mouseX, mouseY) && mouseButton == 0 && !this.was_pressed) {
             this.state++;
             if (this.state > 1) this.state = -1;
-            console.log(this.state);
             this.was_pressed = true
         } else if (mouseButton != 0) {
             this.was_pressed = false
