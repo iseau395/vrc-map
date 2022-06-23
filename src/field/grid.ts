@@ -25,20 +25,20 @@ import { FIELD_SIDE } from "util/constants";
         // let current_x = fieldX % grid_spacing / 2;
         // let current_y = fieldY % grid_spacing / 2;
         
-        let current_x = +fieldX % grid_spacing;
-        let current_y = +fieldY % grid_spacing;
+        let current_x = fieldX % grid_spacing;
+        let current_y = fieldY % grid_spacing;
 
         ctx.beginPath();
         
         while (current_x < ctx.canvas.width) {
-            ctx.moveTo(current_x, -fieldY / fieldZoom);
+            ctx.moveTo(current_x, Math.min(-fieldY / fieldZoom, 0));
             ctx.lineTo(current_x, ctx.canvas.height);
 
             current_x += grid_spacing;
         }
         
         while (current_y < ctx.canvas.height) {
-            ctx.moveTo(-fieldX / fieldZoom, current_y);
+            ctx.moveTo(Math.min(-fieldX / fieldZoom, 0), current_y);
             ctx.lineTo(ctx.canvas.width, current_y);
 
             current_y += grid_spacing;
