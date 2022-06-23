@@ -30,8 +30,10 @@
             .default(forground_canvas);
         const FieldRenderer = new (await import("../field/field-renderer"))
             .default(window.innerWidth, window.innerHeight - 50);
+        const Grid = new (await import("../field/grid"))
+            .default();
         const GameRenderer = await get_game(game);
-
+        
         const resize = () => {
             background_canvas.width = window.innerWidth;
             background_canvas.height = window.innerHeight - 50;
@@ -72,25 +74,43 @@
 
             forground_ctx.restore();
 
+            if (InputController.ctrlKey)
+                Grid.render(
+                    forground_ctx,
+                    FieldRenderer.x(),
+                    FieldRenderer.y(),
+                    FieldRenderer.zoom()
+                )
+
             animationFrame = requestAnimationFrame(render);
         }
 
         function tick() {
-            const mouseX = (InputController.mouseX - FieldRenderer.x) / FieldRenderer.zoom;
-            const mouseY = (InputController.mouseY - FieldRenderer.y) / FieldRenderer.zoom;
+            const mouseX = (InputController.mouseX - FieldRenderer.x()) / FieldRenderer.zoom();
+            const mouseY = (InputController.mouseY - FieldRenderer.y()) / FieldRenderer.zoom();
+
+            const [snappedMouseX, snappedMouseY] = 
+                InputController.ctrlKey ?
+                Grid.snap(mouseX, mouseY) :
+                [mouseX, mouseY];
+
+
 
             FieldRenderer.tick(
                 InputController.dragX,
                 InputController.dragY,
-                InputController.zoom,
+                InputController.zoom
             );
 
             if (!InputController.altKey)
                 GameRenderer.tick(
                     mouseX,
                     mouseY,
+                    snappedMouseX,
+                    snappedMouseY,
                     InputController.mouseButton,
                     InputController.shiftKey,
+                    InputController.ctrlKey,
                     InputController.deltaScroll
                 );
         }

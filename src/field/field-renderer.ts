@@ -79,15 +79,15 @@ export default class FieldRenderer implements Renderable, Tickable {
         this.cache_ctx.stroke();
     }
 
-    get zoom() {
+    zoom() {
         return this.fieldZoom;
     }
 
-    get x() {
+    x() {
         return this.fieldX;
     }
 
-    get y() {
+    y() {
         return this.fieldY;
     }
 }

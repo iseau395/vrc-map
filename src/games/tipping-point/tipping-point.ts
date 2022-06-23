@@ -112,7 +112,7 @@ export default class TippingPoint implements GameRenderer {
         );
     }
 
-    tick(mouseX: number, mouseY: number, mouseButton: number, shiftKey: boolean, deltaScroll: number) {
+    tick(mouseX: number, mouseY: number, snappedMouseX: number, snappedMouseY: number, mouseButton: number, shiftKey: boolean, ctrlKey: boolean, deltaScroll: number) {
         if (shiftKey && mouseButton == 0) {
             if (this.selection.arr == -1) {
                 for (const mogo of this.mogos) {

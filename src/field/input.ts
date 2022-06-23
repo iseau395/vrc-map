@@ -32,6 +32,8 @@ export default class InputController {
     }
 
     private wheel(ev: WheelEvent) {
+        ev.preventDefault();
+
         if (!this._shiftKey) {
             this._zoom += ev.deltaY * -0.002;
             this._zoom = Math.min(Math.max(.125, this._zoom), 4);
@@ -45,6 +47,8 @@ export default class InputController {
     }
 
     private keydown(ev: KeyboardEvent) {
+        ev.preventDefault();
+
         this._altKey = ev.altKey;
         this._ctrlKey = ev.ctrlKey;
         this._shiftKey = ev.shiftKey;

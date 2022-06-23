@@ -5,7 +5,7 @@ import { LINE_COLOR, RED_ALLIANCE, BLUE_ALLIANCE } from "games/generic/colors";
 import Roller from "./gameobjects/roller";
 import { HIGH_GOAL_SUPPORT } from "./colors";
 
-export default class TippingPoint implements GameRenderer {
+export default class SpinUp implements GameRenderer {
     private cache_ctx: CanvasRenderingContext2D;
 
     private selected_disk = -1;
@@ -183,7 +183,7 @@ export default class TippingPoint implements GameRenderer {
         this.cache_ctx.fill();
     }
 
-    tick(mouseX: number, mouseY: number, mouseButton: number, shiftKey: boolean, deltaScroll: number) {
+    tick(mouseX: number, mouseY: number, snappedMouseX: number, snappedMouseY: number, mouseButton: number, shiftKey: boolean, ctrlKey: boolean, deltaScroll: number) {
         if (shiftKey && mouseButton == 0) {
             if (this.selected_disk == -1) {
                 for (const disk of this.disks) {
@@ -198,8 +198,8 @@ export default class TippingPoint implements GameRenderer {
             if (this.selected_disk >= 0)
                 this.disks[this.selected_disk]
                     .update(
-                        mouseX,
-                        mouseY,
+                        snappedMouseX,
+                        snappedMouseY,
                         deltaScroll
                     );
         } else {
