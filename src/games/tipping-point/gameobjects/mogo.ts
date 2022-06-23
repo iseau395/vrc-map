@@ -1,4 +1,4 @@
-import { RoundMovableGameobject } from "games/generic/gameobject";
+import { RoundMovableObject } from "games/generic/object";
 import { FIELD_SCALE } from "util/constants";
 import { drawPolygon } from "util/drawing";
 import { BLUE_ALLIANCE, NEUTRAL, RED_ALLIANCE } from "../../generic/colors";
@@ -9,7 +9,7 @@ export enum MogoVariation {
     NEUTRAL
 }
 
-export default class Mogo extends RoundMovableGameobject {
+export default class Mogo extends RoundMovableObject {
     private static red_cache: CanvasRenderingContext2D;
     private static blue_cache: CanvasRenderingContext2D;
     private static neutral_cache: CanvasRenderingContext2D;

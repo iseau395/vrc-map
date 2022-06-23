@@ -1,13 +1,13 @@
 import type { Renderable } from "util/class-bases";
 import { FIELD_SCALE } from "util/constants";
 
-export interface Gameobject extends Renderable {
+export interface Object extends Renderable {
     update(...params: any): void;
 
     pointInside(x: number, y: number): boolean;
 }
 
-export class MovableGameobject implements Gameobject {
+export class MovableObject implements Object {
     protected x: number;
     protected y: number;
     protected r: number;
@@ -41,7 +41,7 @@ export class MovableGameobject implements Gameobject {
     }
 }
 
-export class RoundMovableGameobject extends MovableGameobject {
+export class RoundMovableObject extends MovableObject {
     protected readonly diameter: number;
 
     pointInside(x: number, y: number) {

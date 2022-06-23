@@ -1,7 +1,7 @@
-import { RoundMovableGameobject } from "games/generic/gameobject";
+import { RoundMovableObject } from "games/generic/object";
 import { FIELD_SCALE } from "util/constants";
 
-export default class Disk extends RoundMovableGameobject {
+export default class Disk extends RoundMovableObject {
     diameter = 14;
     rotate_step = 1;
 

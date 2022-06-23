@@ -1,7 +1,7 @@
-import { RoundMovableGameobject } from "games/generic/gameobject";
+import { RoundMovableObject } from "games/generic/object";
 import { FIELD_SCALE } from "util/constants";
 
-export default class Ring extends RoundMovableGameobject {
+export default class Ring extends RoundMovableObject {
     diameter = 5.23875;
     rotate_step = 1;
 

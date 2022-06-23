@@ -1,8 +1,8 @@
 import { BLUE_ALLIANCE, RED_ALLIANCE } from "games/generic/colors";
-import type { Gameobject } from "games/generic/gameobject";
+import type { Object } from "games/generic/object";
 import { FIELD_SCALE } from "util/constants";
 
-export default class Roller implements Gameobject {
+export default class Roller implements Object {
     static readonly long_side = 24.892 * FIELD_SCALE;
     static readonly short_side = 6.096 * FIELD_SCALE;
 
