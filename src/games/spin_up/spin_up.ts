@@ -44,6 +44,20 @@ export default class SpinUp implements GameRenderer {
         new Disk(FIELD_SIDE / 12 * 3, FIELD_SIDE / 12 * 5 - 1 * FIELD_SCALE),
         new Disk(FIELD_SIDE / 12 * 3, FIELD_SIDE / 12 * 5 - 2 * FIELD_SCALE),
         new Disk(FIELD_SIDE / 12 * 3, FIELD_SIDE / 12 * 5 - 3 * FIELD_SCALE),
+        
+        new Disk(FIELD_SIDE / 48 * 31, FIELD_SIDE / 48 * 9),
+        new Disk(FIELD_SIDE / 48 * 31, FIELD_SIDE / 48 * 12),
+        new Disk(FIELD_SIDE / 48 * 31, FIELD_SIDE / 48 * 15),
+        new Disk(FIELD_SIDE / 48 * 33, FIELD_SIDE / 48 * 17),
+        new Disk(FIELD_SIDE / 48 * 36, FIELD_SIDE / 48 * 17),
+        new Disk(FIELD_SIDE / 48 * 39, FIELD_SIDE / 48 * 17),
+    
+        new Disk(FIELD_SIDE / 48 * 9, FIELD_SIDE / 48 * 31),
+        new Disk(FIELD_SIDE / 48 * 12, FIELD_SIDE / 48 * 31),
+        new Disk(FIELD_SIDE / 48 * 15, FIELD_SIDE / 48 * 31),
+        new Disk(FIELD_SIDE / 48 * 17, FIELD_SIDE / 48 * 33),
+        new Disk(FIELD_SIDE / 48 * 17, FIELD_SIDE / 48 * 36),
+        new Disk(FIELD_SIDE / 48 * 17, FIELD_SIDE / 48 * 39),
 
         // Preloads and Match Loads
         new Disk(-FIELD_SIDE / 12, FIELD_SIDE / 20 * 7),
