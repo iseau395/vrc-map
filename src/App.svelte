@@ -11,7 +11,7 @@
 {:else}
 <p>
     It looks like you are on a touchscreen only device like a phone or tablet.
-    As this field map doesn't work on touchscreen devices (yet), so try to instead use a computer.
+    This field map doesn't work on touchscreen devices (yet), so try to instead use a device with a keyboard and mouse.
 </p>
 {/if}
 
