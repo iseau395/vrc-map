@@ -3,7 +3,7 @@ import { FIELD_SCALE } from "../util/constants";
 
 class Point extends RoundMovableObject {
     protected readonly diameter = 8.5;
-    protected readonly rotate_step = 0;
+    protected rotate_step = 1;
 
     render(ctx: CanvasRenderingContext2D) {
         ctx.lineWidth = 0;
@@ -40,7 +40,7 @@ export default class BasicPath {
 
     tick(mouseX: number, mouseY: number, snappedMouseX: number, snappedMouseY: number, mouseButton: number, shiftKey: boolean, ctrlKey: boolean, deltaScroll: number) {
         if (shiftKey && mouseButton == 0) {
-            if (this.selection == -1) {
+            if (!this.has_selection()) {
                 for (const point of this.points) {
                     if (point.pointInside(mouseX, mouseY)) {
                         this.selection = this.points.indexOf(point);
@@ -50,15 +50,16 @@ export default class BasicPath {
                 }
             }
 
-            this.points[this.selection]
-                .update(
-                    snappedMouseX,
-                    snappedMouseY,
-                    deltaScroll
-                );
-        } else {
-            console.log(mouseButton);
+            console.log(this.points);
 
+            if (this.has_selection())
+                this.points[this.selection]
+                    .update(
+                        snappedMouseX,
+                        snappedMouseY,
+                        deltaScroll
+                    );
+        } else {
             if (mouseButton == 2 && this.added_point == false) {
                 this.points.push(new Point(snappedMouseX, snappedMouseY, 0));
                 this.added_point = true;
