@@ -107,18 +107,6 @@
                 InputController.zoom
             );
 
-            if (!InputController.altKey)
-                GameRenderer.tick(
-                    mouseX,
-                    mouseY,
-                    snappedMouseX,
-                    snappedMouseY,
-                    InputController.mouseButton,
-                    InputController.shiftKey,
-                    InputController.ctrlKey,
-                    InputController.deltaScroll
-                );
-
             Path.tick(
                     mouseX,
                     mouseY,
@@ -129,6 +117,18 @@
                     InputController.ctrlKey,
                     InputController.deltaScroll
                 )
+
+            if (!InputController.altKey && !Path.has_selection())
+                GameRenderer.tick(
+                    mouseX,
+                    mouseY,
+                    snappedMouseX,
+                    snappedMouseY,
+                    InputController.mouseButton,
+                    InputController.shiftKey,
+                    InputController.ctrlKey,
+                    InputController.deltaScroll
+                );
         }
 
         interval = setInterval(tick, 20);

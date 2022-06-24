@@ -96,4 +96,8 @@ export default class BasicPath {
             )
         );
     }
+
+    has_selection() {
+        return this.selection >= 0;
+    }
 }
