@@ -137,16 +137,16 @@ export default class TippingPoint implements GameRenderer {
             if (this.selection.arr == 0)
                 this.mogos[this.selection.index]
                     .update(
-                        mouseX,
-                        mouseY,
+                        snappedMouseX,
+                        snappedMouseY,
                         deltaScroll
                     );
 
             if (this.selection.arr == 1)
                 this.rings[this.selection.index]
                     .update(
-                        mouseX,
-                        mouseY,
+                        snappedMouseX,
+                        snappedMouseY,
                         deltaScroll
                     );
         } else {
