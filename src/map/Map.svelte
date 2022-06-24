@@ -3,6 +3,11 @@
     import type { GameType } from "../util/constants";
     import { get_game } from "../games/game";
 
+    import _InputController from "../field/input";
+    import _FieldRenderer from "../field/field-renderer";
+    import _Grid from "../field/grid";
+    import _Path from "../paths/basic_path";
+
     let background_canvas: HTMLCanvasElement;
     let forground_canvas: HTMLCanvasElement;
 
@@ -26,12 +31,10 @@
             alpha: true
         });
 
-        const InputController = new (await import("../field/input"))
-            .default(forground_canvas);
-        const FieldRenderer = new (await import("../field/field-renderer"))
-            .default(window.innerWidth, window.innerHeight - 50);
-        const Grid = new (await import("../field/grid"))
-            .default();
+        const InputController = new _InputController(forground_canvas);
+        const FieldRenderer = new _FieldRenderer(window.innerWidth, window.innerHeight - 50);
+        const Grid = new _Grid();
+        const Path = new _Path();
         const GameRenderer = await get_game(game);
         
         const resize = () => {
@@ -71,6 +74,8 @@
             FieldRenderer.translate(forground_ctx);
 
             GameRenderer.render(forground_ctx);
+
+            Path.render(forground_ctx);
 
             forground_ctx.restore();
 
@@ -113,6 +118,17 @@
                     InputController.ctrlKey,
                     InputController.deltaScroll
                 );
+
+            Path.tick(
+                    mouseX,
+                    mouseY,
+                    snappedMouseX,
+                    snappedMouseY,
+                    InputController.mouseButton,
+                    InputController.shiftKey,
+                    InputController.ctrlKey,
+                    InputController.deltaScroll
+                )
         }
 
         interval = setInterval(tick, 20);

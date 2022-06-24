@@ -31,6 +31,10 @@ export default class InputController {
         this._mouseButton = -1;
     }
 
+    private contextmenu(ev: MouseEvent) {
+        ev.preventDefault();
+    }
+
     private wheel(ev: WheelEvent) {
         ev.preventDefault();
 
@@ -47,8 +51,6 @@ export default class InputController {
     }
 
     private keydown(ev: KeyboardEvent) {
-        ev.preventDefault();
-
         this._altKey = ev.altKey;
         this._ctrlKey = ev.ctrlKey;
         this._shiftKey = ev.shiftKey;
@@ -64,6 +66,7 @@ export default class InputController {
         canvas.addEventListener("mousemove", ev => this.mousemove(ev));
         canvas.addEventListener("mousedown", ev => this.mousedown(ev));
         canvas.addEventListener("mouseup", ev => this.mouseup(ev));
+        canvas.addEventListener("contextmenu", ev => this.contextmenu(ev));
         canvas.addEventListener("wheel", ev => this.wheel(ev));
         canvas.addEventListener("scroll", ev => this.scroll(ev));
         window.addEventListener("keydown", ev => this.keydown(ev));
