@@ -199,7 +199,7 @@ export default class SpinUp implements GameRenderer {
 
     tick(mouseX: number, mouseY: number, snappedMouseX: number, snappedMouseY: number, mouseButton: number, shiftKey: boolean, ctrlKey: boolean, deltaScroll: number) {
         if (shiftKey && mouseButton == 0) {
-            if (this.selected_disk == -1) {
+            if (!this.has_selection()) {
                 for (const disk of this.disks) {
                     if (disk.pointInside(mouseX, mouseY)) {
                         this.selected_disk = this.disks.indexOf(disk);
@@ -220,7 +220,7 @@ export default class SpinUp implements GameRenderer {
             this.selected_disk = -1;
         }
 
-        if (!shiftKey)
+        if (!this.has_selection())
             for (const roller of this.rollers) {
                 roller.update(mouseX, mouseY, mouseButton);
             }
