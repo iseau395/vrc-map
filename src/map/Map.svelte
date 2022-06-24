@@ -107,16 +107,17 @@
                 InputController.zoom
             );
 
-            Path.tick(
-                    mouseX,
-                    mouseY,
-                    snappedMouseX,
-                    snappedMouseY,
-                    InputController.mouseButton,
-                    InputController.shiftKey,
-                    InputController.ctrlKey,
-                    InputController.deltaScroll
-                )
+            if (!GameRenderer.has_selection())
+                Path.tick(
+                        mouseX,
+                        mouseY,
+                        snappedMouseX,
+                        snappedMouseY,
+                        InputController.mouseButton,
+                        InputController.shiftKey,
+                        InputController.ctrlKey,
+                        InputController.deltaScroll
+                    )
 
             if (!InputController.altKey && !Path.has_selection())
                 GameRenderer.tick(

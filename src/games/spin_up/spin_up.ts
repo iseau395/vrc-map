@@ -263,4 +263,8 @@ export default class SpinUp implements GameRenderer {
 
         ctx.drawImage(this.cache_ctx.canvas, 0, 0);
     }
+
+    has_selection() {
+        return this.selected_disk >= 0;
+    }
 }

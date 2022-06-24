@@ -50,8 +50,6 @@ export default class BasicPath {
                 }
             }
 
-            console.log(this.points);
-
             if (this.has_selection())
                 this.points[this.selection]
                     .update(

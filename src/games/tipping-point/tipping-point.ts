@@ -174,4 +174,8 @@ export default class TippingPoint implements GameRenderer {
 
         ctx.drawImage(this.cache_ctx.canvas, 0, 0);
     }
+
+    has_selection() {
+        return this.selection.arr >= 0;
+    }
 }
