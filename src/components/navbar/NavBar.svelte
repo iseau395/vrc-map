@@ -15,7 +15,8 @@
 </div>
 
 {#if sidemenu}
-    <Sidemenu></Sidemenu>
+    <Sidemenu>
+    </Sidemenu>
 {/if}
 
 <style>

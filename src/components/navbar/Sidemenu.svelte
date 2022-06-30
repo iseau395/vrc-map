@@ -3,7 +3,8 @@
 </script>
 
 <div transition:fly="{{ x: 200, duration: 100 }}">
-
+    <a href="./spin-up">Spin Up</a>
+    <a href="./spin-up">Tipping Point</a>
 </div>
 
 <style>
@@ -15,5 +16,8 @@
         width: 20%;
         position: absolute;
         right: 0px;
+
+        display: flex;
+        flex-direction: column;
     }
 </style>

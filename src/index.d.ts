@@ -1,2 +1,2 @@
 /// <reference types="svelte" />
-const isProduction: boolean;
+declare const isProduction: boolean;
