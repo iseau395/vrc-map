@@ -13,6 +13,8 @@ export default class InputController {
     private _ctrlKey = false;
     private _shiftKey = false;
 
+    private readonly keys = new Map<string, boolean>();
+
     private mousemove(ev: MouseEvent) {
         if (this._mouseButton == 1 || this._mouseButton == 0 && this._altKey) {
             this._dragX += ev.movementX;
@@ -54,12 +56,16 @@ export default class InputController {
         this._altKey = ev.altKey;
         this._ctrlKey = ev.ctrlKey;
         this._shiftKey = ev.shiftKey;
+
+        this.keys.set(ev.key, true);
     }
 
     private keyup(ev: KeyboardEvent) {
         this._altKey = ev.altKey;
         this._ctrlKey = ev.ctrlKey;
         this._shiftKey = ev.shiftKey;
+
+        this.keys.delete(ev.key);
     }
 
     constructor(canvas: HTMLCanvasElement) {
@@ -119,5 +125,9 @@ export default class InputController {
 
     get shiftKey() {
         return this._shiftKey;
+    }
+
+    keyPressed(key: string) {
+        return this.keys.has(key);
     }
 }
