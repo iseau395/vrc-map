@@ -4,7 +4,7 @@
 
 <div transition:fly="{{ x: 200, duration: 100 }}">
     <a href="./spin-up">Spin Up</a>
-    <a href="./spin-up">Tipping Point</a>
+    <a href="./tipping-point">Tipping Point</a>
 </div>
 
 <style>
