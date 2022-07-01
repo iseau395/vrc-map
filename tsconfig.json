@@ -5,7 +5,9 @@
         "types": ["node", "svelte"],
         "noImplicitAny": true,
         "module": "es2020",
-        "baseUrl": "./src"
+        "baseUrl": "./src",
+        
+        "forceConsistentCasingInFileNames": false,
     },
     "include": ["src/**/*.ts"],
     "exclude": ["node_modules/**/*", "public/**/*"],
