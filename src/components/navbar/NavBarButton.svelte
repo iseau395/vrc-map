@@ -16,6 +16,10 @@
         padding-right: 10px;
 
         cursor: pointer;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     div:hover {

@@ -2,21 +2,27 @@
     import NavBarButton from "./NavBarButton.svelte";
     import Sidemenu from "./Sidemenu.svelte";
 
+    import { settings_modal } from "../modals";
+
     let sidemenu = false;
 </script>
 
 <div>
     <span>
         <p>VRC Field Map</p>
+        <NavBarButton on:click={() => ($settings_modal = true)}>
+            Settings
+        </NavBarButton>
     </span>
     <div class="hamburger-button">
-        <NavBarButton on:click={() => sidemenu = !sidemenu}>&equiv;</NavBarButton>
+        <NavBarButton on:click={() => (sidemenu = !sidemenu)}>
+            &equiv;
+        </NavBarButton>
     </div>
 </div>
 
 {#if sidemenu}
-    <Sidemenu>
-    </Sidemenu>
+    <Sidemenu />
 {/if}
 
 <style>
@@ -29,6 +35,8 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+
+        text-align: center;
 
         -webkit-user-select: none; /* Safari */
         -moz-user-select: none; /* Firefox */
@@ -46,9 +54,12 @@
         display: flex;
         align-items: center;
         justify-content: flex-start;
+        width: max-content;
     }
 
     .hamburger-button {
         font-size: 45px;
+        display: flex;
+        justify-content: flex-end;
     }
 </style>
