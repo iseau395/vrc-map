@@ -97,10 +97,10 @@
             const mouseX = (InputController.mouseX - FieldRenderer.x()) / FieldRenderer.zoom();
             const mouseY = (InputController.mouseY - FieldRenderer.y()) / FieldRenderer.zoom();
 
-            if (InputController.keyPressed("g") && !toggled_grid) {
+            if (InputController.keyPressed("KeyG") && !toggled_grid) {
                 $use_grid = !$use_grid;
                 toggled_grid = true
-            } else if (!InputController.keyPressed("g")) {
+            } else if (!InputController.keyPressed("KeyG")) {
                 toggled_grid = false;
             }
 

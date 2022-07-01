@@ -55,7 +55,7 @@ export default class InputController {
         this._ctrlKey = ev.ctrlKey;
         this._shiftKey = ev.shiftKey;
 
-        this.keys.set(ev.key.toLowerCase(), true);
+        this.keys.set(ev.code, true);
     }
 
     private keyup(ev: KeyboardEvent) {
@@ -63,7 +63,7 @@ export default class InputController {
         this._ctrlKey = ev.ctrlKey;
         this._shiftKey = ev.shiftKey;
 
-        this.keys.delete(ev.key.toLowerCase());
+        this.keys.delete(ev.code);
     }
 
     constructor(canvas: HTMLCanvasElement) {
