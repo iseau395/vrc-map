@@ -47,7 +47,13 @@
     p {
         font-size: 35px;
         margin: 0px;
+
         padding-top: 5px;
+        padding-bottom: 5px;
+        padding-right: 10px;
+        padding-left: 10px;
+
+        text-align: center;
     }
 
     span {
@@ -55,6 +61,8 @@
         align-items: center;
         justify-content: flex-start;
         width: max-content;
+
+        font-size: x-large;
     }
 
     .hamburger-button {
