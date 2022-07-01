@@ -38,8 +38,6 @@ export default class InputController {
     }
 
     private wheel(ev: WheelEvent) {
-        ev.preventDefault();
-
         if (!this._shiftKey) {
             this._zoom += ev.deltaY * -0.002;
             this._zoom = Math.min(Math.max(.125, this._zoom), 4);
@@ -73,7 +71,7 @@ export default class InputController {
         canvas.addEventListener("mousedown", ev => this.mousedown(ev));
         canvas.addEventListener("mouseup", ev => this.mouseup(ev));
         canvas.addEventListener("contextmenu", ev => this.contextmenu(ev));
-        canvas.addEventListener("wheel", ev => this.wheel(ev));
+        canvas.addEventListener("wheel", ev => this.wheel(ev), { passive: true });
         canvas.addEventListener("scroll", ev => this.scroll(ev));
         window.addEventListener("keydown", ev => this.keydown(ev));
         window.addEventListener("keyup", ev => this.keyup(ev));
