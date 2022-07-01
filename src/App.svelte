@@ -3,13 +3,22 @@
     import NavBar from "./components/navbar/NavBar.svelte";
     import Map from "./map/Map.svelte";
 
-    const hasMouse = 'onmousemove' in window;
+    const hover_query = window.matchMedia("(hover: hover)");
+    const pointer_query = window.matchMedia("(pointer: fine)");
 
-    const modal = {
-        visible: true,
-        body: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Earum quo facere molestias culpa nobis magnam quibusdam? Ut quas voluptatibus voluptates eveniet natus molestias fuga deleniti voluptate labore commodi optio nobis totam quod cupiditate quasi eos culpa, aperiam impedit ea. Dicta pariatur fugiat porro, inventore provident obcaecati animi aliquam deserunt voluptate corporis sint voluptatem ipsum hic est. Illo voluptatum fugit blanditiis repellendus labore consequuntur omnis expedita, doloribus voluptatem tempora similique reprehenderit quos harum esse ipsam nulla sequi, maiores at a quibusdam praesentium debitis iure provident libero. Molestiae, et dolorem sunt sint labore temporibus doloremque quasi repudiandae odit nobis modi mollitia nam?",
-        title: "This is a title"
+    let has_hover = hover_query.matches;
+    let has_pointer = pointer_query.matches;
+
+    hover_query.onchange = (q) => {
+        has_hover = q.matches;
     };
+    pointer_query.onchange = (q) => {
+        has_pointer = q.matches;
+    };
+
+    $: hasMouse = has_hover || has_pointer;
+
+    let settings_modal = false;
 </script>
 
 <NavBar />
@@ -18,13 +27,15 @@
 <Map />
 {:else}
 <p>
-    It looks like you are on a touchscreen only device like a phone or tablet.
-    This field map doesn't work on touchscreen devices (yet), so try to instead use a device with a keyboard and mouse.
+    It looks like you are on a device without a mouse or touchpad. If you can, please plug in one of these devices, as this field map is designed to use them.
+    If you can't plug one in, then try to switch to another device which can have on plugged in.
 </p>
 {/if}
 
-{#if modal.visible}
-<Modal title={modal.title} body={modal.body} on:click={() => modal.visible = false}/>
+{#if settings_modal}
+<Modal title="Settings" on:click={() => settings_modal = false}>
+
+</Modal>
 {/if}
 
 <style>

@@ -1,6 +1,5 @@
 <script lang="ts">
     export let title = "Title Missing";
-    export let body = "Body Missing";
 </script>
 
 <div class="modal-background">
@@ -12,7 +11,7 @@
                 <line x1="35" y1="5" x2="5" y2="35" style="stroke:white;stroke-width:4"></line>
             </svg>
         </div>
-        <p>{body}</p>
+        <slot />
     </div>
 </div>
 
@@ -38,6 +37,7 @@
         padding: 2vh;
 
         color: white;
+        font-size: large;
     }
 
     div.modal-background {
@@ -65,9 +65,5 @@
         display: block;
         width: 40px;
         height: 40px;
-    }
-
-    p {
-        font-size: large;
     }
 </style>
