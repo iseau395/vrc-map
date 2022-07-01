@@ -1,5 +1,5 @@
-import type { Renderable } from "util/class-bases";
-import { FIELD_SCALE } from "util/constants";
+import type { Renderable } from "../../util/class-bases";
+import { FIELD_SCALE } from "../../util/constants";
 
 export interface Object extends Renderable {
     update(...params: any): void;

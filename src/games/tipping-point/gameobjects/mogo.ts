@@ -1,6 +1,6 @@
 import { RoundMovableObject } from "games/generic/object";
-import { FIELD_SCALE } from "util/constants";
-import { drawPolygon } from "util/drawing";
+import { FIELD_SCALE } from "../../../util/constants";
+import { drawPolygon } from "../../../util/drawing";
 import { BLUE_ALLIANCE, NEUTRAL, RED_ALLIANCE } from "../../generic/colors";
 
 export enum MogoVariation {

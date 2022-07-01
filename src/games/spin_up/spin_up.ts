@@ -1,5 +1,5 @@
 import type { GameRenderer } from "../generic/game-renderer";
-import { FIELD_SCALE, FIELD_SIDE } from "util/constants";
+import { FIELD_SCALE, FIELD_SIDE } from "../../util/constants";
 import Disk from "./gameobjects/disk";
 import { LINE_COLOR, RED_ALLIANCE, BLUE_ALLIANCE } from "games/generic/colors";
 import Roller from "./gameobjects/roller";

@@ -1,4 +1,4 @@
-import { FIELD_SIDE } from "util/constants";
+import { FIELD_SIDE } from "../util/constants";
 
 /**
  * A class for processing the grid for placing things
