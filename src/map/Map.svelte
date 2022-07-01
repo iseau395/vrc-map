@@ -2,6 +2,7 @@
     import { onMount, onDestroy, getContext } from "svelte";
     import type { GameType } from "../util/constants";
     import { get_game } from "../games/game";
+    import { use_grid } from "../components/settings/settings";
 
     import InputControllerClass from "../field/input";
     import FieldRendererClass from "../field/field-renderer";
@@ -79,7 +80,7 @@
 
             forground_ctx.restore();
 
-            if (InputController.ctrlKey)
+            if ($use_grid)
                 Grid.render(
                     forground_ctx,
                     FieldRenderer.x(),
@@ -90,12 +91,22 @@
             animationFrame = requestAnimationFrame(render);
         }
 
+        let toggled_grid = false;
+
         function tick() {
             const mouseX = (InputController.mouseX - FieldRenderer.x()) / FieldRenderer.zoom();
             const mouseY = (InputController.mouseY - FieldRenderer.y()) / FieldRenderer.zoom();
 
+            if (InputController.keyPressed("g") && !toggled_grid) {
+                $use_grid = !$use_grid;
+                toggled_grid = true
+            } else if (!InputController.keyPressed("g")) {
+                toggled_grid = false;
+            }
+
+
             const [snappedMouseX, snappedMouseY] = 
-                InputController.ctrlKey ?
+                $use_grid ?
                 Grid.snap(mouseX, mouseY) :
                 [mouseX, mouseY];
 

@@ -55,7 +55,7 @@ export default class InputController {
         this._ctrlKey = ev.ctrlKey;
         this._shiftKey = ev.shiftKey;
 
-        this.keys.set(ev.key, true);
+        this.keys.set(ev.key.toLowerCase(), true);
     }
 
     private keyup(ev: KeyboardEvent) {
@@ -63,7 +63,7 @@ export default class InputController {
         this._ctrlKey = ev.ctrlKey;
         this._shiftKey = ev.shiftKey;
 
-        this.keys.delete(ev.key);
+        this.keys.delete(ev.key.toLowerCase());
     }
 
     constructor(canvas: HTMLCanvasElement) {
@@ -126,6 +126,6 @@ export default class InputController {
     }
 
     keyPressed(key: string) {
-        return this.keys.has(key);
+        return this.keys.get(key) ?? false;
     }
 }

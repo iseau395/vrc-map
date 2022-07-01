@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Modal from "./components/Modal.svelte";
+    import SettingsModal from "./components/settings/SettingsModal.svelte";
     import NavBar from "./components/navbar/NavBar.svelte";
     import Map from "./map/Map.svelte";
 
@@ -33,9 +33,7 @@
 {/if}
 
 {#if $settings_modal}
-<Modal title="Settings" on:click={() => $settings_modal = false}>
-
-</Modal>
+<SettingsModal />
 {/if}
 
 <style>
