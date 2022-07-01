@@ -3,10 +3,10 @@
     import type { GameType } from "../util/constants";
     import { get_game } from "../games/game";
 
-    import _InputController from "../field/input";
-    import _FieldRenderer from "../field/field-renderer";
-    import _Grid from "../field/grid";
-    import _Path from "../paths/basic_path";
+    import InputControllerClass from "../field/input";
+    import FieldRendererClass from "../field/field-renderer";
+    import GridClass from "../field/grid";
+    import PathClass from "../paths/basic_path";
 
     let background_canvas: HTMLCanvasElement;
     let forground_canvas: HTMLCanvasElement;
@@ -31,10 +31,10 @@
             alpha: true
         });
 
-        const InputController = new _InputController(forground_canvas);
-        const FieldRenderer = new _FieldRenderer(window.innerWidth, window.innerHeight - 50);
-        const Grid = new _Grid();
-        const Path = new _Path();
+        const InputController = new InputControllerClass(forground_canvas);
+        const FieldRenderer = new FieldRendererClass(window.innerWidth, window.innerHeight - 50);
+        const Grid = new GridClass();
+        const Path = new PathClass();
         const GameRenderer = await get_game(game);
         
         const resize = () => {
