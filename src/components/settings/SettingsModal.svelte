@@ -7,5 +7,5 @@
 </script>
 
 <Modal title="Settings" on:click={() => $settings_modal = false}>
-    <Toggle label="Use Grid" bind:value={$use_grid}/>
+    <Toggle label="Use Grid (g)" bind:value={$use_grid}/>
 </Modal>
