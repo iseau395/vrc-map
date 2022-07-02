@@ -13,6 +13,11 @@
         <NavBarButton on:click={() => ($settings_modal = true)}>
             Settings
         </NavBarButton>
+        <a href="https://github.com/iseau395/vrc-map" target="_blank" rel="noopener noreferrer">
+            <NavBarButton>
+                GitHub
+            </NavBarButton>
+        </a>
     </span>
     <div class="hamburger-button">
         <NavBarButton on:click={() => (sidemenu = !sidemenu)}>
@@ -69,5 +74,10 @@
         font-size: 45px;
         display: flex;
         justify-content: flex-end;
+    }
+
+    a {
+        color: white;
+        text-decoration: none;
     }
 </style>
