@@ -17,8 +17,6 @@
     let interval: NodeJS.Timeout;
     let animationFrame: number;
 
-    let redraw = true;
-
     if (isProduction)
         window.onbeforeunload = function() {
             return true;
@@ -44,16 +42,15 @@
             forground_canvas.width = window.innerWidth;
             forground_canvas.height = window.innerHeight - 50;
 
-            redraw = true;
-            render();
+            render(forground_ctx, background_ctx, true, true);
         }
 
         window.addEventListener("resize", resize);
 
-        function render() {
+        function render(forground_ctx: CanvasRenderingContext2D, background_ctx: CanvasRenderingContext2D, offset: boolean, once: boolean) {
             const changed = FieldRenderer.changed();
 
-            if (changed || redraw) {
+            if (changed || once) {
                 background_ctx.fillStyle = "rgb(80, 80, 80)"
                 background_ctx.fillRect(0, 0, background_canvas.width, background_canvas.height);
 
@@ -65,14 +62,13 @@
                 GameRenderer.render_static(background_ctx);
 
                 background_ctx.restore();
-
-                redraw = false;
             }
 
             forground_ctx.clearRect(0, 0, forground_canvas.width, forground_canvas.height);
 
             forground_ctx.save();
-            FieldRenderer.translate(forground_ctx);
+            if (offset)
+                FieldRenderer.translate(forground_ctx);
 
             GameRenderer.render(forground_ctx);
 
@@ -88,7 +84,8 @@
                     FieldRenderer.zoom()
                 )
 
-            animationFrame = requestAnimationFrame(render);
+            if (!once)
+                animationFrame = requestAnimationFrame(() => render(forground_ctx, background_ctx, offset, false));
         }
 
         let toggled_grid = false;
@@ -146,6 +143,7 @@
         interval = setInterval(tick, 20);
         tick();
         resize();
+        render(forground_ctx, background_ctx, true, false);
     });
 
     onDestroy(() => {
