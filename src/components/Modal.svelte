@@ -2,13 +2,25 @@
     export let title = "Title Missing";
 </script>
 
-<div class="modal-background"></div>
+<div class="modal-background" on:click/>
 <div class="modal">
     <div class="modal-top-bar">
         <h1>{title}</h1>
         <svg on:click>
-            <line x1="5" y1="5" x2="35" y2="35" style="stroke:white;stroke-width:4"></line>
-            <line x1="35" y1="5" x2="5" y2="35" style="stroke:white;stroke-width:4"></line>
+            <line
+                x1="5"
+                y1="5"
+                x2="35"
+                y2="35"
+                style="stroke:white;stroke-width:4"
+            />
+            <line
+                x1="35"
+                y1="5"
+                x2="5"
+                y2="35"
+                style="stroke:white;stroke-width:4"
+            />
         </svg>
     </div>
     <slot />
