@@ -1,12 +1,16 @@
 <script lang="ts">
+    import { createEventDispatcher } from 'svelte';
+
     export let title = "Title Missing";
+
+    const dispatch = createEventDispatcher();
 </script>
 
-<div class="modal-background" on:click/>
+<div class="modal-background" on:click={() => dispatch("close")}/>
 <div class="modal">
     <div class="modal-top-bar">
         <h1>{title}</h1>
-        <svg on:click>
+        <svg  on:click={() => dispatch("close")}>
             <line
                 x1="5"
                 y1="5"

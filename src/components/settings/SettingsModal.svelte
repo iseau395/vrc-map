@@ -6,6 +6,6 @@
     import { use_grid } from "./settings";
 </script>
 
-<Modal title="Settings" on:click={() => $settings_modal = false}>
+<Modal title="Settings" on:close={() => $settings_modal = false}>
     <Toggle label="Use Grid (g)" bind:value={$use_grid}/>
 </Modal>
