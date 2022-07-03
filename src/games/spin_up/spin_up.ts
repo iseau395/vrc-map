@@ -1,5 +1,5 @@
 import type { GameRenderer } from "../generic/game-renderer";
-import { FIELD_SCALE, FIELD_SIDE } from "../../util/constants";
+import { CursorType, FIELD_SCALE, FIELD_SIDE } from "../../util/constants";
 import Disk from "./gameobjects/disk";
 import { LINE_COLOR, RED_ALLIANCE, BLUE_ALLIANCE } from "games/generic/colors";
 import Roller from "./gameobjects/roller";
@@ -224,6 +224,34 @@ export default class SpinUp implements GameRenderer {
             for (const roller of this.rollers) {
                 roller.update(mouseX, mouseY, mouseButton);
             }
+    }
+
+    getCursor(mouseX: number, mouseY: number): CursorType {
+        if (this.has_selection())
+            return CursorType.GRABBING;
+        else {
+            let pointInsideDisc = false;
+
+            for (const disc of this.disks) {
+                if (disc.pointInside(mouseX, mouseY))
+                    pointInsideDisc = true;
+            }
+
+            if (pointInsideDisc)
+                return CursorType.GRAB;
+
+            let pointInsideRoller = false;
+
+            for (const roller of this.rollers) {
+                if (roller.pointInside(mouseX, mouseY))
+                    pointInsideRoller = true;
+            }
+
+            if (pointInsideRoller)
+                return CursorType.POINTER;
+        }
+
+        return CursorType.NORMAL;
     }
 
     render(ctx: CanvasRenderingContext2D) {

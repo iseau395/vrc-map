@@ -1,4 +1,4 @@
-import { FIELD_SCALE, FIELD_SIDE } from "../util/constants";
+import { CursorType, FIELD_SCALE, FIELD_SIDE } from "../util/constants";
 import type { Tickable, Renderable } from "../util/class-bases";
 
 export default class FieldRenderer implements Renderable, Tickable {
@@ -28,6 +28,21 @@ export default class FieldRenderer implements Renderable, Tickable {
 
         this.fieldZoom *= zoom;
         this.fieldZoom = Math.min(Math.max(0.08*FIELD_SCALE, this.fieldZoom), 0.3*FIELD_SCALE );
+    }
+
+    getCursor(altKey: boolean): CursorType {
+        let c: CursorType;
+    
+        if (this.prevFieldZoom < this.fieldZoom)
+            c = CursorType.ZOOM_OUT;
+        else if (this.prevFieldZoom > this.fieldZoom)
+            c = CursorType.ZOOM_IN;
+        else if (altKey)
+            c = CursorType.PAN
+        else
+            c = CursorType.NORMAL;
+
+        return c;
     }
 
     translate(ctx: CanvasRenderingContext2D) {

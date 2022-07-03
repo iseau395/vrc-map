@@ -5,3 +5,13 @@ export enum GameType {
     TIPPING_POINT,
     SPIN_UP
 }
+
+export enum CursorType {
+    NORMAL,
+    POINTER,
+    GRAB,
+    GRABBING,
+    ZOOM_IN,
+    ZOOM_OUT,
+    PAN
+}

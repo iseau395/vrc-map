@@ -64,5 +64,7 @@
         margin: 0px;
 
         opacity: 0;
+
+        cursor: pointer;
     }
 </style>

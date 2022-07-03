@@ -78,5 +78,7 @@
         display: block;
         width: 40px;
         height: 40px;
+
+        cursor: pointer;
     }
 </style>

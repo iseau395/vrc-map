@@ -1,3 +1,5 @@
+import type { CursorType } from "./constants";
+
 export interface Renderable {
     render(ctx: CanvasRenderingContext2D): void;
 }

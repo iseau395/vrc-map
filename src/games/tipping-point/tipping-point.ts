@@ -2,7 +2,7 @@ import type { GameRenderer } from "../generic/game-renderer";
 import Mogo from "./gameobjects/mogo";
 import Ring from "./gameobjects/ring";
 
-import { FIELD_SCALE, FIELD_SIDE } from "../../util/constants";
+import { CursorType, FIELD_SCALE, FIELD_SIDE } from "../../util/constants";
 import { BLUE_ALLIANCE, LINE_COLOR, RED_ALLIANCE } from "../generic/colors";
 
 export default class TippingPoint implements GameRenderer {
@@ -153,6 +153,29 @@ export default class TippingPoint implements GameRenderer {
             this.selection.arr = -1;
             this.selection.index = -1;
         }
+    }
+
+    getCursor(mouseX: number, mouseY: number): CursorType {
+        if (this.has_selection())
+            return CursorType.GRABBING;
+        else {
+            let pointInside = false;
+
+            for (const mogo of this.mogos) {
+                if (mogo.pointInside(mouseX, mouseY))
+                    pointInside = true;
+            }
+
+            for (const ring of this.rings) {
+                if (ring.pointInside(mouseX, mouseY))
+                    pointInside = true;
+            }
+
+            if (pointInside)
+                return CursorType.GRAB;
+        }
+
+        return CursorType.NORMAL;
     }
 
     render(ctx: CanvasRenderingContext2D) {

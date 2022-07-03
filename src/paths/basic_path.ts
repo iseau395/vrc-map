@@ -1,5 +1,6 @@
 import { RoundMovableObject } from "../games/generic/object";
-import { FIELD_SCALE } from "../util/constants";
+import { CursorType, FIELD_SCALE } from "../util/constants";
+import type { Renderable, Tickable } from "util/class-bases";
 
 class Point extends RoundMovableObject {
     protected readonly diameter = 8.5;
@@ -30,7 +31,7 @@ class Point extends RoundMovableObject {
     }
 }
 
-export default class BasicPath {
+export default class BasicPath implements Renderable, Tickable {
     private cache_ctx: CanvasRenderingContext2D;
 
     private selection = -1
@@ -67,7 +68,24 @@ export default class BasicPath {
 
             this.selection = -1;
         }
+    }
 
+    getCursor(mouseX: number, mouseY: number): CursorType {
+        if (this.has_selection())
+            return CursorType.GRABBING;
+        else {
+            let pointInside = false;
+
+            for (const point of this.points) {
+                if (point.pointInside(mouseX, mouseY))
+                    pointInside = true;
+            }
+
+            if (pointInside)
+                return CursorType.GRAB;
+        }
+
+        return CursorType.NORMAL;
     }
 
     render(ctx: CanvasRenderingContext2D) {

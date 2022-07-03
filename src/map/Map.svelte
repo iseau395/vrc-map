@@ -1,6 +1,6 @@
 <script lang="ts">
     import { onMount, onDestroy, getContext } from "svelte";
-    import type { GameType } from "../util/constants";
+    import { CursorType, type GameType } from "../util/constants";
     import { get_game } from "../games/game";
     import { use_grid } from "../components/settings/settings";
 
@@ -35,8 +35,31 @@
         const Grid = new GridClass();
         const Path = new PathClass();
         const GameRenderer = await get_game(game);
+
+        function setCursor(cursor: CursorType) {
+            switch (cursor) {
+                case CursorType.POINTER:
+                    forground_canvas.style.cursor = "pointer";
+                    break;
+                case CursorType.GRAB:
+                    forground_canvas.style.cursor = "grab";
+                    break;
+                case CursorType.GRABBING:
+                    forground_canvas.style.cursor = "grabbing";
+                    break;
+                case CursorType.ZOOM_IN:
+                    forground_canvas.style.cursor = "zoom-in";
+                    break;
+                case CursorType.ZOOM_OUT:
+                    forground_canvas.style.cursor = "zoom-out";
+                    break;
+                case CursorType.PAN:
+                    forground_canvas.style.cursor = "move";
+                    break;
+            }
+        }
         
-        const resize = () => {
+        function resize() {
             background_canvas.width = window.innerWidth;
             background_canvas.height = window.innerHeight - 50;
             forground_canvas.width = window.innerWidth;
@@ -90,7 +113,9 @@
 
         let toggled_grid = false;
 
-        function tick() {
+        async function tick() {
+            forground_canvas.style.cursor = "wait";
+
             const mouseX = (InputController.mouseX - FieldRenderer.x()) / FieldRenderer.zoom();
             const mouseY = (InputController.mouseY - FieldRenderer.y()) / FieldRenderer.zoom();
 
@@ -138,6 +163,15 @@
                     InputController.ctrlKey,
                     InputController.deltaScroll
                 );
+
+            forground_canvas.style.cursor = "default";
+            const field_cursor = FieldRenderer.getCursor(InputController.altKey);
+            const game_cursor = GameRenderer.getCursor(mouseX, mouseY);
+            const path_cursor = game_cursor != CursorType.GRABBING ? Path.getCursor(mouseX, mouseY) : CursorType.NORMAL;
+
+            setCursor(field_cursor);
+            setCursor(game_cursor);
+            setCursor(path_cursor);
         }
 
         interval = setInterval(tick, 20);
