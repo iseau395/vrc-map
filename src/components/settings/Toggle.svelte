@@ -6,7 +6,7 @@
 <div class="toggle-wrapper">
     <span>{label}:</span>
     <div>
-        <div class="toggle {value ? "toggled" : ""}">
+        <div class="toggle" class:toggled={value}>
             <div class="toggle-circle"></div>
         </div>
         <input type="checkbox" bind:checked={value}/>

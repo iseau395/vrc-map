@@ -1,6 +1,6 @@
 import type { GameRenderer } from "../generic/game-renderer";
 import { CursorType, FIELD_SCALE, FIELD_SIDE } from "../../util/constants";
-import Disk from "./gameobjects/disk";
+import Disc from "./gameobjects/disc";
 import { LINE_COLOR, RED_ALLIANCE, BLUE_ALLIANCE } from "games/generic/colors";
 import Roller from "./gameobjects/roller";
 import { HIGH_GOAL_SUPPORT } from "./colors";
@@ -8,83 +8,83 @@ import { HIGH_GOAL_SUPPORT } from "./colors";
 export default class SpinUp implements GameRenderer {
     private cache_ctx: CanvasRenderingContext2D;
 
-    private selected_disk = -1;
+    private selected_disc = -1;
 
-    private readonly disks = [
-        new Disk(FIELD_SIDE / 12 * 1, FIELD_SIDE / 12 * 1),
-        new Disk(FIELD_SIDE / 12 * 2, FIELD_SIDE / 12 * 2),
-        new Disk(FIELD_SIDE / 12 * 3, FIELD_SIDE / 12 * 3 - 1 * FIELD_SCALE),
-        new Disk(FIELD_SIDE / 12 * 3, FIELD_SIDE / 12 * 3 - 2 * FIELD_SCALE),
-        new Disk(FIELD_SIDE / 12 * 3, FIELD_SIDE / 12 * 3 - 3 * FIELD_SCALE),
-        new Disk(FIELD_SIDE / 12 * 4, FIELD_SIDE / 12 * 4),
-        new Disk(FIELD_SIDE / 12 * 5, FIELD_SIDE / 12 * 5),
+    private readonly discs = [
+        new Disc(FIELD_SIDE / 12 * 1, FIELD_SIDE / 12 * 1),
+        new Disc(FIELD_SIDE / 12 * 2, FIELD_SIDE / 12 * 2),
+        new Disc(FIELD_SIDE / 12 * 3, FIELD_SIDE / 12 * 3 - 1 * FIELD_SCALE),
+        new Disc(FIELD_SIDE / 12 * 3, FIELD_SIDE / 12 * 3 - 2 * FIELD_SCALE),
+        new Disc(FIELD_SIDE / 12 * 3, FIELD_SIDE / 12 * 3 - 3 * FIELD_SCALE),
+        new Disc(FIELD_SIDE / 12 * 4, FIELD_SIDE / 12 * 4),
+        new Disc(FIELD_SIDE / 12 * 5, FIELD_SIDE / 12 * 5),
 
-        new Disk(FIELD_SIDE / 12 * 7, FIELD_SIDE / 12 * 7),
-        new Disk(FIELD_SIDE / 12 * 8, FIELD_SIDE / 12 * 8),
-        new Disk(FIELD_SIDE / 12 * 9, FIELD_SIDE / 12 * 9 - 1 * FIELD_SCALE),
-        new Disk(FIELD_SIDE / 12 * 9, FIELD_SIDE / 12 * 9 - 2 * FIELD_SCALE),
-        new Disk(FIELD_SIDE / 12 * 9, FIELD_SIDE / 12 * 9 - 3 * FIELD_SCALE),
-        new Disk(FIELD_SIDE / 12 * 10, FIELD_SIDE / 12 * 10),
-        new Disk(FIELD_SIDE / 12 * 11, FIELD_SIDE / 12 * 11),
+        new Disc(FIELD_SIDE / 12 * 7, FIELD_SIDE / 12 * 7),
+        new Disc(FIELD_SIDE / 12 * 8, FIELD_SIDE / 12 * 8),
+        new Disc(FIELD_SIDE / 12 * 9, FIELD_SIDE / 12 * 9 - 1 * FIELD_SCALE),
+        new Disc(FIELD_SIDE / 12 * 9, FIELD_SIDE / 12 * 9 - 2 * FIELD_SCALE),
+        new Disc(FIELD_SIDE / 12 * 9, FIELD_SIDE / 12 * 9 - 3 * FIELD_SCALE),
+        new Disc(FIELD_SIDE / 12 * 10, FIELD_SIDE / 12 * 10),
+        new Disc(FIELD_SIDE / 12 * 11, FIELD_SIDE / 12 * 11),
 
 
-        new Disk(FIELD_SIDE / 12 * 5, FIELD_SIDE / 12 * 3),
-        new Disk(FIELD_SIDE / 12 * 6, FIELD_SIDE / 12 * 4),
-        new Disk(FIELD_SIDE / 12 * 7, FIELD_SIDE / 12 * 5),
+        new Disc(FIELD_SIDE / 12 * 5, FIELD_SIDE / 12 * 3),
+        new Disc(FIELD_SIDE / 12 * 6, FIELD_SIDE / 12 * 4),
+        new Disc(FIELD_SIDE / 12 * 7, FIELD_SIDE / 12 * 5),
         
-        new Disk(FIELD_SIDE / 12 * 9, FIELD_SIDE / 12 * 7 - 1 * FIELD_SCALE),
-        new Disk(FIELD_SIDE / 12 * 9, FIELD_SIDE / 12 * 7 - 2 * FIELD_SCALE),
-        new Disk(FIELD_SIDE / 12 * 9, FIELD_SIDE / 12 * 7 - 3 * FIELD_SCALE),
+        new Disc(FIELD_SIDE / 12 * 9, FIELD_SIDE / 12 * 7 - 1 * FIELD_SCALE),
+        new Disc(FIELD_SIDE / 12 * 9, FIELD_SIDE / 12 * 7 - 2 * FIELD_SCALE),
+        new Disc(FIELD_SIDE / 12 * 9, FIELD_SIDE / 12 * 7 - 3 * FIELD_SCALE),
 
 
-        new Disk(FIELD_SIDE / 12 * 5, FIELD_SIDE / 12 * 7),
-        new Disk(FIELD_SIDE / 12 * 6, FIELD_SIDE / 12 * 8),
-        new Disk(FIELD_SIDE / 12 * 7, FIELD_SIDE / 12 * 9),
+        new Disc(FIELD_SIDE / 12 * 5, FIELD_SIDE / 12 * 7),
+        new Disc(FIELD_SIDE / 12 * 6, FIELD_SIDE / 12 * 8),
+        new Disc(FIELD_SIDE / 12 * 7, FIELD_SIDE / 12 * 9),
         
-        new Disk(FIELD_SIDE / 12 * 3, FIELD_SIDE / 12 * 5 - 1 * FIELD_SCALE),
-        new Disk(FIELD_SIDE / 12 * 3, FIELD_SIDE / 12 * 5 - 2 * FIELD_SCALE),
-        new Disk(FIELD_SIDE / 12 * 3, FIELD_SIDE / 12 * 5 - 3 * FIELD_SCALE),
+        new Disc(FIELD_SIDE / 12 * 3, FIELD_SIDE / 12 * 5 - 1 * FIELD_SCALE),
+        new Disc(FIELD_SIDE / 12 * 3, FIELD_SIDE / 12 * 5 - 2 * FIELD_SCALE),
+        new Disc(FIELD_SIDE / 12 * 3, FIELD_SIDE / 12 * 5 - 3 * FIELD_SCALE),
         
-        new Disk(FIELD_SIDE / 48 * 31, FIELD_SIDE / 48 * 9),
-        new Disk(FIELD_SIDE / 48 * 31, FIELD_SIDE / 48 * 12),
-        new Disk(FIELD_SIDE / 48 * 31, FIELD_SIDE / 48 * 15),
-        new Disk(FIELD_SIDE / 48 * 33, FIELD_SIDE / 48 * 17),
-        new Disk(FIELD_SIDE / 48 * 36, FIELD_SIDE / 48 * 17),
-        new Disk(FIELD_SIDE / 48 * 39, FIELD_SIDE / 48 * 17),
+        new Disc(FIELD_SIDE / 48 * 31, FIELD_SIDE / 48 * 9),
+        new Disc(FIELD_SIDE / 48 * 31, FIELD_SIDE / 48 * 12),
+        new Disc(FIELD_SIDE / 48 * 31, FIELD_SIDE / 48 * 15),
+        new Disc(FIELD_SIDE / 48 * 33, FIELD_SIDE / 48 * 17),
+        new Disc(FIELD_SIDE / 48 * 36, FIELD_SIDE / 48 * 17),
+        new Disc(FIELD_SIDE / 48 * 39, FIELD_SIDE / 48 * 17),
     
-        new Disk(FIELD_SIDE / 48 * 9, FIELD_SIDE / 48 * 31),
-        new Disk(FIELD_SIDE / 48 * 12, FIELD_SIDE / 48 * 31),
-        new Disk(FIELD_SIDE / 48 * 15, FIELD_SIDE / 48 * 31),
-        new Disk(FIELD_SIDE / 48 * 17, FIELD_SIDE / 48 * 33),
-        new Disk(FIELD_SIDE / 48 * 17, FIELD_SIDE / 48 * 36),
-        new Disk(FIELD_SIDE / 48 * 17, FIELD_SIDE / 48 * 39),
+        new Disc(FIELD_SIDE / 48 * 9, FIELD_SIDE / 48 * 31),
+        new Disc(FIELD_SIDE / 48 * 12, FIELD_SIDE / 48 * 31),
+        new Disc(FIELD_SIDE / 48 * 15, FIELD_SIDE / 48 * 31),
+        new Disc(FIELD_SIDE / 48 * 17, FIELD_SIDE / 48 * 33),
+        new Disc(FIELD_SIDE / 48 * 17, FIELD_SIDE / 48 * 36),
+        new Disc(FIELD_SIDE / 48 * 17, FIELD_SIDE / 48 * 39),
 
         // Preloads and Match Loads
-        new Disk(-FIELD_SIDE / 12, FIELD_SIDE / 20 * 7),
-        new Disk(-FIELD_SIDE / 12, FIELD_SIDE / 20 * 8),
-        new Disk(-FIELD_SIDE / 12, FIELD_SIDE / 20 * 13),
-        new Disk(-FIELD_SIDE / 12, FIELD_SIDE / 20 * 12),
+        new Disc(-FIELD_SIDE / 12, FIELD_SIDE / 20 * 7),
+        new Disc(-FIELD_SIDE / 12, FIELD_SIDE / 20 * 8),
+        new Disc(-FIELD_SIDE / 12, FIELD_SIDE / 20 * 13),
+        new Disc(-FIELD_SIDE / 12, FIELD_SIDE / 20 * 12),
 
-        new Disk(FIELD_SIDE + FIELD_SIDE / 12, FIELD_SIDE / 20 * 7),
-        new Disk(FIELD_SIDE + FIELD_SIDE / 12, FIELD_SIDE / 20 * 8),
-        new Disk(FIELD_SIDE + FIELD_SIDE / 12, FIELD_SIDE / 20 * 13),
-        new Disk(FIELD_SIDE + FIELD_SIDE / 12, FIELD_SIDE / 20 * 12),
+        new Disc(FIELD_SIDE + FIELD_SIDE / 12, FIELD_SIDE / 20 * 7),
+        new Disc(FIELD_SIDE + FIELD_SIDE / 12, FIELD_SIDE / 20 * 8),
+        new Disc(FIELD_SIDE + FIELD_SIDE / 12, FIELD_SIDE / 20 * 13),
+        new Disc(FIELD_SIDE + FIELD_SIDE / 12, FIELD_SIDE / 20 * 12),
         
-        new Disk(-FIELD_SIDE / 12 * 2, FIELD_SIDE / 20 * 7),
-        new Disk(-FIELD_SIDE / 12 * 2, FIELD_SIDE / 20 * 8),
-        new Disk(-FIELD_SIDE / 12 * 2, FIELD_SIDE / 20 * 9),
-        new Disk(-FIELD_SIDE / 12 * 2, FIELD_SIDE / 20 * 10),
-        new Disk(-FIELD_SIDE / 12 * 2, FIELD_SIDE / 20 * 11),
-        new Disk(-FIELD_SIDE / 12 * 2, FIELD_SIDE / 20 * 12),
-        new Disk(-FIELD_SIDE / 12 * 2, FIELD_SIDE / 20 * 13),
+        new Disc(-FIELD_SIDE / 12 * 2, FIELD_SIDE / 20 * 7),
+        new Disc(-FIELD_SIDE / 12 * 2, FIELD_SIDE / 20 * 8),
+        new Disc(-FIELD_SIDE / 12 * 2, FIELD_SIDE / 20 * 9),
+        new Disc(-FIELD_SIDE / 12 * 2, FIELD_SIDE / 20 * 10),
+        new Disc(-FIELD_SIDE / 12 * 2, FIELD_SIDE / 20 * 11),
+        new Disc(-FIELD_SIDE / 12 * 2, FIELD_SIDE / 20 * 12),
+        new Disc(-FIELD_SIDE / 12 * 2, FIELD_SIDE / 20 * 13),
 
-        new Disk(FIELD_SIDE + FIELD_SIDE / 12 * 2, FIELD_SIDE / 20 * 7),
-        new Disk(FIELD_SIDE + FIELD_SIDE / 12 * 2, FIELD_SIDE / 20 * 8),
-        new Disk(FIELD_SIDE + FIELD_SIDE / 12 * 2, FIELD_SIDE / 20 * 9),
-        new Disk(FIELD_SIDE + FIELD_SIDE / 12 * 2, FIELD_SIDE / 20 * 10),
-        new Disk(FIELD_SIDE + FIELD_SIDE / 12 * 2, FIELD_SIDE / 20 * 11),
-        new Disk(FIELD_SIDE + FIELD_SIDE / 12 * 2, FIELD_SIDE / 20 * 12),
-        new Disk(FIELD_SIDE + FIELD_SIDE / 12 * 2, FIELD_SIDE / 20 * 13),
+        new Disc(FIELD_SIDE + FIELD_SIDE / 12 * 2, FIELD_SIDE / 20 * 7),
+        new Disc(FIELD_SIDE + FIELD_SIDE / 12 * 2, FIELD_SIDE / 20 * 8),
+        new Disc(FIELD_SIDE + FIELD_SIDE / 12 * 2, FIELD_SIDE / 20 * 9),
+        new Disc(FIELD_SIDE + FIELD_SIDE / 12 * 2, FIELD_SIDE / 20 * 10),
+        new Disc(FIELD_SIDE + FIELD_SIDE / 12 * 2, FIELD_SIDE / 20 * 11),
+        new Disc(FIELD_SIDE + FIELD_SIDE / 12 * 2, FIELD_SIDE / 20 * 12),
+        new Disc(FIELD_SIDE + FIELD_SIDE / 12 * 2, FIELD_SIDE / 20 * 13),
     ]
 
     private readonly rollers = [
@@ -200,24 +200,24 @@ export default class SpinUp implements GameRenderer {
     tick(mouseX: number, mouseY: number, snappedMouseX: number, snappedMouseY: number, mouseButton: number, shiftKey: boolean, ctrlKey: boolean, deltaScroll: number) {
         if (shiftKey && mouseButton == 0) {
             if (!this.has_selection()) {
-                for (const disk of this.disks) {
-                    if (disk.pointInside(mouseX, mouseY)) {
-                        this.selected_disk = this.disks.indexOf(disk);
+                for (const disc of this.discs) {
+                    if (disc.pointInside(mouseX, mouseY)) {
+                        this.selected_disc = this.discs.indexOf(disc);
 
                         break;
                     }
                 }
             }
 
-            if (this.selected_disk >= 0)
-                this.disks[this.selected_disk]
+            if (this.selected_disc >= 0)
+                this.discs[this.selected_disc]
                     .update(
                         snappedMouseX,
                         snappedMouseY,
                         deltaScroll
                     );
         } else {
-            this.selected_disk = -1;
+            this.selected_disc = -1;
         }
 
         if (!this.has_selection())
@@ -232,7 +232,7 @@ export default class SpinUp implements GameRenderer {
         else {
             let pointInsideDisc = false;
 
-            for (const disc of this.disks) {
+            for (const disc of this.discs) {
                 if (disc.pointInside(mouseX, mouseY))
                     pointInsideDisc = true;
             }
@@ -281,8 +281,8 @@ export default class SpinUp implements GameRenderer {
             roller.render(ctx);
         });
 
-        this.disks.forEach(disk => {
-            disk.render(ctx);
+        this.discs.forEach(disc => {
+            disc.render(ctx);
         })
     }
 
@@ -293,6 +293,6 @@ export default class SpinUp implements GameRenderer {
     }
 
     has_selection() {
-        return this.selected_disk >= 0;
+        return this.selected_disc >= 0;
     }
 }
