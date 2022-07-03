@@ -1,8 +1,8 @@
 <script lang="ts">
-    import Modal from "../Modal.svelte";
-    import Toggle from "./Toggle.svelte";
+    import Modal from "../modals/Modal.svelte";
+    import Toggle from "../interactive/Toggle.svelte";
 
-    import { settings_modal } from "../modals";
+    import { settings_modal } from "../modals/modals";
     import { use_grid } from "./settings";
 </script>
 

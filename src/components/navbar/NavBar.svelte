@@ -2,7 +2,7 @@
     import NavBarButton from "./NavBarButton.svelte";
     import Sidemenu from "./Sidemenu.svelte";
 
-    import { settings_modal } from "../modals";
+    import { settings_modal } from "../modals/modals";
 
     let sidemenu = false;
 </script>

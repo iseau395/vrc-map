@@ -3,7 +3,7 @@
     import NavBar from "./components/navbar/NavBar.svelte";
     import Map from "./map/Map.svelte";
 
-    import { settings_modal } from "./components/modals";
+    import { settings_modal, save_modal } from "./components/modals/modals";
 
     const hover_query = window.matchMedia("(hover: hover)");
     const pointer_query = window.matchMedia("(pointer: fine)");
