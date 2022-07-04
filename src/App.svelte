@@ -1,5 +1,6 @@
 <script lang="ts">
     import SettingsModal from "./components/settings/SettingsModal.svelte";
+    import SaveModal from "./components/modals/SaveModal.svelte";
     import NavBar from "./components/navbar/NavBar.svelte";
     import Map from "./map/Map.svelte";
 
@@ -19,12 +20,14 @@
     };
 
     $: hasMouse = has_hover || has_pointer;
+
+    let map: Map;
 </script>
 
 <NavBar />
 
 {#if hasMouse}
-<Map />
+<Map bind:this={map}/>
 {:else}
 <p>
     It looks like you are on a device without a mouse or touchpad. If you can, please plug in one of these devices, as this field map is designed to use them.
@@ -34,6 +37,8 @@
 
 {#if $settings_modal}
 <SettingsModal />
+{:else if $save_modal}
+<SaveModal on:save={(ev) => map.save(ev.detail)} on:load={(ev) => confirm("Are you sure?") && map.load(ev.detail)} />
 {/if}
 
 <style>

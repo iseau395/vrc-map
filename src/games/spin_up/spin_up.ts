@@ -5,7 +5,12 @@ import { LINE_COLOR, RED_ALLIANCE, BLUE_ALLIANCE } from "games/generic/colors";
 import Roller from "./gameobjects/roller";
 import { HIGH_GOAL_SUPPORT } from "./colors";
 
-export default class SpinUp implements GameRenderer {
+interface SaveData {
+    d: { x: number, y: number }[],
+    r: { s: 0 | 1 | -1 }[]
+}
+
+export default class SpinUp implements GameRenderer<SaveData> {
     private cache_ctx: CanvasRenderingContext2D;
 
     private selected_disc = -1;
@@ -199,7 +204,7 @@ export default class SpinUp implements GameRenderer {
 
     tick(mouseX: number, mouseY: number, snappedMouseX: number, snappedMouseY: number, mouseButton: number, shiftKey: boolean, ctrlKey: boolean, deltaScroll: number) {
         if (shiftKey && mouseButton == 0) {
-            if (!this.has_selection()) {
+            if (!this.hasSelection()) {
                 for (const disc of this.discs) {
                     if (disc.pointInside(mouseX, mouseY)) {
                         this.selected_disc = this.discs.indexOf(disc);
@@ -220,14 +225,14 @@ export default class SpinUp implements GameRenderer {
             this.selected_disc = -1;
         }
 
-        if (!this.has_selection())
+        if (!this.hasSelection())
             for (const roller of this.rollers) {
                 roller.update(mouseX, mouseY, mouseButton);
             }
     }
 
     getCursor(mouseX: number, mouseY: number): CursorType {
-        if (this.has_selection())
+        if (this.hasSelection())
             return CursorType.GRABBING;
         else {
             let pointInsideDisc = false;
@@ -252,6 +257,39 @@ export default class SpinUp implements GameRenderer {
         }
 
         return CursorType.NORMAL;
+    }
+
+    saveData() {
+        const data: SaveData = {
+            d: [],
+            r: []
+        };
+
+        for (const disc of this.discs) {
+            data.d.push({ x: disc.getX(), y: disc.getY() })
+        }
+
+        for (const roller of this.rollers) {
+            data.r.push({ s: roller.getState() })
+        }
+
+        return data;
+    }
+
+    loadData(data: SaveData) {
+        this.discs.length = 0;
+        this.rollers.length = 0;
+
+        for (const disc of data.d) {
+            this.discs.push(
+                new Disc(disc.x, disc.y)
+            );
+        }
+
+        this.rollers[0] = new Roller(0, FIELD_SIDE / 6, false, data.r[0].s),
+        this.rollers[1] = new Roller(FIELD_SIDE / 6, 0, true, data.r[1].s),
+        this.rollers[2] = new Roller(FIELD_SIDE - Roller.short_side, FIELD_SIDE / 6 * 5 - Roller.long_side, false, data.r[2].s),
+        this.rollers[3] = new Roller(FIELD_SIDE / 6 * 5 - Roller.long_side, FIELD_SIDE - Roller.short_side, true, data.r[3].s)
     }
 
     render(ctx: CanvasRenderingContext2D) {
@@ -292,7 +330,7 @@ export default class SpinUp implements GameRenderer {
         ctx.drawImage(this.cache_ctx.canvas, 0, 0);
     }
 
-    has_selection() {
+    hasSelection() {
         return this.selected_disc >= 0;
     }
 }

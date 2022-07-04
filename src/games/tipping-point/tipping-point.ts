@@ -5,7 +5,12 @@ import Ring from "./gameobjects/ring";
 import { CursorType, FIELD_SCALE, FIELD_SIDE } from "../../util/constants";
 import { BLUE_ALLIANCE, LINE_COLOR, RED_ALLIANCE } from "../generic/colors";
 
-export default class TippingPoint implements GameRenderer {
+interface SaveData {
+    r: { x: number, y: number }[],
+    m: { x: number, y: number, r: number, v: number }[]
+}
+
+export default class TippingPoint implements GameRenderer<SaveData> {
     private cache_ctx: CanvasRenderingContext2D;
 
     private selection = {
@@ -156,7 +161,7 @@ export default class TippingPoint implements GameRenderer {
     }
 
     getCursor(mouseX: number, mouseY: number): CursorType {
-        if (this.has_selection())
+        if (this.hasSelection())
             return CursorType.GRABBING;
         else {
             let pointInside = false;
@@ -176,6 +181,40 @@ export default class TippingPoint implements GameRenderer {
         }
 
         return CursorType.NORMAL;
+    }
+
+    saveData() {
+        const data: SaveData = {
+            r: [],
+            m: []
+        };
+
+        for (const ring of this.rings) {
+            data.r.push({ x: ring.getX(), y: ring.getY() })
+        }
+
+        for (const mogo of this.mogos) {
+            data.m.push({ x: mogo.getX(), y: mogo.getY(), r: mogo.getRot(), v: mogo.getVariation() })
+        }
+
+        return data;
+    }
+
+    loadData(data: SaveData) {
+        this.rings.length = 0;
+        this.mogos.length = 0;
+
+        for (const ring of data.r) {
+            this.rings.push(
+                new Ring(ring.x, ring.y, 0)
+            );
+        }
+
+        for (const mogo of data.m) {
+            this.mogos.push(
+                new Mogo(mogo.x, mogo.y, mogo.r, mogo.v)
+            );
+        }
     }
 
     render(ctx: CanvasRenderingContext2D) {
@@ -198,7 +237,7 @@ export default class TippingPoint implements GameRenderer {
         ctx.drawImage(this.cache_ctx.canvas, 0, 0);
     }
 
-    has_selection() {
+    hasSelection() {
         return this.selection.arr >= 0;
     }
 }

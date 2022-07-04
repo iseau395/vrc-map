@@ -31,6 +31,11 @@ class Point extends RoundMovableObject {
     }
 }
 
+type SaveData = {
+    x: number,
+    y: number
+}[]
+
 export default class BasicPath implements Renderable, Tickable {
     private cache_ctx: CanvasRenderingContext2D;
 
@@ -41,7 +46,7 @@ export default class BasicPath implements Renderable, Tickable {
 
     tick(mouseX: number, mouseY: number, snappedMouseX: number, snappedMouseY: number, mouseButton: number, shiftKey: boolean, ctrlKey: boolean, deltaScroll: number) {
         if (shiftKey && mouseButton == 0) {
-            if (!this.has_selection()) {
+            if (!this.hasSelection()) {
                 for (const point of this.points) {
                     if (point.pointInside(mouseX, mouseY)) {
                         this.selection = this.points.indexOf(point);
@@ -51,7 +56,7 @@ export default class BasicPath implements Renderable, Tickable {
                 }
             }
 
-            if (this.has_selection())
+            if (this.hasSelection())
                 this.points[this.selection]
                     .update(
                         snappedMouseX,
@@ -70,8 +75,28 @@ export default class BasicPath implements Renderable, Tickable {
         }
     }
 
+    saveData() {
+        const data: SaveData = [];
+
+        for (const point of this.points) {
+            data.push({ x: point.get_x(), y: point.get_y() })
+        }
+
+        return data;
+    }
+
+    loadData(data: SaveData) {
+        this.points.length = 0;
+
+        for (const point of data) {
+            this.points.push(
+                new Point(point.x, point.y, 0)
+            );
+        }
+    }
+
     getCursor(mouseX: number, mouseY: number): CursorType {
-        if (this.has_selection())
+        if (this.hasSelection())
             return CursorType.GRABBING;
         else {
             let pointInside = false;
@@ -114,7 +139,7 @@ export default class BasicPath implements Renderable, Tickable {
         );
     }
 
-    has_selection() {
+    hasSelection() {
         return this.selection >= 0;
     }
 }

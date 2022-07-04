@@ -9,6 +9,9 @@
     import GridClass from "../field/grid";
     import PathClass from "../paths/basic_path";
 
+    import { save_data } from "./save";
+    import type { SaveData } from "./save";
+
     let background_canvas: HTMLCanvasElement;
     let forground_canvas: HTMLCanvasElement;
 
@@ -22,6 +25,20 @@
             return true;
         };
 
+    let _save: (slot: string) => void;
+    export const save = (slot: string) => {
+        if (_save)
+            _save(slot);
+        else throw new Error("Save not defined yet");
+    }
+
+    let _load: (slot: string) => void;
+    export const load = (slot: string) => {
+        if (_load)
+            _load(slot);
+        else throw new Error("Load not defined yet");
+    }
+
     onMount(async () => {
         const background_ctx = background_canvas.getContext("2d", {
             alpha: false
@@ -33,8 +50,27 @@
         const InputController = new InputControllerClass(forground_canvas);
         const FieldRenderer = new FieldRendererClass(window.innerWidth, window.innerHeight - 50);
         const Grid = new GridClass();
-        const Path = new PathClass();
         const GameRenderer = await get_game(game);
+        const Path = new PathClass();
+
+        _save = (slot) =>
+            save_data(slot, game, GameRenderer.saveData(), Path.saveData());
+
+        _load = (slot) => {
+            const data = JSON.parse(localStorage.getItem(`slot-${game}-${slot}`)) as SaveData;
+
+            if (!data)
+                alert("Unable to find slot! make sure you spelt the name right, and you have the right game selected!")
+            if (data.g != game)
+                throw new Error("Incompatable game type");
+            if (data.v != 0)
+                throw new Error("Unknown save version");
+
+            console.log(data.d[0]);
+
+            GameRenderer.loadData(data.d[0]);
+            Path.loadData(data.d[1]);
+        }
 
         function setCursor(cursor: CursorType) {
             switch (cursor) {
@@ -140,7 +176,7 @@
                 InputController.zoom
             );
 
-            if (!GameRenderer.has_selection())
+            if (!GameRenderer.hasSelection())
                 Path.tick(
                         mouseX,
                         mouseY,
@@ -152,7 +188,7 @@
                         InputController.deltaScroll
                     )
 
-            if (!InputController.altKey && !Path.has_selection())
+            if (!InputController.altKey && !Path.hasSelection())
                 GameRenderer.tick(
                     mouseX,
                     mouseY,

@@ -39,6 +39,18 @@ export class MovableObject implements Object {
     render(_ctx: CanvasRenderingContext2D) {
         throw new Error("Unimplimented")
     }
+
+    getX() {
+        return this.x;
+    }
+
+    getY() {
+        return this.y;
+    }
+
+    getRot() {
+        return this.r;
+    }
 }
 
 export class RoundMovableObject extends MovableObject {

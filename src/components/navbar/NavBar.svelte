@@ -2,7 +2,7 @@
     import NavBarButton from "./NavBarButton.svelte";
     import Sidemenu from "./Sidemenu.svelte";
 
-    import { settings_modal } from "../modals/modals";
+    import { settings_modal, save_modal } from "../modals/modals";
 
     let sidemenu = false;
 </script>
@@ -12,6 +12,9 @@
         <p>VRC Field Map</p>
         <NavBarButton on:click={() => ($settings_modal = true)}>
             Settings
+        </NavBarButton>
+        <NavBarButton on:click={() => ($save_modal = true)}>
+            Save/Load
         </NavBarButton>
         <a href="https://github.com/iseau395/vrc-map" target="_blank" rel="noopener noreferrer">
             <NavBarButton>

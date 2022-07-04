@@ -9,7 +9,7 @@ async function create_spin_up() {
     return new (await import("./spin_up/spin_up")).default();
 }
 
-export async function get_game(game: GameType): Promise<GameRenderer> {
+export async function get_game(game: GameType): Promise<GameRenderer<unknown>> {
     switch (game) {
         case GameType.TIPPING_POINT:
             return create_tipping_point();

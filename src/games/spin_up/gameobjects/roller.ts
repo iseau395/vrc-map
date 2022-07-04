@@ -79,6 +79,10 @@ export default class Roller implements Object {
         }
     }
 
+    getState() {
+        return this.state;
+    }
+
     pointInside(x: number, y: number): boolean {
         return x > this.x &&
             y > this.y &&

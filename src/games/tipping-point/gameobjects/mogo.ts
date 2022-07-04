@@ -104,4 +104,8 @@ export default class Mogo extends RoundMovableObject {
             } break;
         }
     }
+
+    getVariation() {
+        return this.variation;
+    }
 }
