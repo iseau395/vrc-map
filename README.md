@@ -1,5 +1,5 @@
 # vrc-map
-An interactive map of the field for VRC (Vex Robotics Competition). This currently supports the games Tipping Point and Spin Up.
+An interactive map of the field for VRC (Vex Robotics Competition). This currently supports the games Tipping Point (kind of) and Spin Up.
 
 ### Controls (For now):
 * Shift + Drag to move gameobjects
