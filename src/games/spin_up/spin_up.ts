@@ -92,10 +92,10 @@ export default class SpinUp implements GameRenderer<SaveData> {
         new Disc(FIELD_SIDE + FIELD_SIDE / 12 * 2, FIELD_SIDE / 20 * 12),
         new Disc(FIELD_SIDE + FIELD_SIDE / 12 * 2, FIELD_SIDE / 20 * 13),
 
-        new Robot(-FIELD_SIDE / 3, FIELD_SIDE / 3),
-        new Robot(-FIELD_SIDE / 3, FIELD_SIDE / 3 * 2),
-        new Robot(FIELD_SIDE + FIELD_SIDE / 3, FIELD_SIDE / 3),
-        new Robot(FIELD_SIDE + FIELD_SIDE / 2, FIELD_SIDE / 3 * 2)
+        new Robot(-FIELD_SIDE / 3, FIELD_SIDE / 3, 0),
+        new Robot(-FIELD_SIDE / 3, FIELD_SIDE / 3 * 2, 1),
+        new Robot(FIELD_SIDE + FIELD_SIDE / 3, FIELD_SIDE / 3, 2),
+        new Robot(FIELD_SIDE + FIELD_SIDE / 3, FIELD_SIDE / 3 * 2, 3)
     ];
 
     private readonly rollers = [
@@ -295,10 +295,10 @@ export default class SpinUp implements GameRenderer<SaveData> {
         }
 
         this.moveable_objects.push(
-            new Robot(-FIELD_SIDE / 3, FIELD_SIDE / 3),
-            new Robot(-FIELD_SIDE / 3, FIELD_SIDE / 3 * 2),
-            new Robot(FIELD_SIDE + FIELD_SIDE / 3, FIELD_SIDE / 3),
-            new Robot(FIELD_SIDE + FIELD_SIDE / 2, FIELD_SIDE / 3 * 2)
+            new Robot(-FIELD_SIDE / 3, FIELD_SIDE / 3, 0),
+            new Robot(-FIELD_SIDE / 3, FIELD_SIDE / 3 * 2, 1),
+            new Robot(FIELD_SIDE + FIELD_SIDE / 3, FIELD_SIDE / 3, 2),
+            new Robot(FIELD_SIDE + FIELD_SIDE / 2, FIELD_SIDE / 3 * 2, 3)
         );
 
         this.rollers[0] = new Roller(0, FIELD_SIDE / 6, false, data.r[0].s),
