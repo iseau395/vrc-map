@@ -2,6 +2,8 @@ import { RoundMovableObject } from "games/generic/object";
 import { FIELD_SCALE } from "../../../util/constants";
 
 export default class Disc extends RoundMovableObject {
+    type = "disc";
+
     diameter = 14;
     rotate_step = 1;
 

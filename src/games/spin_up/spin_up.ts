@@ -4,18 +4,19 @@ import Disc from "./gameobjects/disc";
 import { LINE_COLOR, RED_ALLIANCE, BLUE_ALLIANCE } from "games/generic/colors";
 import Roller from "./gameobjects/roller";
 import { HIGH_GOAL_SUPPORT } from "./colors";
+import Robot from "games/generic/robot";
 
 interface SaveData {
-    d: { x: number, y: number }[],
+    o: { t: string, x: number, y: number }[],
     r: { s: 0 | 1 | -1 }[]
 }
 
 export default class SpinUp implements GameRenderer<SaveData> {
     private cache_ctx: CanvasRenderingContext2D;
 
-    private selected_disc = -1;
+    private selected_object = -1;
 
-    private readonly discs = [
+    private readonly moveable_objects = [
         new Disc(FIELD_SIDE / 12 * 1, FIELD_SIDE / 12 * 1),
         new Disc(FIELD_SIDE / 12 * 2, FIELD_SIDE / 12 * 2),
         new Disc(FIELD_SIDE / 12 * 3, FIELD_SIDE / 12 * 3 - 1 * FIELD_SCALE),
@@ -46,8 +47,8 @@ export default class SpinUp implements GameRenderer<SaveData> {
         new Disc(FIELD_SIDE / 12 * 6, FIELD_SIDE / 12 * 8),
         new Disc(FIELD_SIDE / 12 * 7, FIELD_SIDE / 12 * 9),
         
-        new Disc(FIELD_SIDE / 12 * 3, FIELD_SIDE / 12 * 5 - 1 * FIELD_SCALE),
         new Disc(FIELD_SIDE / 12 * 3, FIELD_SIDE / 12 * 5 - 2 * FIELD_SCALE),
+        new Disc(FIELD_SIDE / 12 * 3, FIELD_SIDE / 12 * 5 - 1 * FIELD_SCALE),
         new Disc(FIELD_SIDE / 12 * 3, FIELD_SIDE / 12 * 5 - 3 * FIELD_SCALE),
         
         new Disc(FIELD_SIDE / 48 * 31, FIELD_SIDE / 48 * 9),
@@ -90,14 +91,19 @@ export default class SpinUp implements GameRenderer<SaveData> {
         new Disc(FIELD_SIDE + FIELD_SIDE / 12 * 2, FIELD_SIDE / 20 * 11),
         new Disc(FIELD_SIDE + FIELD_SIDE / 12 * 2, FIELD_SIDE / 20 * 12),
         new Disc(FIELD_SIDE + FIELD_SIDE / 12 * 2, FIELD_SIDE / 20 * 13),
-    ]
+
+        new Robot(-FIELD_SIDE / 3, FIELD_SIDE / 3),
+        new Robot(-FIELD_SIDE / 3, FIELD_SIDE / 3 * 2),
+        new Robot(FIELD_SIDE + FIELD_SIDE / 3, FIELD_SIDE / 3),
+        new Robot(FIELD_SIDE + FIELD_SIDE / 2, FIELD_SIDE / 3 * 2)
+    ];
 
     private readonly rollers = [
         new Roller(0, FIELD_SIDE / 6, false),
         new Roller(FIELD_SIDE / 6, 0, true),
         new Roller(FIELD_SIDE - Roller.short_side, FIELD_SIDE / 6 * 5 - Roller.long_side, false),
         new Roller(FIELD_SIDE / 6 * 5 - Roller.long_side, FIELD_SIDE - Roller.short_side, true)
-    ]
+    ];
 
     private cache() {
         this.cache_ctx =
@@ -200,29 +206,29 @@ export default class SpinUp implements GameRenderer<SaveData> {
         this.cache_ctx.arc(FIELD_SIDE / 6, FIELD_SIDE / 6 * 5, high_goal_diameter/2 * FIELD_SCALE, 0, Math.PI * 2);
         this.cache_ctx.closePath();
         this.cache_ctx.fill();
-    }
+    };
 
     tick(mouseX: number, mouseY: number, snappedMouseX: number, snappedMouseY: number, mouseButton: number, shiftKey: boolean, ctrlKey: boolean, deltaScroll: number) {
         if (shiftKey && mouseButton == 0) {
             if (!this.hasSelection()) {
-                for (const disc of this.discs) {
-                    if (disc.pointInside(mouseX, mouseY)) {
-                        this.selected_disc = this.discs.indexOf(disc);
+                for (const object of this.moveable_objects) {
+                    if (object.pointInside(mouseX, mouseY)) {
+                        this.selected_object = this.moveable_objects.indexOf(object);
 
                         break;
                     }
                 }
             }
 
-            if (this.selected_disc >= 0)
-                this.discs[this.selected_disc]
+            if (this.selected_object >= 0)
+                this.moveable_objects[this.selected_object]
                     .update(
                         snappedMouseX,
                         snappedMouseY,
                         deltaScroll
                     );
         } else {
-            this.selected_disc = -1;
+            this.selected_object = -1;
         }
 
         if (!this.hasSelection())
@@ -235,14 +241,14 @@ export default class SpinUp implements GameRenderer<SaveData> {
         if (this.hasSelection())
             return CursorType.GRABBING;
         else {
-            let pointInsideDisc = false;
+            let pointInsideObject = false;
 
-            for (const disc of this.discs) {
-                if (disc.pointInside(mouseX, mouseY))
-                    pointInsideDisc = true;
+            for (const object of this.moveable_objects) {
+                if (object.pointInside(mouseX, mouseY))
+                    pointInsideObject = true;
             }
 
-            if (pointInsideDisc)
+            if (pointInsideObject)
                 return CursorType.GRAB;
 
             let pointInsideRoller = false;
@@ -261,12 +267,13 @@ export default class SpinUp implements GameRenderer<SaveData> {
 
     saveData() {
         const data: SaveData = {
-            d: [],
+            o: [],
             r: []
         };
 
-        for (const disc of this.discs) {
-            data.d.push({ x: disc.getX(), y: disc.getY() })
+        for (const object of this.moveable_objects) {
+            if (object)
+            data.o.push({ t: object.getType(), x: object.getX(), y: object.getY() })
         }
 
         for (const roller of this.rollers) {
@@ -277,14 +284,22 @@ export default class SpinUp implements GameRenderer<SaveData> {
     }
 
     loadData(data: SaveData) {
-        this.discs.length = 0;
+        this.moveable_objects.length = 0;
         this.rollers.length = 0;
 
-        for (const disc of data.d) {
-            this.discs.push(
-                new Disc(disc.x, disc.y)
-            );
+        for (const object of data.o) {
+            if (object.t == "disc")
+                this.moveable_objects.push(
+                    new Disc(object.x, object.y)
+                );
         }
+
+        this.moveable_objects.push(
+            new Robot(-FIELD_SIDE / 3, FIELD_SIDE / 3),
+            new Robot(-FIELD_SIDE / 3, FIELD_SIDE / 3 * 2),
+            new Robot(FIELD_SIDE + FIELD_SIDE / 3, FIELD_SIDE / 3),
+            new Robot(FIELD_SIDE + FIELD_SIDE / 2, FIELD_SIDE / 3 * 2)
+        );
 
         this.rollers[0] = new Roller(0, FIELD_SIDE / 6, false, data.r[0].s),
         this.rollers[1] = new Roller(FIELD_SIDE / 6, 0, true, data.r[1].s),
@@ -319,9 +334,9 @@ export default class SpinUp implements GameRenderer<SaveData> {
             roller.render(ctx);
         });
 
-        this.discs.forEach(disc => {
-            disc.render(ctx);
-        })
+        this.moveable_objects.forEach(object => {
+            object.render(ctx);
+        });
     }
 
     render_static(ctx: CanvasRenderingContext2D) {
@@ -331,6 +346,6 @@ export default class SpinUp implements GameRenderer<SaveData> {
     }
 
     hasSelection() {
-        return this.selected_disc >= 0;
+        return this.selected_object >= 0;
     }
 }

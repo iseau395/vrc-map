@@ -8,6 +8,8 @@ export interface Object extends Renderable {
 }
 
 export class MovableObject implements Object {
+    protected type: string;
+
     protected x: number;
     protected y: number;
     protected r: number;
@@ -50,6 +52,10 @@ export class MovableObject implements Object {
 
     getRot() {
         return this.r;
+    }
+
+    getType() {
+        return this.type;
     }
 }
 
