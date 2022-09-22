@@ -29,22 +29,18 @@ export default class Robot extends MovableObject {
         ctx.font = '100px serif';
         switch (this.texture) {
             case 0:
-                console.log("red a");
                 ctx.fillStyle = "rgb(255, 0, 0)";
                 ctx.fillText("A", this.x, this.y + 25);
                 break;
             case 1:
-                console.log("red b");
                 ctx.fillStyle = "rgb(255, 0, 0)";
                 ctx.fillText("B", this.x, this.y + 25);
                 break;
             case 2:
-                console.log("blue a");
                 ctx.fillStyle = "rgb(0, 0, 255)";
                 ctx.fillText("A", this.x, this.y + 25);
                 break;
             case 3:
-                console.log("blue a");
                 ctx.fillStyle = "rgb(0, 0, 255)";
                 ctx.fillText("B", this.x, this.y + 25);
                 break;
