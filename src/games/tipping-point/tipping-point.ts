@@ -33,7 +33,10 @@ export default class TippingPoint implements GameRenderer<SaveData> {
         new Mogo(FIELD_SIDE/2, FIELD_SIDE/4 * 3, 0, 2),
     ];
     private rings = [
-        new Ring(50, 50, 0)
+        new Ring(FIELD_SIDE / 2, FIELD_SIDE / 24 * 1, 0),
+        new Ring(FIELD_SIDE / 2, FIELD_SIDE / 24 * 2, 0),
+        new Ring(FIELD_SIDE / 2, FIELD_SIDE / 24 * 3, 0),
+        new Ring(FIELD_SIDE / 2, FIELD_SIDE / 24 * 4, 0),
     ];
 
     private drawPlatform(x: number, y: number, color: CanvasRenderingContext2D["strokeStyle"], ctx: CanvasRenderingContext2D) {
